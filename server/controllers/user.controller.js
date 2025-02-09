@@ -252,3 +252,42 @@ export const uploadAvatar = async (req, res) => {
         })
     }
 }
+
+//update user details
+export const updateUserDetailsController = async (req, res) => {
+    try {
+        
+        const userId = req.userId //from authMiddleware
+        const {name , email, mobile, password} = req.body
+
+        // Hash the password
+        let hashedPassword
+        if(password) {
+            hashedPassword = await hashPassword(password);
+        }
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            userId, {
+                ...(name && {name: name}),
+                ...(email && {email: email}),
+                ...(mobile && {mobile: mobile}),
+                ...(password && {password: hashedPassword})
+            },
+            { new: true } // To return the updated user
+        )
+
+        return res.status(200).json({
+            message: "user details updated successfully.",
+            error: false,
+            success: true,
+            data: updatedUser
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error:true,
+            success: false,
+        })
+    }
+}
