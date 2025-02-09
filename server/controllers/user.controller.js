@@ -7,6 +7,8 @@ import generateRefreshToken from "../utils/generateRefreshToken.js";
 import uploadImgCloudinary from "../utils/uploadImgCloudinary.js";
 import verificationEmailTemplate from "../utils/verificationEmailTemplate.js";
 import dotenv from "dotenv"
+import generateOTP from "../utils/generateOTP.js";
+import forgotPasswordEmailTemplate from "../utils/forgotPasswordEmailTemplate.js";
 
 dotenv.config();
 
@@ -260,6 +262,22 @@ export const updateUserDetailsController = async (req, res) => {
         const userId = req.userId //from authMiddleware
         const {name , email, mobile, password} = req.body
 
+        //check if mobile already exist with other account or not
+        if (mobile) {
+            const checkMobile = await UserModel.findOne({
+                mobile: mobile,
+                _id: { $ne: userId }, // Exclude the current user
+            });
+
+            if (checkMobile) {
+                return res.status(400).json({
+                    message: "This mobile number is already associated with another account.",
+                    error: true,
+                    success: false,
+                });
+            }
+        }
+
         // Hash the password
         let hashedPassword
         if(password) {
@@ -291,3 +309,58 @@ export const updateUserDetailsController = async (req, res) => {
         })
     }
 }
+
+//forgot password for not login
+export const forgotPasswordController = async (req, res) => {
+    try {
+        const {email} = req.body
+
+        if(!email) {
+            return res.status(400).json({
+                message: "Please provide Email!!!",
+                error: true,
+                success: false
+            })
+        }
+
+        const user = await UserModel.findOne({email})
+        if(!user) {
+            return res.status(400).json({
+                message: "Email does not exist!!!",
+                error: true,
+                success: false
+            })
+        }
+
+        const otp = generateOTP()
+        const otpExpireTime = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+        const update = await UserModel.findByIdAndUpdate(user._id, {
+            forgot_password_otp: otp,
+            forgot_password_expiry: new Date(otpExpireTime).toISOString()
+        })
+
+        await sendEmail({
+            sendTo: email,
+            subject: "Forgot Password from BlinkIt-Clone.",
+            html: forgotPasswordEmailTemplate({
+                name: user.name, 
+                otp: otp
+            })
+        })
+
+        return res.status(200).json({
+            message: "check your Email",
+            error: false,
+            success: true,
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error:true,
+            success: false
+        })
+    }
+}
+
