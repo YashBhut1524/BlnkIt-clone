@@ -132,7 +132,7 @@ export const loginUserController = async (req, res) => {
 
         if(!user) {
             return res.status(400).json({
-                message: "User nott registered with this email!!!",
+                message: "User nott registered with this email!",
                 error: true,
                 success: false
             })
@@ -140,7 +140,7 @@ export const loginUserController = async (req, res) => {
 
         if(user.status !== "Active") {
             return res.satus(400).json({
-                message: `Your account is ${user.status}, Please contact to admin!!!`,
+                message: `Your account is ${user.status}, Please contact to admin!`,
                 error: true,
                 success: false
             })
@@ -315,9 +315,9 @@ export const forgotPasswordController = async (req, res) => {
     try {
         const {email} = req.body
 
-        if(!email) {
+        if(!email?.trim()) {
             return res.status(400).json({
-                message: "Please provide Email!!!",
+                message: "Please provide Email!",
                 error: true,
                 success: false
             })
@@ -326,7 +326,7 @@ export const forgotPasswordController = async (req, res) => {
         const user = await UserModel.findOne({email})
         if(!user) {
             return res.status(400).json({
-                message: "Email does not exist!!!",
+                message: "Email does not exist!",
                 error: true,
                 success: false
             })
@@ -364,3 +364,59 @@ export const forgotPasswordController = async (req, res) => {
     }
 }
 
+//verify forgot password OTP
+export const verifyForgotPasswordOTPController = async (req, res) => {
+    try {
+        const {email, otp} = req.body
+
+        if (!email?.trim() || !otp?.trim()) {
+            return res.status(400).json({
+                message: "Please provide both Email and OTP!",
+                error: true,
+                success: false
+            });
+        }
+        
+        const user = UserModel.findOne({email})
+
+        if(!user) {
+            return res.status(400).json({
+                message: "Email does not exist!",
+                error: true,
+                success: false
+            })
+        }
+
+        const currentTime = new Date()
+
+        if(user.forgot_password_expiry < currentTime) {
+            return res.status(400).json({
+                message: "The OTP has expired. Please request a new one to proceed.",
+                error: true,
+                success: false
+            })
+        }
+
+        if(otp !== user.forgot_password_otp) {
+            return res.status(400).json({
+                message: "The OTP you entered is incorrect. Please check and try again.",
+                error: true,
+                success: false
+            })
+        }
+
+        //if otp is not expired && otp === user.forgot_password_otp
+        return res.status(200).json({
+            message: "verified OTP successfully.",
+            error: false,
+            success: true
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error:true,
+            success: false
+        })
+    }
+}
