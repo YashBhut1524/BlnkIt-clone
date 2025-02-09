@@ -1,8 +1,10 @@
+import { response } from "express";
 import {hashPassword,  comparePasswords} from "../helper/passwordHashng.js";
 import sendEmail from "../helper/sendEmail.js";
 import UserModel from "../models/user.model.js";
 import generateAccessToken from "../utils/generateAccessToken.js";
 import generateRefreshToken from "../utils/generateRefreshToken.js";
+import uploadImgCloudinary from "../utils/uploadImgCloudinary.js";
 import verificationEmailTemplate from "../utils/verificationEmailTemplate.js";
 import dotenv from "dotenv"
 
@@ -182,15 +184,18 @@ export const loginUserController = async (req, res) => {
     }
 }
 
+//Logout user
 export const logoutController = async (req, res) => {
     try {
 
-        userId = req.userId //from middleware
+        
+        const userId = req.userId //from middleware
+        // console.log("userId: ", userId)
 
         const cookiesOption = {
-            httpOnly: true,
-            secure: true,
-            sameSite: "None"
+            httpOnly : true,
+            secure : true,
+            sameSite : "None"
         }
 
         res.clearCookie("accessToken", cookiesOption)
@@ -206,6 +211,38 @@ export const logoutController = async (req, res) => {
             error: false,
             success: true
         });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error:true,
+            success: false
+        })
+    }
+}
+
+//upload user avatar
+export const uploadAvatar = async (req, res) => {
+    try {
+
+        const userId = req.userId //from authMiddleware
+        const image = req.file //from multer middleware
+        // console.log("Image: ", image);
+
+        const upload = await uploadImgCloudinary(image)
+        // console.log(upload);
+
+        const updateUser = await UserModel.findByIdAndUpdate(userId, {
+            avatar: upload.url
+        })
+
+        return res.status(200).json({
+            message: "Avatar uploaded successfully",
+            data: {
+                _id: userId,
+                avatar: upload.url
+            }
+        })
 
     } catch (error) {
         return res.status(500).json({

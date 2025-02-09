@@ -15,6 +15,7 @@ const authMiddleware = async (req, res, next) => {
 
         const decode = await jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN)
         // console.log("Decode: ", decode);
+
         if(!decode) {
             return res.status(401).json({
                 message: "Unauthorized access!!!",
@@ -24,7 +25,8 @@ const authMiddleware = async (req, res, next) => {
         }
 
         req.userId = decode.id
-
+        // console.log("req.userId:", req.userId);
+        
         next()
 
     } catch (error) {
