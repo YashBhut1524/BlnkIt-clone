@@ -4,6 +4,7 @@ import {
     loginUserController, 
     logoutController, 
     registerUserController, 
+    resetPasswordController, 
     updateUserDetailsController, 
     uploadAvatar, 
     verifyForgotPasswordOTPController, 
@@ -22,5 +23,6 @@ userRoutes.put("/upload-avatar", authMiddleware, upload.single("avatar"), upload
 userRoutes.put("/update-user", authMiddleware, updateUserDetailsController)
 userRoutes.put("/forgot-password", forgotPasswordController)
 userRoutes.put("/verify-forgot-password-otp", verifyForgotPasswordOTPController)
+userRoutes.put("/reset-password", resetPasswordController)
 
 export default userRoutes

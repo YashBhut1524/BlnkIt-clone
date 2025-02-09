@@ -9,6 +9,7 @@ import verificationEmailTemplate from "../utils/verificationEmailTemplate.js";
 import dotenv from "dotenv"
 import generateOTP from "../utils/generateOTP.js";
 import forgotPasswordEmailTemplate from "../utils/forgotPasswordEmailTemplate.js";
+import resetPasswordConfirmationTemplate from "../utils/resetPasswordConfirmationTemplate.js";
 
 dotenv.config();
 
@@ -369,7 +370,7 @@ export const verifyForgotPasswordOTPController = async (req, res) => {
     try {
         const {email, otp} = req.body
 
-        if (!email?.trim() || !otp?.trim()) {
+        if (!email || !otp) {
             return res.status(400).json({
                 message: "Please provide both Email and OTP!",
                 error: true,
@@ -377,7 +378,7 @@ export const verifyForgotPasswordOTPController = async (req, res) => {
             });
         }
         
-        const user = UserModel.findOne({email})
+        const user = await UserModel.findOne({email})
 
         if(!user) {
             return res.status(400).json({
@@ -407,7 +408,7 @@ export const verifyForgotPasswordOTPController = async (req, res) => {
 
         //if otp is not expired && otp === user.forgot_password_otp
         return res.status(200).json({
-            message: "verified OTP successfully.",
+            message: "OTP verified successfully.",
             error: false,
             success: true
         })
@@ -420,3 +421,66 @@ export const verifyForgotPasswordOTPController = async (req, res) => {
         })
     }
 }
+
+//reset the password
+export const resetPasswordController = async (req, res) => {
+    try {
+        const { email, newPassword, confirmPassword } = req.body;
+
+        if (!email || !newPassword || !confirmPassword) {
+            return res.status(400).json({
+                message: "Please provide Email and Passwords!",
+                error: true,
+                success: false
+            });
+        }
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({
+                message: "Passwords do not match! Please ensure both fields are identical.",
+                error: true,
+                success: false
+            });
+        }
+
+        const hashedPassword = await hashPassword(newPassword);
+
+        const updatedUser = await UserModel.findOneAndUpdate(
+            { email }, // Find the user by email
+            { password: hashedPassword }, // Update the password
+            { new: true } // Return the updated user
+        );
+
+        if (!updatedUser) {
+            return res.status(400).json({
+                message: "Email does not exist!",
+                error: true,
+                success: false
+            });
+        }
+
+        console.log("updatedUser: ", updatedUser);
+        
+        await sendEmail({
+            sendTo: email,
+            subject: "Your Password Has Been Successfully Reset - BlinkItClone",
+            html: resetPasswordConfirmationTemplate({
+                name: updatedUser.name,
+                email: updatedUser.email,
+                supportEmail: "support@yashh1524.com"
+            })
+        })
+
+        return res.status(200).json({
+            message: "Password updated successfully.",
+            error: false,
+            success: true
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
+};
