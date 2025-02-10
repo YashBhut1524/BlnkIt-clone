@@ -1,4 +1,3 @@
-import { response } from "express";
 import {hashPassword,  comparePasswords} from "../helper/passwordHashng.js";
 import sendEmail from "../helper/sendEmail.js";
 import UserModel from "../models/user.model.js";
@@ -10,6 +9,7 @@ import dotenv from "dotenv"
 import generateOTP from "../utils/generateOTP.js";
 import forgotPasswordEmailTemplate from "../utils/forgotPasswordEmailTemplate.js";
 import resetPasswordConfirmationTemplate from "../utils/resetPasswordConfirmationTemplate.js";
+import jwt from "jsonwebtoken"
 
 dotenv.config();
 
@@ -484,3 +484,57 @@ export const resetPasswordController = async (req, res) => {
         });
     }
 };
+
+//refresh token controller
+export const refreshTokenController = async (req, res) => {
+    try {
+        const refreshToken = req.cookies.refreshToken || req?.header?.authorization?.split(" ")[1]
+
+        if(!refreshToken) {
+            return res.status(400).json({
+                message: "Refresh Token not found!",
+                error: true,
+                success: false
+            });
+        }
+
+        console.log("refreshToken: ", refreshToken);
+        const verifyToken = await jwt.verify(refreshToken, process.env.SECRET_KEY_REFRESH_TOKEN)
+        
+        if(!verifyToken) {
+            return res.status(400).json({
+                message: "Token is expired!",
+                error: true,
+                success: false
+            });
+        }
+
+        console.log("verifyToken: ", verifyToken);
+        const userId = verifyToken.id
+
+        const newAccessToken = await generateAccessToken(userId)
+        
+        const cookiesOption = {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        }
+        res.cookie("accessToken", newAccessToken, cookiesOption)
+
+        return res.status(200).json({
+            message: "New accessToken generated.",
+            error: false,
+            success: true,
+            data: {
+                accessToken: newAccessToken
+            }
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
+}

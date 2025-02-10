@@ -3,6 +3,7 @@ import {
     forgotPasswordController, 
     loginUserController, 
     logoutController, 
+    refreshTokenController, 
     registerUserController, 
     resetPasswordController, 
     updateUserDetailsController, 
@@ -24,5 +25,7 @@ userRoutes.put("/update-user", authMiddleware, updateUserDetailsController)
 userRoutes.put("/forgot-password", forgotPasswordController)
 userRoutes.put("/verify-forgot-password-otp", verifyForgotPasswordOTPController)
 userRoutes.put("/reset-password", resetPasswordController)
+userRoutes.post("/refresh-token", refreshTokenController)
+
 
 export default userRoutes
