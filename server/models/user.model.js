@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     mobile : {
         type : Number,
         default : null,
-        unique: true,
+        required: [true, "Provide mobile number"]
     },
     refresh_token : {
         type : String,

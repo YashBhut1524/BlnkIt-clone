@@ -17,10 +17,10 @@ dotenv.config();
 export const registerUserController = async (req, res) => {
     try {
         // Extract parameters from request body
-        const { name, email, password } = req.body;
+        const { name, email, password, mobile } = req.body;
 
         // Validate required fields
-        if (!name || !email || !password) {
+        if (!name || !email || !password || !mobile) {
             return res.status(400).json({
                 message: "Please fill the required fields!",
                 error: true,
@@ -29,24 +29,28 @@ export const registerUserController = async (req, res) => {
         }
 
         // Check if a user with the same email already exists
-        const existingUser = await UserModel.findOne({ email });
+        const existingUser = await UserModel.findOne({ $or: [{ email }, { mobile }] });
+
         if (existingUser) {
             return res.status(400).json({
-                message: "Email is already registered!",
+                message: existingUser.email === email 
+                    ? "Email is already registered!" 
+                    : "Mobile number is already registered!",
                 error: true,
                 success: false
             });
         }
-
         // Hash the password
         const hashedPassword = await hashPassword(password);
 
         // Store user in the database
-        const newUser = new UserModel({
-            name,
-            email,
-            password: hashedPassword
-        });
+const newUser = new UserModel({
+    name,
+    email,
+    password: hashedPassword,
+    mobile
+});
+
 
         const savedUser = await newUser.save();
         // console.log(savedUser.name);
