@@ -43,7 +43,7 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
                 ...summaryApi.register,
                 data: registerData
             })
-            console.log("response: ", response);
+            // console.log("response: ", response);
             if (response.data.error){
                 toast.error(response.data.message)
             }
@@ -62,8 +62,6 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
             // console.log(error);
             AxiosToastError(error);
         }
-
-        
     }
 
     return (

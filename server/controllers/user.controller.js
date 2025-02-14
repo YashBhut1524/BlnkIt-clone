@@ -146,7 +146,7 @@ export const loginUserController = async (req, res) => {
 
         if(!user) {
             return res.status(400).json({
-                message: "User nott registered with this email!",
+                message: "User not registered with this email!",
                 error: true,
                 success: false
             })
