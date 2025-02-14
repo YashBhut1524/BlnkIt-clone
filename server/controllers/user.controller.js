@@ -381,7 +381,7 @@ export const forgotPasswordController = async (req, res) => {
 //verify forgot password OTP
 export const verifyForgotPasswordOTPController = async (req, res) => {
     try {
-        const {email, otp} = req.body
+        const { email, otp } = req.body;
 
         if (!email || !otp) {
             return res.status(400).json({
@@ -391,49 +391,55 @@ export const verifyForgotPasswordOTPController = async (req, res) => {
             });
         }
         
-        const user = await UserModel.findOne({email})
+        const user = await UserModel.findOne({ email });
 
-        if(!user) {
+        if (!user) {
             return res.status(400).json({
                 message: "Email does not exist!",
                 error: true,
                 success: false
-            })
+            });
         }
 
-        const currentTime = new Date()
+        const currentTime = new Date();
 
-        if(user.forgot_password_expiry < currentTime) {
+        if (user.forgot_password_expiry < currentTime) {
             return res.status(400).json({
                 message: "The OTP has expired. Please request a new one to proceed.",
                 error: true,
                 success: false
-            })
+            });
         }
 
-        if(otp !== user.forgot_password_otp) {
+        if (otp !== user.forgot_password_otp) {
             return res.status(400).json({
                 message: "The OTP you entered is incorrect. Please check and try again.",
                 error: true,
                 success: false
-            })
+            });
         }
 
-        //if otp is not expired && otp === user.forgot_password_otp
+        // OTP is correct, now reset OTP field to prevent reuse
+        await UserModel.updateOne(
+            { email },
+            { $set: { forgot_password_otp: null, forgot_password_expiry: null } }
+        );
+
         return res.status(200).json({
             message: "OTP verified successfully.",
             error: false,
             success: true
-        })
+        });
 
     } catch (error) {
         return res.status(500).json({
             message: error.message || error,
-            error:true,
+            error: true,
             success: false
-        })
+        });
     }
-}
+};
+
 
 //reset the password
 export const resetPasswordController = async (req, res) => {
