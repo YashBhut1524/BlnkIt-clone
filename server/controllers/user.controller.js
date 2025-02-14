@@ -44,13 +44,12 @@ export const registerUserController = async (req, res) => {
         const hashedPassword = await hashPassword(password);
 
         // Store user in the database
-const newUser = new UserModel({
-    name,
-    email,
-    password: hashedPassword,
-    mobile
-});
-
+        const newUser = new UserModel({
+            name,
+            email,
+            password: hashedPassword,
+            mobile
+        });
 
         const savedUser = await newUser.save();
         // console.log(savedUser.name);
