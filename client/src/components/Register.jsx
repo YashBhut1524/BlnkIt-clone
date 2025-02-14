@@ -44,6 +44,9 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
                 data: registerData
             })
             console.log("response: ", response);
+            if (response.data.error){
+                toast.error(response.data.message)
+            }
             if (response.data.success) {
                 toast.success(response.data.message);
                 setRegisterData({
