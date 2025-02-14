@@ -11,9 +11,10 @@ dotenv.config()
 
 const app = express()
 app.use(cors({
-    credential: true,
+    credentials: true,
     origin: process.env.CLIENT_URL
-}))
+}));
+
 app.use(express.json())
 app.use(cookieParser())
 app.use(morgan())
