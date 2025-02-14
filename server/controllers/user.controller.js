@@ -16,10 +16,8 @@ dotenv.config();
 //register user
 export const registerUserController = async (req, res) => {
     try {
-        // Extract parameters from request body
         const { name, email, password, mobile } = req.body;
 
-        // Validate required fields
         if (!name || !email || !password || !mobile) {
             return res.status(400).json({
                 message: "Please fill the required fields!",
@@ -28,7 +26,6 @@ export const registerUserController = async (req, res) => {
             });
         }
 
-        // Check if a user with the same email already exists
         const existingUser = await UserModel.findOne({ $or: [{ email }, { mobile }] });
 
         if (existingUser) {
@@ -40,10 +37,9 @@ export const registerUserController = async (req, res) => {
                 success: false
             });
         }
-        // Hash the password
+
         const hashedPassword = await hashPassword(password);
 
-        // Store user in the database
         const newUser = new UserModel({
             name,
             email,
@@ -52,9 +48,7 @@ export const registerUserController = async (req, res) => {
         });
 
         const savedUser = await newUser.save();
-        // console.log(savedUser.name);
-        
-        // Send verification email
+
         const verifyEmailURL = `${process.env.CLIENT_URL}/verify-email?code=${savedUser._id}`;
 
         await sendEmail({
@@ -66,12 +60,28 @@ export const registerUserController = async (req, res) => {
             }),
         });
 
-        // Return response to the user after successful registration
+        // Auto-login after successful registration
+        const accessToken = await generateAccessToken(savedUser._id);
+        const refreshToken = await generateRefreshToken(savedUser._id);
+
+        const cookiesOption = {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        };
+
+        res.cookie("accessToken", accessToken, cookiesOption);
+        res.cookie("refreshToken", refreshToken, cookiesOption);
+
         return res.status(201).json({
-            message: "User registered successfully. Please verify your email.",
+            message: "User registered successfully and logged in.",
             error: false,
             success: true,
-            data: savedUser
+            data: {
+                user: savedUser,
+                accessToken,
+                refreshToken
+            }
         });
 
     } catch (error) {
