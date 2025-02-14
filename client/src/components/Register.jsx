@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import Axios from "../../utils/Axios";
+import summaryApi from "../../common/summaryApi";
+import toast from "react-hot-toast";
+import AxiosToastError from "../../utils/AxiosToastError";
 
 const Register = ({ setIsLoginOpen, setIsRegister }) => {
     const [registerData, setRegisterData] = useState({
         name: "",
         email: "",
         password: "",
-        confirmPassword: "",
         mobile: "",
     });
 
@@ -35,6 +38,29 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         
+        try {
+            const response = await Axios({
+                ...summaryApi.register,
+                data: registerData
+            })
+            console.log("response: ", response);
+            if (response.data.success) {
+                toast.success(response.data.message);
+                setRegisterData({
+                    name: "",
+                    email: "",
+                    password: "",
+                    mobile: "",
+                });
+                setIsLoginOpen(false); // This will close the register pop-up
+            }
+            
+        } catch (error) {
+            // console.log(error);
+            AxiosToastError(error);
+        }
+
+        
     }
 
     return (
@@ -55,6 +81,7 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
                         placeholder="Full Name"
                         className="w-full p-2 mb-3 border rounded-md"
                         onChange={handleChangeRegister}
+                        autoComplete="off"
                     />
                     <input
                         value={registerData.email}
@@ -63,6 +90,7 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
                         placeholder="Email Address"
                         className="w-full p-2 mb-3 border rounded-md"
                         onChange={handleChangeRegister}
+                        autoComplete="off"
                     />
                     <input
                         value={registerData.password}
@@ -71,6 +99,7 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
                         placeholder="Password"
                         className="w-full p-2 mb-3 border rounded-md"
                         onChange={handleChangeRegister}
+                        autoComplete="off"
                     />
                     <input
                         value={registerData.confirmPassword}
@@ -79,6 +108,7 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
                         placeholder="Confirm Password"
                         className="w-full p-2 mb-3 border rounded-md"
                         onChange={handleChangeRegister}
+                        autoComplete="off"
                     />
                     <input
                         value={registerData.mobile}
@@ -87,6 +117,7 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
                         placeholder="Enter mobile number"
                         className="w-full p-2 mb-2 border rounded-md"
                         onChange={handleChangeRegister}
+                        autoComplete="off"
                     />
 
                     {passwordError && <p className="text-red-500 text-sm mb-3">{passwordError}</p>}
