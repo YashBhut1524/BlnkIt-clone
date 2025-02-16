@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AxiosToastError from "../../utils/AxiosToastError";
 import Axios from "../../utils/Axios";
@@ -7,27 +7,63 @@ import toast from "react-hot-toast";
 
 const VerifyForgotPasswordOTP = () => {
     const location = useLocation();
+    // console.log("location",location)
     const navigate = useNavigate();
     const email = location.state?.email || "";
 
-    const [otp, setOtp] = useState("");
+    const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+    const inputRefs = useRef([]);
+
+    // Handle OTP input change
+    const handleChange = (index, e) => {
+        const value = e.target.value;
+        if (isNaN(value)) return; // Allow only numbers
+
+        const newOtp = [...otp];
+        newOtp[index] = value.substring(value.length - 1); // Only keep the last digit
+        setOtp(newOtp);
+
+        // Move to next input if a number is entered
+        if (value && index < 5) {
+            inputRefs.current[index + 1].focus();
+        }
+    };
+
+    // Handle Backspace Key
+    const handleKeyDown = (index, e) => {
+        if (e.key === "Backspace" && !otp[index] && index > 0) {
+            inputRefs.current[index - 1].focus();
+        }
+    };
 
     const handleVerifyOTP = async (e) => {
         e.preventDefault();
+        const otpValue = otp.join(""); // Convert array to string
+
+        if (otpValue.length !== 6) {
+            toast.error("Please enter a 6-digit OTP.");
+            return;
+        }
+
         try {
             const response = await Axios({
                 ...summaryApi.verifyForgotPasswordOTP,
-                data: { email, otp }
+                data: { email, otp: otpValue },
             });
 
-            console.log("OTP Verification response: ", response);
+            // console.log("OTP Verification response: ", response);
             if (response.data.error) {
                 toast.error(response.data.message);
             }
             if (response.data.success) {
                 toast.success("OTP verified successfully!");
-                
-                navigate("/reset-password", {state: {email}});
+                navigate(
+                    "/reset-password", 
+                    { state: { 
+                        email, 
+                        data: response.data 
+                    } }
+                );
             }
         } catch (error) {
             AxiosToastError(error);
@@ -42,14 +78,21 @@ const VerifyForgotPasswordOTP = () => {
             </p>
 
             <form onSubmit={handleVerifyOTP} className="w-full max-w-md mt-6 space-y-4">
-                <input
-                    type="text"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    placeholder="Enter OTP"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    required
-                />
+                {/* OTP Input Fields */}
+                <div className="flex justify-center space-x-2">
+                    {otp.map((digit, index) => (
+                        <input
+                            key={index}
+                            ref={(el) => (inputRefs.current[index] = el)}
+                            type="text"
+                            value={digit}
+                            onChange={(e) => handleChange(index, e)}
+                            onKeyDown={(e) => handleKeyDown(index, e)}
+                            maxLength={1}
+                            className="w-12 h-12 text-center text-xl font-semibold border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                    ))}
+                </div>
 
                 <button
                     type="submit"

@@ -22,7 +22,7 @@ function App() {
       {/* Check if Login Component is Being Rendered */}
       {isLoginOpen && (
         <>
-          {console.log("Rendering Login Popup")}
+          {/* {console.log("Rendering Login Popup")} */}
           <Login setIsLoginOpen={setIsLoginOpen} />
         </>
       )}

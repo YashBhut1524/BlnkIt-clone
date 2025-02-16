@@ -11,7 +11,7 @@ const ForgotPassword = () => {
 
     const navigate = useNavigate()
 
-    console.log("Outlet Context:", outletContext); // Debugging
+    // console.log("Outlet Context:", outletContext); // Debugging
 
 
     const handleSubmit = async (e) => {
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
                 ...summaryApi.forgotPassword,
                 data: {email}
             })
-            console.log("response: ", response);
+            // console.log("response: ", response);
             if(response.data.error) {
                 toast.error(response.data.message)
             }
@@ -74,10 +74,10 @@ const ForgotPassword = () => {
                     onClick={() => {
                         if (outletContext?.setIsLoginOpen) {
                             navigate("/")
-                            console.log("Opening Login Popup");
+                            // console.log("Opening Login Popup");
                             outletContext.setIsLoginOpen(true);
                         } else {
-                            console.log("setIsLoginOpen is not available");
+                            // console.log("setIsLoginOpen is not available");
                         }
                     }}
                 >

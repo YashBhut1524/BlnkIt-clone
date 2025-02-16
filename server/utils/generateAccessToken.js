@@ -6,7 +6,6 @@ const generateAccessToken = async (userId) => {
         process.env.SECRET_KEY_ACCESS_TOKEN, 
         {expiresIn: "5h"},
     )
-
     return token
 }
 

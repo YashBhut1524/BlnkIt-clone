@@ -528,7 +528,7 @@ export const refreshTokenController = async (req, res) => {
             });
         }
 
-        console.log("verifyToken: ", verifyToken);
+        // console.log("verifyToken: ", verifyToken);
         const userId = verifyToken.id
 
         const newAccessToken = await generateAccessToken(userId)

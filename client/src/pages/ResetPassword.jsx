@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import AxiosToastError from "../../utils/AxiosToastError";
 import Axios from "../../utils/Axios";
@@ -6,11 +6,20 @@ import summaryApi from "../../common/summaryApi";
 import toast from "react-hot-toast";
 
 const ResetPassword = () => {
-    const outletContext = useOutletContext(); // Get Outlet context
-
+    const outletContext = useOutletContext();
     const location = useLocation();
     const navigate = useNavigate();
-    const email = location.state?.email || ""; // Get email from state
+    const success = location.state?.data?.success
+    // console.log("success: ", success);
+    const email = location.state?.email || "";
+    
+    // Redirect if accessed directly
+    useEffect(() => {
+        if (!email && !success) {
+            toast.error("Unauthorized access! Redirecting...");
+            navigate("/forgot-password", { replace: true }); // Redirect to forgot password
+        }
+    }, [email, navigate, success]);
 
     const [data, setData] = useState({
         email: email,
@@ -20,45 +29,32 @@ const ResetPassword = () => {
 
     const [loading, setLoading] = useState(false);
 
-    // Handle input change dynamically
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Check if passwords match and fields are not empty
-    const isDisabled = 
-        !data.newPassword || 
-        !data.confirmPassword || 
-        data.newPassword !== data.confirmPassword;
+    const isDisabled = !data.newPassword || !data.confirmPassword || data.newPassword !== data.confirmPassword;
 
     const handleResetPassword = async (e) => {
         e.preventDefault();
-
         setLoading(true);
 
         try {
             const response = await Axios({
                 ...summaryApi.resetPassword,
-                data // Send the whole data object
+                data
             });
-
-            console.log("Reset Password response: ", response);
+            // console.log("Reset Password response: ", response);
             
             if (response.data.error) {
                 toast.error(response.data.message);
             } else {
                 toast.success("Password reset successfully! You can now log in.");
-
-                // Navigate to home page
                 navigate("/");
 
-                // Open login popup if available in context
                 if (outletContext?.setIsLoginOpen) {
                     outletContext.setIsLoginOpen(true);
-                    console.log("Opening Login Popup...");
-                } else {
-                    console.log("setIsLoginOpen is not available in outletContext");
                 }
             }
         } catch (error) {

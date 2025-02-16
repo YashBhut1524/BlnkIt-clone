@@ -26,12 +26,15 @@ const Login = ({ setIsLoginOpen, setIsRegister }) => {
                 data: loginData
             }) 
             // console.log("response: ", response);
-            
+
             if(response.data.error) {
                 toast.error(response.data.message)
             }
             if (response.data.success) {
+                // console.log("response: ", response);
                 toast.success(response.data.message);
+                localStorage.setItem("accessToken", response.data.data.accessToken)
+                localStorage.setItem("refreshToken", response.data.data.refreshToken)
                 setLoginData({
                     email: "",
                     password: "",
