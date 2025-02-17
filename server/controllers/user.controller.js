@@ -563,12 +563,12 @@ export const userDetailsController = async (req, res) => {
     try {
         const userId = req.userId
 
-        const user = await UserModel.findById(userId)
+        const user = await UserModel.findById(userId).select("-password -refresh_token")
 
         if(!user) {
             return res.status(400).json({
                 message: "User does not exist!",
-                error: true,
+                error: true,    
                 success: false
             })
         }

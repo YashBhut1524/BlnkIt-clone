@@ -21,7 +21,7 @@ const ForgotPassword = () => {
                 ...summaryApi.forgotPassword,
                 data: {email}
             })
-            // console.log("response: ", response);
+            console.log("response: ", response);
             if(response.data.error) {
                 toast.error(response.data.message)
             }
