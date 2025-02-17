@@ -8,6 +8,7 @@ import {
     resetPasswordController, 
     updateUserDetailsController, 
     uploadAvatar, 
+    userDetailsController, 
     verifyForgotPasswordOTPController, 
     verifyUserController 
 } from "../controllers/user.controller.js"
@@ -26,6 +27,7 @@ userRoutes.put("/forgot-password", forgotPasswordController)
 userRoutes.put("/verify-forgot-password-otp", verifyForgotPasswordOTPController)
 userRoutes.put("/reset-password", resetPasswordController)
 userRoutes.post("/refresh-token", refreshTokenController)
-
+userRoutes.get("/get-user-details", authMiddleware, userDetailsController)
 
 export default userRoutes
+

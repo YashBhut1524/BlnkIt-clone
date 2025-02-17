@@ -557,3 +557,33 @@ export const refreshTokenController = async (req, res) => {
         });
     }
 }
+
+//get login user details 
+export const userDetailsController = async (req, res) => {
+    try {
+        const userId = req.userId
+
+        const user = await UserModel.findById(userId)
+
+        if(!user) {
+            return res.status(400).json({
+                message: "User does not exist!",
+                error: true,
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: "user details",
+            data: user,
+            error: false,
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
+}
