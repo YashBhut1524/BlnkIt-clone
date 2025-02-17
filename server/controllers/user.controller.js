@@ -172,6 +172,10 @@ export const loginUserController = async (req, res) => {
         const accessToken = await generateAccessToken(user._id)
         const refreshToken = await generateRefreshToken(user._id)
 
+        const updateUser = await UserModel.findByIdAndUpdate(user?._id, {
+            last_login_date: new Date()
+        })
+
         const cookiesOption = {
             httpOnly: true,
             secure: true,
@@ -439,7 +443,6 @@ export const verifyForgotPasswordOTPController = async (req, res) => {
         });
     }
 };
-
 
 //reset the password
 export const resetPasswordController = async (req, res) => {
