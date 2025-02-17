@@ -7,11 +7,15 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
+import { useSelector } from "react-redux";
 
 function Header() {
     const [isMobile] = useMobile();
     const location = useLocation();
     const isSearchPage = location.pathname === "/search";
+    const user = useSelector((state) => state?.user)
+    console.log("user from store: ", user);
+    
 
     // Login/Register Popup State
     const [isLoginOpen, setIsLoginOpen] = useState(false);
