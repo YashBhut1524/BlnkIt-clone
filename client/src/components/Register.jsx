@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import Axios from "../../utils/Axios";
-import summaryApi from "../../common/summaryApi";
 import toast from "react-hot-toast";
 import AxiosToastError from "../../utils/AxiosToastError";
+import summaryApi from "../common/summaryApi";
 
 const Register = ({ setIsLoginOpen, setIsRegister }) => {
     const [registerData, setRegisterData] = useState({

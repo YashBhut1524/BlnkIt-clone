@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import AxiosToastError from "../../utils/AxiosToastError";
 import Axios from "../../utils/Axios";
-import summaryApi from "../../common/summaryApi";
+import summaryApi from "../common/summaryApi";
 import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
                 ...summaryApi.forgotPassword,
                 data: {email}
             })
-            console.log("response: ", response);
+            // console.log("response: ", response);
             if(response.data.error) {
                 toast.error(response.data.message)
             }

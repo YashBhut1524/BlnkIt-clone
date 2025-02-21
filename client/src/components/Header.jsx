@@ -4,22 +4,30 @@ import SearchBar from "./SearchBar";
 import { FaRegCircleUser } from "react-icons/fa6";
 import useMobile from "../hooks/useMobile";
 import { HiOutlineShoppingCart } from "react-icons/hi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
 import { useSelector } from "react-redux";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import UserMenu from "./UserMenu";
 
 function Header() {
     const [isMobile] = useMobile();
     const location = useLocation();
     const isSearchPage = location.pathname === "/search";
     const user = useSelector((state) => state?.user)
-    console.log("user from store: ", user);
+    // console.log("user from store: ", user);
     
 
     // Login/Register Popup State
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isRegister, setIsRegister] = useState(false);
+    const [openUserMenu, setOpenUserMenu] = useState(false)
+    
+    useEffect(() => {
+        // console.log("User state updated:", user);
+        setOpenUserMenu(false);  // Close the user menu when user logs in
+    }, [user]);
 
     return (
         <header className="h-28 lg:h-auto lg:max-h-64 bg-white p-2 shadow-md sticky z-50 lg:pt-4">
@@ -38,29 +46,65 @@ function Header() {
                     </div>
 
                     {/* Login, User Icon, and Cart */}
-                    <div className="flex items-center gap-6 lg:gap-12">
+                    <div className="flex items-center gap-4 lg:gap-8">
                         {/* User Icon (for mobile) */}
                         <button className="lg:hidden">
                             <FaRegCircleUser size={25} />
                         </button>
 
                         {/* Login Button */}
-                        <button 
-                            onClick={() => {
-                                setIsLoginOpen(true);
-                                setIsRegister(false);
-                            }} 
-                            className="hidden lg:block text-xl cursor-pointer"
-                        >
-                            Login
-                        </button>
+                        {
+                            user?._id 
+                                ? (
+                                    <div className="hidden lg:block relative w-[40%] p-2 select-none">
+                                        <div 
+                                            className="flex gap-1 items-center cursor-pointer p-2 hover:bg-[#f6f2f2] rounded-md"
+                                            onClick={() => setOpenUserMenu(prev => !prev)}
+                                        >
+                                            <p>Account</p>
+                                            {
+                                                openUserMenu 
+                                                    ? (
+                                                        <FaAngleUp/>
+                                                    ) 
+                                                    : (
+                                                        <FaAngleDown/>
+                                                    )
+                                            }
+                                        </div>
+                                        <div className="absolute right-0 top-13">
+                                            {
+                                                openUserMenu === true &&
+                                                (
+                                                    <div className="bg-[#ffffff] rounded-md p-4 min-w-52 lg:shadow-lg">
+                                                        <UserMenu />
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                ) 
+                                : (
+                                    <button 
+                                        onClick={() => {
+                                            setIsLoginOpen(true);
+                                            setIsRegister(false);
+                                        }} 
+                                        className="hidden lg:block text-xl cursor-pointer"
+                                    >
+                                        Login
+                                    </button>
+                                )
+                        }
 
                         {/* Cart Button */}
-                        <button className="hidden lg:flex items-center bg-[#0C831F] px-2 py-3 gap-2 text-white cursor-pointer rounded-lg">
+                        <button className="min-w-[8rem] w-auto justify-around hidden lg:flex items-center bg-[#0C831F] px-2 py-3 gap-1 text-white cursor-pointer rounded-lg">
                             <div className="hover:animate-bounce">
                                 <HiOutlineShoppingCart size={30} />
                             </div>
-                            <div className="font-bold">My Cart</div>
+                            <div className="font-bold">
+                                My Cart
+                            </div>
                         </button>
                     </div>
                 </div>

@@ -2,8 +2,8 @@ import { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AxiosToastError from "../../utils/AxiosToastError";
 import Axios from "../../utils/Axios";
-import summaryApi from "../../common/summaryApi";
 import toast from "react-hot-toast";
+import summaryApi from "../common/summaryApi";
 
 const VerifyForgotPasswordOTP = () => {
     const location = useLocation();

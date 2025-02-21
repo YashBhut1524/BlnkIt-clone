@@ -2,11 +2,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "../../utils/Axios";
-import summaryApi from "../../common/summaryApi";
+import summaryApi from ".././common/summaryApi";
 import AxiosToastError from "../../utils/AxiosToastError";
 import toast from "react-hot-toast";
+import fetchUserDetails from "../../utils/fetchUserDetails";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../store/userSlice";
 
 const Login = ({ setIsLoginOpen, setIsRegister }) => {
+
+    const dispatch = useDispatch()
     const [loginData, setLoginData] = useState({ 
         email: "", 
         password: "" 
@@ -35,11 +40,15 @@ const Login = ({ setIsLoginOpen, setIsRegister }) => {
                 toast.success(response.data.message);
                 localStorage.setItem("accessToken", response.data.data.accessToken)
                 localStorage.setItem("refreshToken", response.data.data.refreshToken)
+                const userDetails = await fetchUserDetails()
+                dispatch(setUserDetails(userDetails.data))
+
                 setLoginData({
                     email: "",
                     password: "",
                 });
                 setIsLoginOpen(false); // This will close the register pop-up
+                navigate("/")
             }
         } catch (error) {
             AxiosToastError(error)

@@ -1,4 +1,3 @@
-
 export const baseURL = import.meta.env.VITE_API_URL
 
 const summaryApi = {
@@ -9,6 +8,10 @@ const summaryApi = {
     login : {
         url : '/api/user/login',
         method : 'post'
+    },
+    logout : {
+        url : '/api/user/logout',
+        method : 'get'
     },
     forgotPassword : {
         url : '/api/user/forgot-password',
@@ -25,6 +28,10 @@ const summaryApi = {
     refreshToken : {
         url: "/api/user/refresh-token",
         method: "post"
+    },
+    getUserDetails : {
+        url: "/api/user/get-user-details",
+        method: "get"
     }
 }
 

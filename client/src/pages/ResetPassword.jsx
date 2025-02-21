@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import AxiosToastError from "../../utils/AxiosToastError";
 import Axios from "../../utils/Axios";
-import summaryApi from "../../common/summaryApi";
+import summaryApi from "../common/summaryApi";
 import toast from "react-hot-toast";
 
 const ResetPassword = () => {
