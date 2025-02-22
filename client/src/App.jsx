@@ -19,11 +19,6 @@ function App() {
     dispatch(setUserDetails(userData.data))
   }
 
-  useEffect(() => {
-    fetchUser()
-  }, [])
-  
-
   return (
     <>
       <Header setIsLoginOpen={setIsLoginOpen} />
