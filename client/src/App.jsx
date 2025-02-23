@@ -15,15 +15,19 @@ function App() {
   const fetchUser = async () => {
     const userData = await fetchUserDetails()
     // console.log("userData: ", userData);
-
     dispatch(setUserDetails(userData.data))
   }
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
+  
 
   return (
     <>
       <Header setIsLoginOpen={setIsLoginOpen} />
       
-      <main className="min-h-[77vh]">
+      <main className="min-h-[77vh] w-full">
         <Outlet context={{ setIsLoginOpen }} />
       </main> 
 

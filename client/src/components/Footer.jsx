@@ -3,7 +3,7 @@ import { BsThreads } from "react-icons/bs";
 
 function Footer() {
     return (
-        <footer className="border-t">
+        <footer className="border-t w-full">
             <div className="container mx-auto p-4 text-center flex flex-col lg:flex-row gap-2 items-center lg:justify-between">
                 <p>© All Rights Reserved 2025.</p>
                 <div className="flex item-center justify-center gap-4">

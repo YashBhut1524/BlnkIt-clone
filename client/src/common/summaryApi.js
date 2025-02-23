@@ -32,6 +32,10 @@ const summaryApi = {
     getUserDetails : {
         url: "/api/user/get-user-details",
         method: "get"
+    },
+    updateAvatar : {
+        url: "/api/user/upload-avatar",
+        method: "put"
     }
 }
 

@@ -258,6 +258,8 @@ export const uploadAvatar = async (req, res) => {
 
         return res.status(200).json({
             message: "Avatar uploaded successfully",
+            error:false,
+            success: true,
             data: {
                 _id: userId,
                 avatar: upload.url

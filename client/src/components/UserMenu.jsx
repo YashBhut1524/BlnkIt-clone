@@ -5,6 +5,7 @@ import Axios from "../../utils/Axios";
 import summaryApi from "../common/summaryApi";
 import toast from "react-hot-toast";
 import { logout } from "../store/userSlice";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 function UserMenu() {
     const user = useSelector((state) => state.user);
@@ -37,12 +38,17 @@ function UserMenu() {
             <div className="font-semibold text-gray-800 pb-1">
                 My Account
             </div>
-            <div className="text-sm text-gray-600 border-b pb-2">
-                {user.name || user.mobile}
+            <div className="text-sm text-gray-600 border-b pb-2 flex gap-2 items-center hover:text-black hover:bg-[#f4f1f1] mb-2">
+                <span>
+                    {user.name || user.mobile}
+                </span>
+                <Link to={"/dashboard/profile"}>
+                    <FaExternalLinkAlt size={12} className="hover:text-black"/>
+                </Link>
             </div>
             <div className="text-sm grid gap-2 mt-3">
-                <Link to="/" className="hover:text-blue-500 transition">My Orders</Link>
-                <Link to="/" className="hover:text-blue-500 transition">Saved Addresses</Link>
+                <Link to="/dashboard/my-orders" className="hover:text-blue-500 transition">My Orders</Link>
+                <Link to="/dashboard/addresses" className="hover:text-blue-500 transition">Saved Addresses</Link>
                 <button 
                     className="text-left text-red-500 hover:text-red-700 transition"
                     onClick={handleLogout}

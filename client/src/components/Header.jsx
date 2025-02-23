@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/blinkitlogo.jpg";
 import SearchBar from "./SearchBar";
 import { FaRegCircleUser } from "react-icons/fa6";
@@ -15,6 +15,7 @@ function Header() {
     const [isMobile] = useMobile();
     const location = useLocation();
     const isSearchPage = location.pathname === "/search";
+    const navigate = useNavigate()
     const user = useSelector((state) => state?.user)
     // console.log("user from store: ", user);
     
@@ -28,6 +29,13 @@ function Header() {
         // console.log("User state updated:", user);
         setOpenUserMenu(false);  // Close the user menu when user logs in
     }, [user]);
+
+    const handleMobileUser = () => {
+        if(!user._id) {
+            setIsLoginOpen(true)
+        }
+        navigate("/user-menu")
+    }
 
     return (
         <header className="h-28 lg:h-auto lg:max-h-64 bg-white p-2 shadow-md sticky z-50 lg:pt-4">
@@ -48,7 +56,10 @@ function Header() {
                     {/* Login, User Icon, and Cart */}
                     <div className="flex items-center gap-4 lg:gap-8">
                         {/* User Icon (for mobile) */}
-                        <button className="lg:hidden">
+                        <button 
+                            className="lg:hidden"
+                            onClick={handleMobileUser}
+                        >
                             <FaRegCircleUser size={25} />
                         </button>
 
