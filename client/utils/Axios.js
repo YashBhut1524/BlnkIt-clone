@@ -57,12 +57,11 @@ const refreshAccessToken = async (refreshToken) => {
             }
         })
         const accessToken = response.data.data.accessToken
-        console.log("response: ", response);
+        // console.log("response: ", response);
         localStorage.setItem("accessToken", accessToken)
         return accessToken
     } catch (error) {
         console.log("error: ", error);
-        
     }
 }
 

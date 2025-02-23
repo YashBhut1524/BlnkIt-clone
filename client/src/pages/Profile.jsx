@@ -159,7 +159,7 @@ function Profile() {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-not-allowed"
                         placeholder="Enter your email"
                         disabled
                     />

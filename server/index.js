@@ -6,6 +6,8 @@ import morgan from "morgan"
 import helemet from "helmet"
 import connectDB from "./config/connectDB.js"
 import userRoutes from "./routes/user.route.js"
+import categoryRoutes from "./routes/category.route.js"
+import imageRoutes from "./routes/image.route.js"
 
 dotenv.config()
 
@@ -33,6 +35,8 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api/user", userRoutes)
+app.use("/api/category", categoryRoutes)
+app.use("/api/file", imageRoutes)
 
 connectDB().then(() => {
     app.listen(PORT, () => {

@@ -492,7 +492,7 @@ export const resetPasswordController = async (req, res) => {
             });
         }
 
-        console.log("updatedUser: ", updatedUser);
+        // console.log("updatedUser: ", updatedUser);
         
         await sendEmail({
             sendTo: email,
@@ -531,7 +531,7 @@ export const refreshTokenController = async (req, res) => {
             });
         }
 
-        console.log("refreshToken: ", refreshToken);
+        // console.log("refreshToken: ", refreshToken);
         const verifyToken = await jwt.verify(refreshToken, process.env.SECRET_KEY_REFRESH_TOKEN)
         
         if(!verifyToken) {

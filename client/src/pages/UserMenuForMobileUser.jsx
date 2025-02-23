@@ -1,14 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHome, FaRegUser } from "react-icons/fa";
-import { MdOutlineListAlt } from "react-icons/md";
+import { FaHome, FaRegUser, FaFileUpload, FaUserCircle } from "react-icons/fa";
+import { MdOutlineListAlt, MdCategory } from "react-icons/md";
 import { IoArrowBack } from "react-icons/io5";
 import Axios from "../../utils/Axios";
 import summaryApi from "../common/summaryApi";
 import { logout } from "../store/userSlice";
 import toast from "react-hot-toast";
 import AxiosToastError from "../../utils/AxiosToastError";
-import { FaUserCircle } from "react-icons/fa";
+import { AiFillProduct } from "react-icons/ai";
+import { TbCategory } from "react-icons/tb";
 
 function UserMenuForMobileUser() {
     const user = useSelector((state) => state.user);
@@ -59,7 +60,38 @@ function UserMenuForMobileUser() {
                 </div>
             </Link>
             {/* Menu Items */}
-            <div className="mt-6 space-y-4">
+            <div className="mt-4 space-y-2">
+                {
+                    user.role === "ADMIN" 
+                        && (
+                            <>
+                                <Link 
+                                    to="/dashboard/category" 
+                                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <TbCategory size={20} /> <span>Category</span>
+                                </Link>
+                                <Link 
+                                    to="/dashboard/sub-category" 
+                                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <MdCategory size={20} /> <span>Sub Category</span>
+                                </Link>
+                                <Link 
+                                    to="/dashboard/products" 
+                                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <AiFillProduct size={20} /> <span>Products</span>
+                                </Link>
+                                <Link 
+                                    to="/dashboard/products" 
+                                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <FaFileUpload size={18} /> <span>Upload Product</span>
+                                </Link>
+                            </>
+                        )
+                }
                 <Link 
                     to="/dashboard/my-orders" 
                     className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
