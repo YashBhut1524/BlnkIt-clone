@@ -10,6 +10,7 @@ import generateOTP from "../utils/generateOTP.js";
 import forgotPasswordEmailTemplate from "../utils/forgotPasswordEmailTemplate.js";
 import resetPasswordConfirmationTemplate from "../utils/resetPasswordConfirmationTemplate.js";
 import jwt from "jsonwebtoken"
+import deleteImgCloudinary from "../utils/deleteImgCloudinary.js";
 
 dotenv.config();
 
@@ -248,6 +249,14 @@ export const uploadAvatar = async (req, res) => {
         const userId = req.userId //from authMiddleware
         const image = req.file //from multer middleware
         // console.log("Image: ", image);
+
+        // Get user's current avatar URL
+        const user = await UserModel.findById(userId);
+        const oldAvatarUrl = user?.avatar;
+
+        if (oldAvatarUrl && oldAvatarUrl !== ""){
+            deleteImgCloudinary(oldAvatarUrl)
+        }
 
         const upload = await uploadImgCloudinary(image)
         // console.log(upload);
