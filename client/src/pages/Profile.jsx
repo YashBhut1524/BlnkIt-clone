@@ -5,8 +5,9 @@ import AxiosToastError from "../../utils/AxiosToastError";
 import Axios from "../../utils/Axios";
 import summaryApi from "../common/summaryApi";
 import toast from "react-hot-toast";
-import { updateAvatar } from "../store/userSlice";
+import { setUserDetails, updateAvatar } from "../store/userSlice";
 import BeatLoader from "react-spinners/BeatLoader";
+import fetchUserDetails from "../../utils/fetchUserDetails";
 
 function Profile() {
     const user = useSelector(state => state.user);
@@ -80,6 +81,10 @@ function Profile() {
             if (response.data.success) {
                 toast.success(response.data.message);
             }
+            const userData = await fetchUserDetails()
+            // console.log("userData: ", userData);
+            dispatch(setUserDetails(userData.data))
+            
         } catch (error) {
             AxiosToastError(error)
         }
@@ -103,7 +108,7 @@ function Profile() {
                         className="w-full h-full object-cover transition-opacity duration-300"
                     />
                 ) : (
-                    <FaUserCircle size={60} className="text-gray-600" />
+                    <FaUserCircle size={145} className="text-gray-600" />
                 )}
 
                 {/* Smooth Hover Overlay Effect */}
