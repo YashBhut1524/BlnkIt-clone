@@ -73,25 +73,14 @@ function Header() {
                                             onClick={() => setOpenUserMenu(prev => !prev)}
                                         >
                                             <p>Account</p>
-                                            {
-                                                openUserMenu 
-                                                    ? (
-                                                        <FaAngleUp/>
-                                                    ) 
-                                                    : (
-                                                        <FaAngleDown/>
-                                                    )
-                                            }
+                                            {openUserMenu ? <FaAngleUp /> : <FaAngleDown />}
                                         </div>
                                         <div className="absolute right-0 top-13">
-                                            {
-                                                openUserMenu === true &&
-                                                (
-                                                    <div className="bg-[#ffffff] rounded-md p-4 min-w-52 lg:shadow-lg">
-                                                        <UserMenu />
-                                                    </div>
-                                                )
-                                            }
+                                            {openUserMenu && (
+                                                <div className="bg-[#ffffff] rounded-md p-4 min-w-52 lg:shadow-lg">
+                                                    <UserMenu closeMenu={() => setOpenUserMenu(false)} />
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ) 
