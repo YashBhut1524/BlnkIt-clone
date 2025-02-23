@@ -324,7 +324,7 @@ export const updateUserDetailsController = async (req, res) => {
         )
 
         return res.status(200).json({
-            message: "user details updated successfully.",
+            message: "Updated successfully.",
             error: false,
             success: true,
             data: updatedUser

@@ -1,14 +1,13 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/blinkitlogo.jpg";
 import SearchBar from "./SearchBar";
-import { FaRegCircleUser } from "react-icons/fa6";
 import useMobile from "../hooks/useMobile";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
 import { useSelector } from "react-redux";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp, FaUserCircle } from "react-icons/fa";
 import UserMenu from "./UserMenu";
 
 function Header() {
@@ -60,7 +59,17 @@ function Header() {
                             className="lg:hidden"
                             onClick={handleMobileUser}
                         >
-                            <FaRegCircleUser size={25} />
+                        {user?.avatar && user.avatar !== "" 
+                            ? (
+                                <img 
+                                    src={user.avatar} 
+                                    alt="User Avatar" 
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                            ) : (
+                                <FaUserCircle size={25} className="text-black" />
+                            )
+                        }
                         </button>
 
                         {/* Login Button */}

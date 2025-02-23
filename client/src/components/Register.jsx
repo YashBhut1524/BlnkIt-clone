@@ -4,6 +4,7 @@ import Axios from "../../utils/Axios";
 import toast from "react-hot-toast";
 import AxiosToastError from "../../utils/AxiosToastError";
 import summaryApi from "../common/summaryApi";
+import { useNavigate } from "react-router-dom";
 
 const Register = ({ setIsLoginOpen, setIsRegister }) => {
     const [registerData, setRegisterData] = useState({
@@ -12,6 +13,7 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
         password: "",
         mobile: "",
     });
+    const navigate = useNavigate(); 
 
     const [passwordError, setPasswordError] = useState("");
 
@@ -56,6 +58,7 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
                     mobile: "",
                 });
                 setIsLoginOpen(false); // This will close the register pop-up
+                navigate("/")
             }
             
         } catch (error) {
