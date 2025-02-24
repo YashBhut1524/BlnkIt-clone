@@ -17,6 +17,8 @@ function Category() {
     const [loading, setLoading] = useState(false)
     const [categoryData, setCategoryData] = useState([])
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [deleteCategoryId, setDeleteCategoryId] = useState(null);
 
     const handleOpenUpdateCategoryModel = (category) => {
         setSelectedCategory(category);
@@ -48,26 +50,33 @@ function Category() {
         fetchCategory()
     }, [])
 
-    const handleDeleteCategory = async (categoryId) => {
+    const handleOpenConfirmDialog = (categoryId) => {
+        setDeleteCategoryId(categoryId);
+        setShowConfirmDialog(true);
+    };
+
+    const handleConfirmDelete = async () => {
         try {
-            setLoading(true)
+            setLoading(true);
+            setShowConfirmDialog(false); // Close the modal
+    
             const response = await Axios({
                 ...summaryApi.deleteCategory,
-                data: {categoryId}
-            })
-            console.log("response :", response);
-            if(response.data.success) {
-                toast.success(response.data.message)
-                fetchCategory()
+                data: { categoryId: deleteCategoryId }
+            });
+    
+            if (response.data.success) {
+                toast.success(response.data.message);
+                fetchCategory();
             } else {
-                toast.error(response.data.message)
+                toast.error(response.data.message);
             }
         } catch (error) {
-            AxiosToastError(error)
+            AxiosToastError(error);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     return (
         <section>
@@ -89,8 +98,7 @@ function Category() {
             {categoryData.map((category) => (
                 <div 
                     key={category._id} 
-                    className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center 
-                            transition-transform transform hover:scale-105 relative"
+                    className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center transition-transform transform hover:scale-105 relative"
                 >
                     {/* Buttons Wrapper */}
                     <div className="absolute top-2 right-2 flex space-x-2">
@@ -106,7 +114,7 @@ function Category() {
                         {/* Delete Button */}
                         <button 
                             className="px-2 py-1 bg-red-600 text-white font-medium rounded-md shadow-md hover:bg-red-700 transition-all duration-300"
-                            onClick={() => handleDeleteCategory(category._id)}                                
+                            onClick={() => handleOpenConfirmDialog(category._id)}                                
                         >
                             <MdDelete size={15} />
                         </button>
@@ -133,9 +141,34 @@ function Category() {
                     <UpdateCategoryModel  
                         close={() => setOpenUpdateCategoryModel(false)}
                         fetchCategory={fetchCategory}
-                        category={selectedCategory}  // ✅ Pass category details
+                        category={selectedCategory}
                     />
                 )
+            }
+            {
+                showConfirmDialog && 
+                    (
+                        <div className="fixed inset-0 flex items-center justify-center bg-neutral-800/70">
+                            <div className="bg-white p-6 rounded-md shadow-lg text-center">
+                                <h2 className="text-lg font-semibold">Are you sure?</h2>
+                                <p className="text-gray-600">Do you really want to delete this category?</p>
+                                <div className="mt-4 flex justify-center space-x-4">
+                                    <button 
+                                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                                        onClick={handleConfirmDelete}
+                                    >
+                                        Yes, Delete
+                                    </button>
+                                    <button 
+                                        className="px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400"
+                                        onClick={() => setShowConfirmDialog(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )
             }
             {
                 loading && (
