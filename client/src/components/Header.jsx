@@ -23,10 +23,12 @@ function Header() {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isRegister, setIsRegister] = useState(false);
     const [openUserMenu, setOpenUserMenu] = useState(false)
-    
-    useEffect(() => {
-        // console.log("User state updated:", user);
+    const [userData, setUserData] = useState(user);
+
+useEffect(() => {
+    // console.log("User state updated:", user);
         setOpenUserMenu(false);  // Close the user menu when user logs in
+        setUserData(user); // Update local state when Redux updates
     }, [user]);
 
     const handleMobileUser = () => {

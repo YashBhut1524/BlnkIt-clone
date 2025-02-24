@@ -1,4 +1,6 @@
 import CategoryModel from "../models/category.model.js";
+import ProductModel from "../models/product.model.js";
+import SubCategoryModel from "../models/subCategory.model.js";
 import deleteImgCloudinary from "../utils/deleteImgCloudinary.js";
 
 export const addCategoryController = async (req, res) => {
@@ -114,10 +116,31 @@ export const deleteCategoryController = async (req, res) => {
     try {
         const { categoryId } = req.body;
 
+        // Check if category exists
         const existingCategory = await CategoryModel.findById(categoryId);
         if (!existingCategory) {
             return res.status(404).json({
                 message: "Category not found.",
+                error: true,
+                success: false
+            });
+        }
+
+        // Check if the category is used in subcategories
+        const subCategoryCount = await SubCategoryModel.countDocuments({ category: categoryId });
+        if (subCategoryCount > 0) {
+            return res.status(400).json({
+                message: `Cannot delete this category. It is linked to ${subCategoryCount} subcategory(ies).`,
+                error: true,
+                success: false
+            });
+        }
+
+        // Check if the category is used in products
+        const productCount = await ProductModel.countDocuments({ category: categoryId });
+        if (productCount > 0) {
+            return res.status(400).json({
+                message: `Cannot delete this category. It is linked to ${productCount} product(s).`,
                 error: true,
                 success: false
             });
@@ -128,6 +151,7 @@ export const deleteCategoryController = async (req, res) => {
             await deleteImgCloudinary(existingCategory.image);
         }
 
+        // Delete the category
         await CategoryModel.findByIdAndDelete(categoryId);
 
         return res.status(200).json({
@@ -138,11 +162,9 @@ export const deleteCategoryController = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            message: error.message || error,
+            message: error.message || "An unexpected error occurred.",
             error: true,
             success: false,
         });
     }
 };
-
-

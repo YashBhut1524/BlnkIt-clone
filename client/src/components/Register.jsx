@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import AxiosToastError from "../../utils/AxiosToastError";
 import summaryApi from "../common/summaryApi";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../store/userSlice";
 
 const Register = ({ setIsLoginOpen, setIsRegister }) => {
     const [registerData, setRegisterData] = useState({
@@ -16,6 +18,8 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
     const navigate = useNavigate(); 
 
     const [passwordError, setPasswordError] = useState("");
+
+    const dispatch = useDispatch();
 
     const handleChangeRegister = (e) => {
         const { name, value } = e.target;
@@ -51,14 +55,19 @@ const Register = ({ setIsLoginOpen, setIsRegister }) => {
             }
             if (response.data.success) {
                 toast.success(response.data.message);
+                dispatch(setUserDetails(response.data.user));
                 setRegisterData({
                     name: "",
                     email: "",
                     password: "",
                     mobile: "",
                 });
-                setIsLoginOpen(false); // This will close the register pop-up
                 navigate("/")
+                setIsLoginOpen(false); // This will close the register pop-up
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             }
             
         } catch (error) {
