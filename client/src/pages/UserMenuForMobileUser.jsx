@@ -31,7 +31,7 @@ function UserMenuForMobileUser() {
     };
 
     return (
-        <div className="bg-white px-6 py-4">
+        <div className="bg-white px-6 py-1">
 
             {/* Back Button */}
             <button 
@@ -43,7 +43,7 @@ function UserMenuForMobileUser() {
 
             {/* User Info */}
             <Link to={"/dashboard/profile"}>
-                <div className="mt-10 text-gray-700 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 py-3 rounded-xl">
+                <div className="mt-5 text-gray-700 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 py-3 rounded-xl">
                     {user?.avatar && user.avatar !== "" ? (
                         <img 
                             src={user.avatar} 

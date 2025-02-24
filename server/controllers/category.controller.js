@@ -38,3 +38,31 @@ export const addCategoryController = async (req, res) => {
         });
     }
 };
+
+export const getCategoryController = async (req, res) => {
+    try {
+        const data = await CategoryModel.find()
+        
+        if(!data) {
+            return res.status(400).json({
+                message: "No category found!",
+                error: true,
+                success: false,
+            });   
+        }
+
+        return res.status(200).json({
+            data: data,
+            message: "Fetched Category successfully.",
+            error: false,
+            success: true
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false,
+        });        
+    }
+}

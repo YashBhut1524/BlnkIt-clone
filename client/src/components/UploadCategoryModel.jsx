@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import Axios from "../../utils/Axios";
 import summaryApi from "../common/summaryApi";
 
-function UploadCategoryModel({ close }) {
+function UploadCategoryModel({ close, fetchCategory }) {
     const [data, setData] = useState({
         name: "",
         image: "",
@@ -87,6 +87,7 @@ function UploadCategoryModel({ close }) {
             if (response.data.success) {
                 toast.success(response.data.message || "Category added successfully!");
                 close(); // Close modal
+                fetchCategory()
             } else {
                 toast.error(response.data.message || "Failed to add category");
             }

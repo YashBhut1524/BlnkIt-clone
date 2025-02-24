@@ -37,7 +37,7 @@ function Header() {
     }
 
     return (
-        <header className="h-28 lg:h-auto lg:max-h-64 bg-white p-2 shadow-md sticky z-50 lg:pt-4">
+        <header className="h-28 lg:h-auto lg:max-h-64 bg-white p-2 shadow-md sticky z-40 lg:pt-4">
             {!(isSearchPage && isMobile) && (
                 <div className="container mx-auto flex gap-1 items-center px-4 justify-between lg:max-w-full">
                     {/* Logo */}

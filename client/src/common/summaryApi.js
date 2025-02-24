@@ -41,10 +41,6 @@ const summaryApi = {
         url: "/api/user/update-user",
         method: "put"
     },
-    addCategory : {
-        url: "/api/category/add-category",
-        method: "post"
-    },
     uploadImage : {
         url: "/api/file/upload-image",
         method: "post"
@@ -52,7 +48,15 @@ const summaryApi = {
     deleteImage : {
         url: "/api/file/delete-image",
         method: "post"
-    }
+    },
+    addCategory : {
+        url: "/api/category/add-category",
+        method: "post"
+    },
+    getCategory : {
+        url: "/api/category/get-category",
+        method: "get"
+    },
 }
 
 export default summaryApi
