@@ -14,6 +14,7 @@ import UploadProduct from "../pages/UploadProduct"
 import Category from "../pages/Category"
 import SubCategory from "../pages/SubCategory"
 import ProductsAdmin from "../pages/ProductsAdmin"
+import ProtectedRoute from "../components/ProtectedRoute"
 
 const router = createBrowserRouter([
     {
@@ -62,24 +63,24 @@ const router = createBrowserRouter([
                     },
                     {
                         path: "products",
-                        element: <ProductsAdmin />
+                        element: <ProtectedRoute element={<ProductsAdmin />} allowedRoles={["ADMIN"]} />
                     },
                     {
                         path: "upload-product",
-                        element: <UploadProduct />
+                        element: <ProtectedRoute element={<UploadProduct />} allowedRoles={["ADMIN"]} />
                     },
                     {
                         path: "category",
-                        element: <Category />
+                        element: <ProtectedRoute element={<Category />} allowedRoles={["ADMIN"]} />
                     },
                     {
                         path: "sub-category",
-                        element: <SubCategory />
+                        element: <ProtectedRoute element={<SubCategory />} allowedRoles={["ADMIN"]} />
                     },
                 ]
             }
         ]
     }
-])
+]);
 
 export default router
