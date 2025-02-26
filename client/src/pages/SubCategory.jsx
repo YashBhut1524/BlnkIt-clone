@@ -14,6 +14,7 @@ import ViewImage from "../components/ViewImage"
 import UpdateSubCategoryModel from "../components/UpdateSubCategoryModel"
 import { FaEdit } from "react-icons/fa"
 import { MdDelete } from "react-icons/md"
+import GridLoader from "react-spinners/GridLoader"
 
 function SubCategory() {
 
@@ -23,6 +24,9 @@ function SubCategory() {
     const [loading, setLoading] = useState(false)
     const [getImgUrl, setGetImgUrl] = useState("")
     const [selectedSubCategory, setSelectedSubCategory] = useState(null)
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [deleteSubCategoryId, setDeleteSubCategoryId] = useState(null);
+    
     const columnHelper = createColumnHelper()
 
     const columns = [
@@ -32,7 +36,7 @@ function SubCategory() {
         columnHelper.accessor("image", {
             header: "Image",
             cell: ({ row }) => (
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center hover:cursor-pointer">
                     <img 
                         src={row.original.image} 
                         alt={row.original.name}  
@@ -73,7 +77,9 @@ function SubCategory() {
                     </button>
                     <button 
                         className="px-2 py-1 bg-red-600 text-white font-medium rounded-md shadow-md hover:bg-red-700 transition-all duration-300"
-                        onClick={() => {handleDeleteSubCategory(row.original._id)}}
+                        // onClick={() => {handleDeleteSubCategory(row.original._id)}}
+                        onClick={() => handleOpenConfirmDialog(row.original._id)}                                
+
                     >
                         {/* Delete */}
                         <MdDelete size={15} />
@@ -89,15 +95,17 @@ function SubCategory() {
         setOpenUpdateSubCategoryModel(true);
     };
     
-    const handleDeleteSubCategory = async (id) => {
+    const handleConfirmDelete = async () => {
         try {
+            setLoading(true)
             const response = await Axios({
                 ...summaryApi.deleteSubCategory,
-                data: {subCategoryId: id}
+                data: {subCategoryId: deleteSubCategoryId}
             })
             // console.log("response: ", response);
             if(response.data.success) {
                 toast.success(response.data.message)
+                setShowConfirmDialog(false)
                 fetchSubCategories()
             } else {
                 toast.error(response.data.message)
@@ -105,8 +113,15 @@ function SubCategory() {
 
         } catch (error) {
             AxiosToastError(error)
+        } finally {
+            setLoading(false)
         }
     }
+
+    const handleOpenConfirmDialog = (categoryId) => {
+        setDeleteSubCategoryId(categoryId);
+        setShowConfirmDialog(true);
+    };
 
     const  fetchSubCategories = async () => {
         try {
@@ -166,6 +181,45 @@ function SubCategory() {
                         fetchSubCategories={fetchSubCategories}
                     />
                 )
+            }
+            {
+                showConfirmDialog && 
+                    (
+                        <div className="fixed inset-0 flex items-center justify-center bg-neutral-800/70">
+                            <div className="bg-white p-6 rounded-md shadow-lg text-center">
+                                <>
+                                    {
+                                        loading 
+                                        ? (
+                                            <div className="grid place-items-center">
+                                                <GridLoader color="#434343" margin={2} size={25} />
+                                            </div>
+                                        ) 
+                                        : (
+                                            <>
+                                                <h2 className="text-lg font-semibold">Are you sure?</h2>
+                                                <p className="text-gray-600">Do you really want to delete this category?</p>
+                                                <div className="mt-4 flex justify-center space-x-4">
+                                                    <button 
+                                                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                                                        onClick={handleConfirmDelete}
+                                                    >
+                                                        Yes, Delete
+                                                    </button>
+                                                    <button 
+                                                        className="px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400"
+                                                        onClick={() => setShowConfirmDialog(false)}
+                                                        >
+                                                            Cancel
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )
+                                    }
+                                </>
+                            </div>
+                        </div>
+                    )
             }
             {   
                 getImgUrl && 
