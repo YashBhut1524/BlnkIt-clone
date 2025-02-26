@@ -198,7 +198,7 @@ function SubCategory() {
                                         : (
                                             <>
                                                 <h2 className="text-lg font-semibold">Are you sure?</h2>
-                                                <p className="text-gray-600">Do you really want to delete this category?</p>
+                                                <p className="text-gray-600">Do you really want to delete this subCategory?</p>
                                                 <div className="mt-4 flex justify-center space-x-4">
                                                     <button 
                                                         className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"

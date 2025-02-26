@@ -6,11 +6,11 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
-const uploadImgCloudinary = async (image) => {
+const uploadImgCloudinary = async (image, path) => {
     const buffer = image?.buffer || Buffer.from(await image.arrayBuffer())
 
     const uploadImage = await new Promise((resolve,reject)=>{
-        cloudinary.uploader.upload_stream({ folder : "binkeyit"},(error,uploadResult)=>{
+        cloudinary.uploader.upload_stream({ folder : `binkeyit/${path}`},(error,uploadResult)=>{
             return resolve(uploadResult)
         }).end(buffer)
     })

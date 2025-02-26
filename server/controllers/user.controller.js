@@ -255,10 +255,10 @@ export const uploadAvatar = async (req, res) => {
         const oldAvatarUrl = user?.avatar;
 
         if (oldAvatarUrl && oldAvatarUrl !== ""){
-            deleteImgCloudinary(oldAvatarUrl)
+            deleteImgCloudinary(oldAvatarUrl, "profile")
         }
 
-        const upload = await uploadImgCloudinary(image)
+        const upload = await uploadImgCloudinary(image, "profile")
         // console.log(upload);
 
         const updateUser = await UserModel.findByIdAndUpdate(userId, {

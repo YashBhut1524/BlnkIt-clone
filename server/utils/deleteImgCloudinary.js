@@ -14,7 +14,7 @@ cloudinary.config({
             binkeyit/q4l3vh0ppnxgp5ds4swx.png
         */
 
-const deleteImgCloudinary = async (imageUrl) => {
+const deleteImgCloudinary = async (imageUrl, path) => {
 
     try {
         if (!imageUrl) {
@@ -24,7 +24,7 @@ const deleteImgCloudinary = async (imageUrl) => {
         // Extract the public ID from the image URL
         const publicId = imageUrl.split('/').slice(-1)[0].split('.')[0]; // Extract ID from URL
 
-        const result = await cloudinary.uploader.destroy(`binkeyit/${publicId}`);
+        const result = await cloudinary.uploader.destroy(`binkeyit/${path}/${publicId}`);
         console.log("Cloudinary delete result:", result);
 
         return result;

@@ -94,7 +94,7 @@ export const updateSubCategoryController = async (req, res) => {
         }
 
         if(existingSubCategory.image) {
-            await deleteImgCloudinary(existingSubCategory.image)
+            await deleteImgCloudinary(existingSubCategory.image, "subCategory")
         }
 
         const updatedSubCategory = await SubCategoryModel.findByIdAndUpdate(
@@ -145,7 +145,7 @@ export const deleteSubCategoryController = async (req, res) => {
         }
 
         if(existingSubCategory.image) {
-            await deleteImgCloudinary(existingSubCategory.image)
+            await deleteImgCloudinary(existingSubCategory.image, "subCategory")
         }
 
         await SubCategoryModel.findByIdAndDelete(existingSubCategory)

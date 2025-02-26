@@ -37,7 +37,7 @@ function UploadCategoryModel({ close, fetchCategory }) {
 
         setLoading(true); // Start loading
         try {
-            const response = await uploadImage(file);
+            const response = await uploadImage(file, "category");
             setData((prev) => ({
                 ...prev,
                 image: response.data.data.url,
@@ -62,7 +62,7 @@ function UploadCategoryModel({ close, fetchCategory }) {
     
         try {
             setLoading(true); // Start loading during deletion
-            await deleteImage(data.image);
+            await deleteImage(data.image, "category");
     
             // Update state only after successful deletion
             setData((prev) => ({

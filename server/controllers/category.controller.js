@@ -86,7 +86,7 @@ export const updateCategoryController = async (req, res) => {
 
         // Delete old image from Cloudinary if it exists
         if (existingCategory.image) {
-            await deleteImgCloudinary(existingCategory.image);
+            await deleteImgCloudinary(existingCategory.image, "category");
         }
 
         // Update category
@@ -148,7 +148,7 @@ export const deleteCategoryController = async (req, res) => {
 
         // Delete old image from Cloudinary if it exists
         if (existingCategory.image) {
-            await deleteImgCloudinary(existingCategory.image);
+            await deleteImgCloudinary(existingCategory.image, "category"  );
         }
 
         // Delete the category

@@ -43,7 +43,7 @@ function UpdateSubCategoryModel({ close, subCategory, fetchSubCategories}) {
 
         setLoading(true); // Start loading
         try {
-            const response = await uploadImage(file);
+            const response = await uploadImage(file, "subCategory");
             setData((prev) => ({
                 ...prev,
                 image: response.data.data.url,
@@ -68,7 +68,7 @@ function UpdateSubCategoryModel({ close, subCategory, fetchSubCategories}) {
     
         try {
             setLoading(true); // Start loading during deletion
-            await deleteImage(data.image);
+            await deleteImage(data.image, "subCategory");
     
             // Update state only after successful deletion
             setData((prev) => ({
