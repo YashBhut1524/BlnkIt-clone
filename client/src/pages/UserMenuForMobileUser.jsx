@@ -54,7 +54,7 @@ function UserMenuForMobileUser() {
                         <FaUserCircle size={48} className="text-black" />
                     )}
                     <div>
-                        <p className="text-lg font-medium">{user?.name}</p>
+                        <p className="text-lg font-medium">{user?.name} <span className="text-sm text-[#878787]">{user.role === "ADMIN" ? "(admin)" : ""}</span></p>
                         <p className="text-sm text-gray-500">{user?.email}</p>
                     </div>
                 </div>
@@ -84,7 +84,7 @@ function UserMenuForMobileUser() {
                                     <AiFillProduct size={20} /> <span>Products</span>
                                 </Link>
                                 <Link 
-                                    to="/dashboard/products" 
+                                    to="/dashboard/upload-product" 
                                     className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
                                 >
                                     <FaFileUpload size={18} /> <span>Upload Product</span>

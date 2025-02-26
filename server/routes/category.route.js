@@ -5,7 +5,6 @@ import {
     getCategoryController, 
     updateCategoryController 
 } from "../controllers/category.controller.js"
-
 import authMiddleware from "../middleware/authMiddleware.js"
 
 const categoryRoutes = Router()

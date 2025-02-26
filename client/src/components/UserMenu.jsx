@@ -46,6 +46,25 @@ function UserMenu({ closeMenu }) {
                 <Link to="/dashboard/addresses" onClick={closeMenu} className="hover:text-blue-500 transition">
                     Saved Addresses
                 </Link>
+                {
+                    user.role === "ADMIN" 
+                        && (
+                            <>
+                                <Link to="/dashboard/category" onClick={closeMenu} className="hover:text-blue-500 transition">
+                                    <span>Category</span>
+                                </Link>
+                                <Link to="/dashboard/sub-category" onClick={closeMenu} className="hover:text-blue-500 transition">
+                                    <span>Sub Category</span>
+                                </Link>
+                                <Link to="/dashboard/products" onClick={closeMenu} className="hover:text-blue-500 transition">
+                                    <span>Products</span>
+                                </Link>
+                                <Link to="/dashboard/upload-product" onClick={closeMenu} className="hover:text-blue-500 transition">
+                                    <span>Upload Product</span>
+                                </Link>                                                                                                                            
+                            </>
+                        )
+                }
                 <button className="text-left text-red-500 hover:text-red-700 transition" onClick={handleLogout}>
                     Logout
                 </button>

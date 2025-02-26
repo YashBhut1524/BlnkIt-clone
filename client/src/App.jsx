@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import Login from "./components/Login";
 import fetchUserDetails from "../utils/fetchUserDetails";
 import { setUserDetails } from "./store/userSlice";
 import { useDispatch } from "react-redux";
+import Axios from "../utils/Axios";
+import summaryApi from "./common/summaryApi";
+import { setAllCategory } from "./store/productSlice";
+import AxiosToastError from "../utils/AxiosToastError";
 
 function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -18,8 +22,25 @@ function App() {
     dispatch(setUserDetails(userData.data))
   }
 
-  useEffect(() => {
-    fetchUser()
+  const fetchCategory = async () => {
+        try {
+            const response = await Axios({
+                ...summaryApi.getCategory,
+            })
+            // console.log("response: ", response);
+            if(response.data.success) {
+                dispatch(setAllCategory(response.data.data))
+            } else {
+                toast.error(response.data.message)
+            }
+        } catch (error) {
+            AxiosToastError(error)
+        }
+    }
+    
+    useEffect(() => {
+      fetchUser()
+      fetchCategory()
   }, [])
   
 

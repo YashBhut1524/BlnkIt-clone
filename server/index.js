@@ -8,6 +8,7 @@ import connectDB from "./config/connectDB.js"
 import userRoutes from "./routes/user.route.js"
 import categoryRoutes from "./routes/category.route.js"
 import imageRoutes from "./routes/image.route.js"
+import subCategoryRoutes from "./routes/subCetegory.route.js"
 
 dotenv.config()
 
@@ -35,8 +36,9 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api/user", userRoutes)
-app.use("/api/category", categoryRoutes)
 app.use("/api/file", imageRoutes)
+app.use("/api/category", categoryRoutes)
+app.use("/api/sub-category", subCategoryRoutes)
 
 connectDB().then(() => {
     app.listen(PORT, () => {

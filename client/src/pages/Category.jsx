@@ -9,6 +9,7 @@ import NoData from "../components/NoData"
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import UpdateCategoryModel from "../components/updateCategoryModel"
+// import { useSelector } from "react-redux"
 
 function Category() {
 
@@ -24,6 +25,13 @@ function Category() {
         setSelectedCategory(category);
         setOpenUpdateCategoryModel(true);
     };
+
+    // const allCategory = useSelector(state => state.product.allCategory)
+    // // console.log("allCategory from redux: ", allCategory);
+    
+    // useEffect(() => {
+    //     setCategoryData(allCategory);
+    // }, [allCategory]);
     
     const fetchCategory = async () => {
         try {
@@ -80,10 +88,10 @@ function Category() {
 
     return (
         <section>
-            <div className="p-2 bg-white shadow-xl flex items-center justify-between">
+            <div className="p-2 bg-white shadow-xl flex items-center justify-between sticky top-0 z-10">
                 <h2 className="font-semibold">Category</h2>
                 <button 
-                    className=" p-2 bg-[#0C831F] text-white font-bold rounded-md hover:bg-[#2c4e33] transition"
+                    className="p-2 bg-[#0C831F] text-white font-bold rounded-md hover:bg-[#2c4e33] transition"
                     onClick={() => setOpenUploadCategoryModel(true)}
                 >
                     Add Category
@@ -132,7 +140,7 @@ function Category() {
                 openUploadCategoryModel && (
                     <UploadCategoryModel 
                         close={() => setOpenUploadCategoryModel(false)}
-                        fetchCategory={fetchCategory}
+                        fetchCategory = {fetchCategory}
                     />
                 )
             }
