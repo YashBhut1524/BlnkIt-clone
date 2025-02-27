@@ -3,13 +3,15 @@ import {
     flexRender,
     getCoreRowModel,
     useReactTable,
+    getPaginationRowModel,
 } from '@tanstack/react-table';
 
-function DisplayTable({ data = [], columns = [] }) {
+function DisplayTable({ data, columns }) {
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(), // Enable pagination
     });
 
     return (
@@ -53,26 +55,47 @@ function DisplayTable({ data = [], columns = [] }) {
                         </tr>
                     ))}
                 </tbody>
-
-                {/* Table Footer */}
-                <tfoot className="bg-gray-800 text-white">
-                    {table.getFooterGroups()?.map((footerGroup) => (
-                        <tr key={footerGroup.id}>
-                            <th className="px-6 py-3 border-t border-gray-600 border-r"></th>
-                            {footerGroup.headers.map((header) => (
-                                <th 
-                                    key={header.id} 
-                                    className="px-6 py-3 border-t border-gray-600 border-r last:border-r-0"
-                                >
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(header.column.columnDef.footer, header.getContext())}
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                </tfoot>
             </table>
+
+            {/* Pagination Controls */}
+            <div className="flex flex-wrap justify-center sm:justify-between items-center gap-4 mt-4">
+                
+                {/* Page Size Selector */}
+                <div className="w-full sm:w-auto flex justify-center">
+                    <select 
+                        value={table.getState().pagination.pageSize}
+                        onChange={(e) => table.setPageSize(Number(e.target.value))}
+                        className="border p-2 rounded-md w-40 sm:w-auto"
+                    >
+                        {[5, 10, 20].map((size) => (
+                            <option key={size} value={size}>
+                                Show {size}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* Pagination Buttons */}
+                <div className="flex items-center gap-2">
+                    <button 
+                        onClick={() => table.previousPage()} 
+                        disabled={!table.getCanPreviousPage()} 
+                        className="px-4 py-2 bg-gray-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    >
+                        Previous
+                    </button>
+                    <span className="px-4 py-2 text-center">
+                        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+                    </span>
+                    <button 
+                        onClick={() => table.nextPage()} 
+                        disabled={!table.getCanNextPage()} 
+                        className="px-4 py-2 bg-gray-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
