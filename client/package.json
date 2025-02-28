@@ -26,6 +26,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
     "react-spinners": "^0.15.0",
+    "react-switch": "^7.1.0",
     "react-type-animation": "^3.2.0",
     "shadcn": "^2.4.0-canary.10",
     "tailwind-merge": "^3.0.1",

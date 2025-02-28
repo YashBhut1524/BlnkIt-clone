@@ -67,7 +67,7 @@ function DisplayTable({ data, columns }) {
                         onChange={(e) => table.setPageSize(Number(e.target.value))}
                         className="border p-2 rounded-md w-40 sm:w-auto"
                     >
-                        {[5, 10, 20].map((size) => (
+                        {[5, 10, 20, 50, 100, 1000].map((size) => (
                             <option key={size} value={size}>
                                 Show {size}
                             </option>

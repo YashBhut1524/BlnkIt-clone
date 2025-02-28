@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useRef } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa";
@@ -41,7 +42,8 @@ function UploadSubCategoryModel({ close, fetchSubCategories }) {
                 image: response.data.data.url,
             }));
         } catch (error) {
-            console.error("Image upload failed:", error);
+            // console.error("Image upload failed:", error);
+            toast.error("Image upload failed. Please try again.")
         } finally {
             setLoading(false); // Stop loading
         }

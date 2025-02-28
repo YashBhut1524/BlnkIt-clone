@@ -138,7 +138,7 @@ function SubCategory() {
 
     return (
         <section>
-            <div className="p-2 bg-white shadow-xl flex items-center justify-between">
+            <div className="p-2 bg-white shadow-xl flex items-center justify-between sticky top-0 z-10">
                 <h2 className="font-semibold">Sub Category</h2>
                 <div className="flex gap-2">
                     <button 
