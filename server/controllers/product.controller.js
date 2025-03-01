@@ -94,3 +94,48 @@ export const addProductController = async (req, res) => {
         })
     }
 }
+
+export const getProductsController = async (req, res) => {
+    try {
+        let {page, limit, search} = req.body
+
+        if(!page) {
+            page = 1;
+        }
+        if(!limit) {
+            limit = 10;
+        }
+
+        const query = search
+            ? {
+                $or: [
+                    { name: { $regex: search, $options: "i" } }, // Case-insensitive search
+                ],
+            }: {};
+
+        const skip = (page - 1) * limit
+
+        const [data,totalCount] = await Promise.all([
+            ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit),
+            ProductModel.countDocuments(query)
+        ])
+        
+        console.log("data: ", data);
+        console.log("totalCount: ", totalCount);        
+
+        return res.status(200).json({
+            message : "Product data fetched successfully",
+            error : false,
+            success : true,
+            totalCount : totalCount,
+            totalNoPage : Math.ceil( totalCount / limit),
+            data
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false,
+        })
+    }
+}

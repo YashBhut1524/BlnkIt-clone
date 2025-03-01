@@ -13,6 +13,7 @@ import AddField from "../components/AddField";
 import Switch from "react-switch";
 import Axios from "../../utils/Axios";
 import summaryApi from "../common/summaryApi";
+import successAlert from "../../utils/successAlert";
 
 function UploadProduct() {
     const [data, setData] = useState({
@@ -25,7 +26,20 @@ function UploadProduct() {
         price: "",
         description: "",
         discount: "",
-        more_details: {},
+        more_details: {
+                // This is an example of additional product details to make it easier to manage and display 
+                "Shelf Life": "3 months",
+                "Key Features": "",
+                "Manufacturer Details": "",
+                "Marketed By": "",
+                "Country Of Origin": "India",
+                "FSSAI License": "",
+                "Customer Care Details": "Email: info@blinkit.com",
+                "Return Policy": "This Item is non-returnable. For a damaged, defective, incorrect or expired item, you can request a replacement within 72 hours of delivery. In case of an incorrect item, you may raise a replacement or return request only if the item is sealed/unopened/unused and in original condition.",
+                "Seller": "Moonstone Ventures LLP",
+                "Seller FSSAI": "",
+                "Disclaimer": "Every effort is made to maintain accuracy of all information. However, actual product packaging and materials may contain more and/or different information. It is recommended not to solely rely on the information presented."
+        },
         publish: true
     });
     
@@ -165,7 +179,10 @@ function UploadProduct() {
 
             console.log("response: ", response);
             if(response.data.success) {
-                toast.success(response.data.message || "Product added successfully");
+
+                // toast.success(response.data.message || "Product added successfully");
+                successAlert(response.data.message || "Product added successfully")
+
                 // Reset form
                 setData({
                     name: "",
