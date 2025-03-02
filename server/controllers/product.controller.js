@@ -215,3 +215,35 @@ export const deleteProductController = async (req, res) => {
         });
     };
 }
+
+export const getProductsByCategoryController = async (req, res) => {
+    try {
+        const { categoryId } = req.body;
+
+        if(!categoryId) {
+            return res.status(400).json({
+                message: "Category ID is required.",
+                error: true,
+                success: false,
+            });
+        }
+
+        const products = await ProductModel.find({ 
+            category: {$in: categoryId} 
+        }).limit(15)
+
+        return res.status(200).json({
+            message : "Products fetched successfully",
+            error : false,
+            success : true,
+            data : products
+        })  
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false,
+        })
+    }
+}
