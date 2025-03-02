@@ -14,37 +14,31 @@ import Switch from "react-switch";
 import Axios from "../../utils/Axios";
 import summaryApi from "../common/summaryApi";
 import successAlert from "../../utils/successAlert";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function UploadProduct() {
+function UpdateProduct() {
+
+    //get Data from state
+    const location = useLocation();
+    const product = location.state?.product; // Accessing the passed data
+    const id = product?._id;
+
+    console.log(product);
+
+    // Initialize state with product data if available
     const [data, setData] = useState({
-        name: "",
-        image: [],
-        category: [],
-        subCategory: [],
-        unit: "",
-        stock: "",
-        price: "",
-        description: "",
-        discount: "",
-        more_details: {
-                // This is an example of additional product details to make it easier to manage and display 
-                "Shelf Life": "3 months",
-                "Key Features": "",
-                "Size": "",
-                "Color": "",
-                "Manufacturer Details": "",
-                "Marketed By": "",
-                "Country Of Origin": "India",
-                "FSSAI License": "",
-                "Customer Care Details": "Email: info@blinkit.com",
-                "Return Policy": "This Item is non-returnable. For a damaged, defective, incorrect or expired item, you can request a replacement within 72 hours of delivery. In case of an incorrect item, you may raise a replacement or return request only if the item is sealed/unopened/unused and in original condition.",
-                "Seller": "Moonstone Ventures LLP",
-                "Seller FSSAI": "13323999000008",
-                "Disclaimer": "Every effort is made to maintain accuracy of all information. However, actual product packaging and materials may contain more and/or different information. It is recommended not to solely rely on the information presented."
-        },
-        publish: true
+        name: product?.name || "",
+        image: product?.image || [],
+        category: product?.category || [],
+        subCategory: product?.subCategory || [],
+        unit: product?.unit || "",
+        stock: product?.stock || "",
+        price: product?.price || "",
+        description: product?.description || "",
+        discount: product?.discount || "",
+        more_details: product?.more_details || {},
+        publish: product?.publish ?? true
     });
-    
     const [loading, setLoading] = useState(false);
     const [viewImageURL, setViewImageURL] = useState(null); // Track image to view
     const [numberOfImages, setNumberOfImages] = useState(0);
@@ -69,6 +63,7 @@ function UploadProduct() {
     (Object.keys(data.more_details).length > 0 && 
     Object.values(data.more_details).some(value => !value.trim())); // Ensures no empty values
 
+    const navigate = useNavigate()
     
     const filteredSubCategories = allSubCategory?.filter(subCategory =>
         subCategory.category?.some(category => 
@@ -170,39 +165,22 @@ function UploadProduct() {
         setOpenAddField(false);
     }
 
-    const handleSubmit = async () => {
-        console.log("Data:", data);
+    const handleUpdateProduct = async () => {
 
         try {
             const response = await Axios({
-                ...summaryApi.addProduct,
+                ...summaryApi.updateProduct,
+                url: summaryApi.updateProduct.url.replace(":id", id),
                 data: data
             })
+            // console.log("response: ", response);
 
-            console.log("response: ", response);
             if(response.data.success) {
-
-                // toast.success(response.data.message || "Product added successfully");
-                successAlert(response.data.message || "Product added successfully")
-
-                // Reset form
-                setData({
-                    name: "",
-                    image: [],
-                    category: [],
-                    subCategory: [],
-                    unit: "",
-                    stock: "",
-                    price: "",
-                    description: "",
-                    discount: "",
-                    more_details: {},
-                    publish: true
-                });
+                successAlert(response.data.message || "Product updated successfully!");
+                navigate("/dashboard/products")
             } else {
-                toast.error(response.data.message || "Failed to add product");
+                toast.error(response.data.message || "Failed to update product");
             }
-
         } catch (error) {
             AxiosToastError(error)
         }
@@ -211,7 +189,7 @@ function UploadProduct() {
     return (
         <section>
             <div className="p-2 bg-white shadow-xl flex items-center justify-between sticky top-0 z-10">
-                <h2 className="font-semibold">Upload Product</h2>
+                <h2 className="font-semibold">Update Product</h2>
             </div>
             <div>
                 <div className="p-4 space-y-4">
@@ -573,7 +551,7 @@ function UploadProduct() {
 
                     {/* Submit Button */}
                     <button
-                        onClick={handleSubmit}
+                        onClick={handleUpdateProduct}
                         disabled={disableSubmitButton} 
                         className={`w-full sm:w-auto mt-4 px-6 py-3 rounded-lg text-white font-semibold shadow-md transition-all 
                             ${disableSubmitButton ? "bg-gray-400 cursor-not-allowed" : "bg-[#0C831F] hover:bg-[#2c4e33] text-white cursor-pointer"}`}
@@ -581,10 +559,10 @@ function UploadProduct() {
                         {loading ? (
                             <>
                                 <BeatLoader color="#ffffff" size={10} /> {/* Show loading spinner */}
-                                <span className="ml-2">Submitting...</span>
+                                <span className="ml-2">Updating...</span>
                             </>
                         ) : (
-                            "Submit Product"
+                            "Update Product"
                         )}
                     </button>
 
@@ -618,4 +596,6 @@ function UploadProduct() {
     );
 }
 
-export default UploadProduct;
+export default UpdateProduct
+
+

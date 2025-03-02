@@ -115,10 +115,16 @@ export const getProductsController = async (req, res) => {
 
         const skip = (page - 1) * limit
 
-        const [data,totalCount] = await Promise.all([
-            ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit),
+        const [data, totalCount] = await Promise.all([
+            ProductModel.find(query)
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("category") // Populate category details
+                .populate("subCategory"), // Populate subCategory details
             ProductModel.countDocuments(query)
-        ])
+        ]);
+        
         
         console.log("data: ", data);
         console.log("totalCount: ", totalCount);        
@@ -138,4 +144,74 @@ export const getProductsController = async (req, res) => {
             success: false,
         })
     }
+}
+
+export const updateProductController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = req.body;
+        console.log(data);
+        
+        if (!id) {
+            return res.status(400).json({
+                message: "Product ID is required.",
+                error: true,
+                success: false,
+            });
+        }
+        
+        const updatedProduct = await ProductModel.findByIdAndUpdate(id, data, {new: true});
+
+        if (!updatedProduct) {
+            return res.status(404).json({
+                message: "Product not found.",
+                error: true,
+                success: false,
+            });
+        }
+
+        return res.status(200).json({
+            message: "Product updated successfully",
+            error: false,
+            success: true,
+            data: updatedProduct,
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false,
+        })
+    }
+} 
+
+export const deleteProductController = async (req, res) => {
+    try {
+        const {id} = req.params
+
+        if(!id) {
+            return res.status(400).json({
+                message: "Product ID is required.",
+                error: true,
+                success: false,
+            });
+        }
+
+        const deletedProduct = await ProductModel.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            message : "Product Deleted successfully",
+            error : false,
+            success : true,
+            data : deletedProduct
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false,
+        });
+    };
 }

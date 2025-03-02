@@ -80,7 +80,6 @@ function ProductsAdmin() {
     return (
         <section>
             <div className="h-[70vh] bottom-0">
-                
                 {/* Heading & SearchBar */}
                 <div className="p-2 bg-white shadow-xl flex items-center justify-between sticky top-0 z-10">
                     <h2 className="font-semibold">Product Admin</h2>
@@ -107,13 +106,13 @@ function ProductsAdmin() {
                 <div className="min-h-[55vh] p-4 overflow-y-hidden">
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-x-4 gap-y-2">
                         {productsData.map((p) => (
-                            <ProductCardAdmin key={p._id} data={p} />
+                            <ProductCardAdmin key={p._id} data={p} fetchProductsData={fetchProductsData}/>
                         ))}
                     </div>
                 </div>
 
                 {/* Page Navigation */}
-                <div className="flex justify-center items-center gap-2 sm:gap-4 mt-1 flex-wrap">
+                <div className="flex justify-center items-center gap-2 sm:gap-4 mt-0 flex-wrap">
                     {/* Hide on small screens */}
                     <button 
                         className="hidden sm:block px-3 py-2 rounded-md shadow-sm transition duration-200 active:scale-95 

@@ -9,7 +9,7 @@ import { setUserDetails } from "./store/userSlice";
 import { useDispatch } from "react-redux";
 import Axios from "../utils/Axios";
 import summaryApi from "./common/summaryApi";
-import { setAllCategory, setAllSubCategory } from "./store/productSlice";
+import { setAllCategory, setAllSubCategory, setLoadingCategory } from "./store/productSlice";
 import AxiosToastError from "../utils/AxiosToastError";
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
 
   const fetchCategory = async () => {
         try {
+            dispatch(setLoadingCategory(true))
             const response = await Axios({
                 ...summaryApi.getCategory,
             })
@@ -32,9 +33,11 @@ function App() {
                 dispatch(setAllCategory(response.data.data))
             } else {
                 toast.error(response.data.message)
-            }
+            } 
         } catch (error) {
             AxiosToastError(error)
+        } finally {
+          dispatch(setLoadingCategory(false))
         }
     }
 
@@ -65,7 +68,7 @@ function App() {
     <>
       <Header setIsLoginOpen={setIsLoginOpen} />
       
-      <main className="min-h-[77vh] w-full">
+      <main className="min-h-[77vh] w-full bg-white">
         <Outlet context={{ setIsLoginOpen }} />
       </main> 
 

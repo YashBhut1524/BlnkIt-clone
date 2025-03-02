@@ -15,6 +15,7 @@ import Category from "../pages/Category"
 import SubCategory from "../pages/SubCategory"
 import ProductsAdmin from "../pages/ProductsAdmin"
 import ProtectedRoute from "../components/ProtectedRoute"
+import UpdateProduct from "../pages/UpdateProduct"
 
 const router = createBrowserRouter([
     {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
                         path: "sub-category",
                         element: <ProtectedRoute element={<SubCategory />} allowedRoles={["ADMIN"]} />
                     },
+                    {
+                        path: "update-product/:id",
+                        element: <ProtectedRoute element={<UpdateProduct />} allowedRoles={["ADMIN"]} />
+                    }
                 ]
             }
         ]

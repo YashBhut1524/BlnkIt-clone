@@ -88,6 +88,14 @@ const summaryApi = {
     getProduct: {
         url: "/api/product/get-product",
         method: "post"
+    },
+    updateProduct: {
+        url: "/api/product/update-product/:id",
+        method: "put"
+    },
+    deleteProduct: {
+        url: "/api/product/delete-product/:id",
+        method: "delete"
     }
 }
 
