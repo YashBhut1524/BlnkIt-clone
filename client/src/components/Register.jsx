@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import Axios from "../../utils/Axios";
+import Axios from "../utils/Axios";
 import toast from "react-hot-toast";
-import AxiosToastError from "../../utils/AxiosToastError";
-import summaryApi from "../common/summaryApi";
+import AxiosToastError from "../utils/AxiosToastError";
+import summaryApi from "../common/summaryApi";;
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "../store/userSlice";

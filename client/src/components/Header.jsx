@@ -46,7 +46,7 @@ useEffect(() => {
                     {/* Logo */}
                     <div className="h-full">
                         <Link to="/" className="h-full flex items-center justify-center">
-                            <img src={logo} alt="BlinkIt" className="max-w-[100px] max-h-[50px] w-auto h-auto" />
+                            <img src={logo} alt="BlinkIt" className="lg:max-w-[150px] lg:max-h-[70px] max-w-[100px] max-h-[50px] w-auto h-auto" />
                         </Link>
                     </div>
 

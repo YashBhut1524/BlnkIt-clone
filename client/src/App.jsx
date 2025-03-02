@@ -4,13 +4,13 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import toast, { Toaster } from 'react-hot-toast';
 import Login from "./components/Login";
-import fetchUserDetails from "../utils/fetchUserDetails";
+import fetchUserDetails from "./utils/fetchUserDetails";
 import { setUserDetails } from "./store/userSlice";
 import { useDispatch } from "react-redux";
-import Axios from "../utils/Axios";
+import Axios from "./utils/Axios";
 import summaryApi from "./common/summaryApi";
 import { setAllCategory, setAllSubCategory, setLoadingCategory } from "./store/productSlice";
-import AxiosToastError from "../utils/AxiosToastError";
+import AxiosToastError from "./utils/AxiosToastError";
 
 function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);

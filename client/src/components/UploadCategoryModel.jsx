@@ -2,14 +2,14 @@
 import { useState, useRef, useEffect } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa";
-import uploadImage from "../../utils/uploadImage";
+import uploadImage from "../utils/uploadImage";
 import { MdDelete } from "react-icons/md";
 import BeatLoader from "react-spinners/BeatLoader";
-import AxiosToastError from "../../utils/AxiosToastError";
-import deleteImage from "../../utils/deleteImage";
+import AxiosToastError from "../utils/AxiosToastError";
+import deleteImage from "../utils/deleteImage";
 import toast from "react-hot-toast";
-import Axios from "../../utils/Axios";
-import summaryApi from "../common/summaryApi";
+import Axios from "../utils/Axios";
+import summaryApi from "../common/summaryApi";;
 import { useSelector } from "react-redux";
 
 function UploadCategoryModel({ close, fetchCategory }) {

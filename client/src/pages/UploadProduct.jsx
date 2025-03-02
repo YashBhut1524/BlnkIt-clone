@@ -2,18 +2,18 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
-import uploadImage from "../../utils/uploadImage";
+import uploadImage from "../utils/uploadImage";
 import BeatLoader from "react-spinners/BeatLoader";
 import ViewImage from "../components/ViewImage";
-import deleteImage from "../../utils/deleteImage";
-import AxiosToastError from "../../utils/AxiosToastError";
+import deleteImage from "../utils/deleteImage";
+import AxiosToastError from "../utils/AxiosToastError";
 import { IoCloseSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import AddField from "../components/AddField";
 import Switch from "react-switch";
-import Axios from "../../utils/Axios";
-import summaryApi from "../common/summaryApi";
-import successAlert from "../../utils/successAlert";
+import Axios from "../utils/Axios";
+import summaryApi from "../common/summaryApi";;
+import successAlert from "../utils/successAlert";
 
 function UploadProduct() {
     const [data, setData] = useState({

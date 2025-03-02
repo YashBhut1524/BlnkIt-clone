@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Axios from "../../utils/Axios";
+import Axios from "../utils/Axios";
 import summaryApi from ".././common/summaryApi";
-import AxiosToastError from "../../utils/AxiosToastError";
+import AxiosToastError from "../utils/AxiosToastError";
 import toast from "react-hot-toast";
-import fetchUserDetails from "../../utils/fetchUserDetails";
+import fetchUserDetails from "../utils/fetchUserDetails";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "../store/userSlice";
 

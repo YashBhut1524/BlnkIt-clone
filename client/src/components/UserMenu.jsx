@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import AxiosToastError from "../../utils/AxiosToastError";
-import Axios from "../../utils/Axios";
-import summaryApi from "../common/summaryApi";
+import AxiosToastError from "../utils/AxiosToastError";
+import Axios from "../utils/Axios";
+import summaryApi from "../common/summaryApi";;
 import toast from "react-hot-toast";
 import { logout } from "../store/userSlice";
 import { FaExternalLinkAlt } from "react-icons/fa";

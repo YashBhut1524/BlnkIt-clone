@@ -1,4 +1,5 @@
-import summaryApi from "../src/common/summaryApi"
+
+import summaryApi from "../common/summaryApi"
 import Axios from "./Axios"
 import AxiosToastError from "./AxiosToastError"
 

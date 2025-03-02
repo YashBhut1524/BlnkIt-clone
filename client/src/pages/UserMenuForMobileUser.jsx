@@ -3,11 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaHome, FaRegUser, FaFileUpload, FaUserCircle } from "react-icons/fa";
 import { MdOutlineListAlt, MdCategory } from "react-icons/md";
 import { IoArrowBack } from "react-icons/io5";
-import Axios from "../../utils/Axios";
-import summaryApi from "../common/summaryApi";
+import Axios from "../utils/Axios";
+import summaryApi from "../common/summaryApi";;
 import { logout } from "../store/userSlice";
 import toast from "react-hot-toast";
-import AxiosToastError from "../../utils/AxiosToastError";
+import AxiosToastError from "../utils/AxiosToastError";
 import { AiFillProduct } from "react-icons/ai";
 import { TbCategory } from "react-icons/tb";
 

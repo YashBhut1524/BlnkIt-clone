@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useRef } from "react";
 import { useState } from "react";
-import uploadImage from "../../utils/uploadImage";
-import deleteImage from "../../utils/deleteImage";
-import AxiosToastError from "../../utils/AxiosToastError";
+import uploadImage from "../utils/uploadImage";
+import deleteImage from "../utils/deleteImage";
+import AxiosToastError from "../utils/AxiosToastError";
 import toast from "react-hot-toast";
-import Axios from "../../utils/Axios";
-import summaryApi from "../common/summaryApi";
+import Axios from "../utils/Axios";
+import summaryApi from "../common/summaryApi";;
 import { IoCloseSharp } from "react-icons/io5";
 import BeatLoader from "react-spinners/BeatLoader";
 import { FaPlus } from "react-icons/fa";

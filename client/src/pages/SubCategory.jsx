@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import UploadSubCategoryModel from "../components/UploadSubCategoryModel";
-import AxiosToastError from "../../utils/AxiosToastError";
-import Axios from "../../utils/Axios";
-import summaryApi from "../common/summaryApi";
+import AxiosToastError from "../utils/AxiosToastError";
+import Axios from "../utils/Axios";
+import summaryApi from "../common/summaryApi";;
 import toast from "react-hot-toast";
 import DisplayTable from "./DisplayTable";
 import { createColumnHelper } from "@tanstack/react-table";

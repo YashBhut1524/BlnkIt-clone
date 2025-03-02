@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import UploadCategoryModel from "../components/UploadCategoryModel"
-import AxiosToastError from "../../utils/AxiosToastError"
-import Axios from "../../utils/Axios"
-import summaryApi from "../common/summaryApi"
+import AxiosToastError from "../utils/AxiosToastError"
+import Axios from "../utils/Axios"
+import summaryApi from "../common/summaryApi";
 import toast from "react-hot-toast"
 import GridLoader from "react-spinners/GridLoader";
 import NoData from "../components/NoData"

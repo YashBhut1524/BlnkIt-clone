@@ -2,9 +2,9 @@
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import AxiosToastError from "../../utils/AxiosToastError";
-import Axios from "../../utils/Axios";
-import summaryApi from "../common/summaryApi";
+import AxiosToastError from "../utils/AxiosToastError";
+import Axios from "../utils/Axios";
+import summaryApi from "../common/summaryApi";;
 import toast from "react-hot-toast";
 
 function ProductCardAdmin({ data, fetchProductsData }) {
