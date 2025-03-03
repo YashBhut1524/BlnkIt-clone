@@ -14,6 +14,6 @@ productRouters.post("/add-product", authMiddleware, addProductController)
 productRouters.post("/get-product", getProductsController)
 productRouters.put("/update-product/:id", authMiddleware, updateProductController )
 productRouters.delete("/delete-product/:id", authMiddleware, deleteProductController )
-productRouters.get("/get-product-by-category", getProductsByCategoryController)
+productRouters.post("/get-products-by-category", getProductsByCategoryController)
 
 export default productRouters;

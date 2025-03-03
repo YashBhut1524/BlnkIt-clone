@@ -129,7 +129,7 @@ function ProductsAdmin() {
                         onClick={() => setPageNum(pageNum - 1)}
                         disabled={pageNum === 1}
                     >
-                        Previou
+                        Previous
                     </button>
 
                     <span 

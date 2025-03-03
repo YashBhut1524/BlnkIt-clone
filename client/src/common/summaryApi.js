@@ -97,9 +97,9 @@ const summaryApi = {
         url: "/api/product/delete-product/:id",
         method: "delete"
     },
-    getProductsByCategory: {
-        url: "/api/product/get-product-by-category",
-        method: "get"
+    getProductByCategory: {
+        url: "/api/product/get-products-by-category",
+        method: "post"
     }
 }
 

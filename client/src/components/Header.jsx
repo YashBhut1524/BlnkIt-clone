@@ -8,8 +8,9 @@ import { useEffect, useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
 import { useSelector } from "react-redux";
-import { FaAngleDown, FaAngleUp, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import UserMenu from "./UserMenu";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
 function Header() {
     const [isMobile] = useMobile();
@@ -40,13 +41,13 @@ useEffect(() => {
     }
 
     return (
-        <header className="h-28 lg:h-auto lg:max-h-64 bg-white p-2 shadow-md sticky z-40 lg:pt-4">
+        <header className="h-28 lg:h-22 lg:min-h-15 bg-white px-2 border-b border-gray-200 sticky z-40 ">
             {!(isSearchPage && isMobile) && (
                 <div className="container mx-auto flex gap-1 items-center px-4 justify-between lg:max-w-full">
                     {/* Logo */}
-                    <div className="h-full">
+                    <div className="h-full lg:p-2 lg:border-r border-gray-200">
                         <Link to="/" className="h-full flex items-center justify-center">
-                            <img src={logo} alt="BlinkIt" className="lg:max-w-[150px] lg:max-h-[70px] max-w-[100px] max-h-[50px] w-auto h-auto" />
+                            <img src={logo} alt="BlinkIt" className="lg:max-w-[110px] lg:max-h-[65px] max-w-[100px] max-h-[50px] w-auto h-auto" />
                         </Link>
                     </div>
 
@@ -81,13 +82,13 @@ useEffect(() => {
                                 ? (
                                     <div className="hidden lg:block relative w-[40%] p-2 select-none">
                                         <div 
-                                            className="flex gap-1 items-center cursor-pointer p-2 hover:bg-[#f6f2f2] rounded-md"
+                                            className="flex gap-2 items-center cursor-pointer p-2 hover:bg-[#f6f2f2] rounded-md"
                                             onClick={() => setOpenUserMenu(prev => !prev)}
                                         >
-                                            <p>Account</p>
-                                            {openUserMenu ? <FaAngleUp /> : <FaAngleDown />}
+                                            <p className="text-lg">Account</p>
+                                            {openUserMenu ? <IoMdArrowDropup size={60} /> : <IoMdArrowDropdown size={60} />}
                                         </div>
-                                        <div className="absolute right-0 top-13">
+                                        <div className="absolute right-0 top-16">
                                             {openUserMenu && (
                                                 <div className="bg-[#ffffff] rounded-md p-4 min-w-52 lg:shadow-lg">
                                                     <UserMenu closeMenu={() => setOpenUserMenu(false)} />

@@ -182,7 +182,7 @@ function SubCategory() {
                 />
             )}
             {showConfirmDialog && (
-                <div className="fixed inset-0 flex items-center justify-center bg-neutral-800/70">
+                <div className="z-40 fixed inset-0 flex items-center justify-center bg-neutral-800/70">
                     <div className="bg-white p-6 rounded-md shadow-lg text-center">
                         {loading ? (
                             <div className="grid place-items-center">

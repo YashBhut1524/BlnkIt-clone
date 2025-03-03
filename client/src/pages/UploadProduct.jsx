@@ -30,6 +30,9 @@ function UploadProduct() {
                 // This is an example of additional product details to make it easier to manage and display 
                 "Shelf Life": "3 months",
                 "Key Features": "",
+                "Offers": "",
+                "Nutrition Information": "",
+                "Ingredients": "",
                 "Size": "",
                 "Color": "",
                 "Manufacturer Details": "",
