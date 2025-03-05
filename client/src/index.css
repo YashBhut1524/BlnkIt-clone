@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
 body {
-    @apply bg-slate-50 
+    @apply bg-slate-50;
+    padding-top: 5rem;
+}
+
+.no-scrollbar {
+    overflow-y: auto; /* Enable vertical scrolling */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari */
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Adjust card width */
+    gap: 12px;
 }

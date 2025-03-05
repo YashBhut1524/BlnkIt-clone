@@ -86,18 +86,22 @@ const router = createBrowserRouter([
                     }
                 ]
             },
+            // {
+            //     path: ":category",
+            //     children: [
+            //         {
+            //             path: ":subcategory",
+            //             element: <ProductDetails />
+            //         }
+            //     ]
+            // },
             {
-                path: ":category",
-                children: [
-                    {
-                        path: ":subcategory",
-                        element: <ProductList />
-                    }
-                ]
+                path: "products-list/:product-id",
+                element: <ProductDetails />
             },
             {
-                path: "product/:product-id",
-                element: <ProductDetails />
+                path: "/products-list",
+                element: <ProductList />
             }
         ]
     }

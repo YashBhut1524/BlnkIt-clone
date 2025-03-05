@@ -25,7 +25,7 @@ function ProductViewByCategory({ id, name }) {
                     id,
                 },
             });
-            console.log(response.data);
+            // console.log(response.data);
             setData(response.data.data);
         } catch (error) {
             AxiosToastError(error);
@@ -78,10 +78,15 @@ function ProductViewByCategory({ id, name }) {
                     {loading &&
                         loadingCardNumber.map((_, index) => (
                             <CardLoadingSkeleton key={index} />
-                        ))}
-                    {data.map((product, index) => (
-                        <ProductCard data={product} key={index} />
-                    ))}
+                        ))
+                    }
+                    {data
+                        .filter(product => product.stock !== 0) // Exclude out-of-stock products
+                        .slice(0, 15)
+                        .map((product, index) => (
+                            <ProductCard data={product} key={index} />
+                        ))
+                    }
                 </div>
 
                 {/* Right Arrow Button */}

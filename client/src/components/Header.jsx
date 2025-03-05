@@ -41,7 +41,7 @@ useEffect(() => {
     }
 
     return (
-        <header className="h-28 lg:h-22 lg:min-h-15 bg-white px-2 border-b border-gray-200 sticky z-40 ">
+        <header className="fixed top-0 left-0 w-full h-28 lg:h-22 lg:min-h-15 bg-white px-2 border-b border-gray-200 z-40">
             {!(isSearchPage && isMobile) && (
                 <div className="container mx-auto flex gap-1 items-center px-4 justify-between lg:max-w-full">
                     {/* Logo */}

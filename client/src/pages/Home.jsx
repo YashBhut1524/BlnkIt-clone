@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import banner from "../assets/banner.jpg";
 import pharmaBanner from "../assets/pharmacy.jpg";
 import babycare from "../assets/babycare.jpg";
@@ -5,10 +6,11 @@ import pet from "../assets/Pet.jpg";
 import android_feed from "../assets/android_feed.jpg";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { validURLConvertor } from "../utils/validURLConvertor";
+// import { validURLConvertor } from "../utils/validURLConvertor";
 import ProductViewByCategory from "../components/ProductViewByCategory";
 
 function Home() {
+    
     const loadingCategory = useSelector(state => state.product.loadingCategory);
     const allCategory = useSelector(state => state.product.allCategory);
     const allSubCategory = useSelector(state => state.product.allSubCategory);
@@ -19,15 +21,18 @@ function Home() {
         const filteredSubCategories = allSubCategory?.filter(subCategory => 
             subCategory.category?.some(cat => cat._id === categoryId)
         );
-        console.log("filteredSubCategories: ", filteredSubCategories);
+        // console.log("filteredSubCategories: ", filteredSubCategories);
 
-        const url = `/${validURLConvertor(categoryName)}-${categoryId}/${validURLConvertor(filteredSubCategories[0].name)}-${filteredSubCategories[0]._id}`
+        // const url = `/${validURLConvertor(categoryName)}-${categoryId}/${validURLConvertor(filteredSubCategories[0].name)}-${filteredSubCategories[0]._id}`
         
-        navigate(url);
+        // navigate(url);
+        let subCategoryId = filteredSubCategories[0]?._id;
+        navigate("/products-list", { state: { categoryId, subCategoryId } });
+
     };
 
     return (
-        <section className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 w-full mx-auto mt-1">
+        <section className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 w-full mx-auto mt-3 top-28 lg:top-22">
             {/* Large Screen Layout */}
             <div className="hidden lg:block w-full max-w-[1200px] mx-auto">
                 <div className="w-full rounded bg-white -ml-4">

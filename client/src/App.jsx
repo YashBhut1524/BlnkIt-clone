@@ -16,6 +16,7 @@ function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const dispatch = useDispatch()
 
+
   const fetchUser = async () => {
     const userData = await fetchUserDetails()
     // console.log("userData: ", userData);

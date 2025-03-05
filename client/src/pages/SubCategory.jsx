@@ -38,7 +38,7 @@ function SubCategory() {
                     <img 
                         src={row.original.image} 
                         alt={row.original.name}  
-                        className="w-10 h-10 object-cover rounded"
+                        className="w-20 h-20 object-scale-down rounded"
                         onClick={() => setGetImgUrl(row.original.image)}
                     />
                 </div>
