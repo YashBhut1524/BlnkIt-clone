@@ -8,7 +8,7 @@ function ProductCard({data}) {
 
     const formattedUnit = /^\d+$/.test(data?.unit) ? `${data.unit} Unit` : data.unit;
 
-    const url = `product/${validURLConvertor(data.name)}-${data._id}`
+    const url = `products-list/${validURLConvertor(data.name)}-${data._id}`;
 
     return (
         <Link to={url} className='border py-2 lg:p-4 grid gap-1 lg:gap-3 min-w-36 lg:min-w-52 rounded cursor-pointer bg-white border-gray-200 relative'>
