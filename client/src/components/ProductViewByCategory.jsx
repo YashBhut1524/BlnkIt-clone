@@ -9,6 +9,9 @@ import ProductCard from "./ProductCard";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 function ProductViewByCategory({ id, name }) {
+
+    // console.log(id);
+
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -56,7 +59,11 @@ function ProductViewByCategory({ id, name }) {
         <>
             <div className="mx-auto flex justify-between">
                 <h2 className="font-bold text-lg mb-3">{name}</h2>
-                <Link to={""} className="text-[#0C831F] text-xl font-semibold">
+                <Link 
+                    to={"/all-products-by-category"} 
+                    state={{ categoryId: id }} 
+                    className="text-[#0C831F] text-xl font-semibold"
+                >
                     see all
                 </Link>
             </div>

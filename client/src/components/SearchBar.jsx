@@ -22,6 +22,12 @@ function SearchBar() {
         navigate("/search");
     };
 
+    const handleOnChange = (e)=>{
+        const value = e.target.value
+        const url = `/search?q=${value}`
+        navigate(url)
+    }
+
     return (
         <div className="w-full min-w-[300px] lg:min-w-[600px] rounded-lg border border-neutral-200 overflow-hidden flex items-center h-12 lg:h-full bg-slate-50 px-3">
             <div>
@@ -58,6 +64,7 @@ function SearchBar() {
                         placeholder="What are you looking for today?"
                         className="bg-transparent w-full h-full outline-none"
                         autoFocus={true}
+                        onChange={handleOnChange}
                     />
                 )}
             </div>

@@ -283,3 +283,82 @@ export const getProductByCategoryAndSubCategory  = async(request,response)=>{
         })
     }
 }
+
+export const getProductByProductId = async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        if (!id) {
+            return res.status(400).json({
+                message: "Product ID is required.",
+                error: true,
+                success: false,
+            });
+        }
+
+        const product = await ProductModel.findById(id).populate("category").populate("subCategory");
+        
+        if(!product) {
+            return res.status(404).json({
+                message: "Product not found.",
+                error: true,
+                success: false,
+            });
+        }
+
+        return res.status(200).json({
+            message: "Product fetched successfully.",
+            error: false,
+            success: true,
+            data: product
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message : error.message || error,
+            error : true,
+            success : false
+        })
+    }
+}
+
+export const searchProductController = async (req, res) => {
+    try {
+        let { search, page = 1, limit = 10 } = req.body; // Default page=1, limit=10
+
+        if (!search) {
+            return res.status(400).json({
+                message: "Search query is required.",
+                error: true,
+                success: false,
+            });
+        }
+
+        const query = {
+            $or: [{ name: { $regex: search, $options: "i" } }],
+        };
+
+        const products = await ProductModel.find(query)
+            .populate("category")
+            .populate("subCategory")
+            .limit(limit)
+            .skip((page - 1) * limit); // Skip records based on page number
+
+        const total = await ProductModel.countDocuments(query); // Get total count
+
+        return res.status(200).json({
+            message: "Products fetched successfully.",
+            error: false,
+            success: true,
+            data: products,
+            total, // Send total products count
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false,
+        });
+    }
+};

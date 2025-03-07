@@ -1,4 +1,3 @@
-import sharp from 'sharp';
 import { v2 as cloudinary } from 'cloudinary';
 
 cloudinary.config({
@@ -8,12 +7,7 @@ cloudinary.config({
 });
 
 const uploadImgCloudinary = async (image, path) => {
-    // Convert and compress image before uploading
     const buffer = image?.buffer || Buffer.from(await image.arrayBuffer());
-    const compressedImage = await sharp(buffer)
-        .resize({ width: 800 }) // Resize to max 800px width (adjust as needed)
-        .jpeg({ quality: 70 })  // Compress JPEG with 70% quality
-        .toBuffer();
 
     const uploadImage = await new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream(
@@ -22,7 +16,7 @@ const uploadImgCloudinary = async (image, path) => {
                 if (error) return reject(error);
                 resolve(uploadResult);
             }
-        ).end(compressedImage);
+        ).end(buffer);
     });
 
     return uploadImage;

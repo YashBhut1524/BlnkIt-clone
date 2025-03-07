@@ -7,8 +7,14 @@ import Axios from "../utils/Axios";
 import summaryApi from "../common/summaryApi";
 import ProductCardForProductListPage from "../components/ProductCardForProductListPage";
 import { validURLConvertor } from "../utils/validURLConvertor";
+import nothing_here_yet from "../assets/nothing_here_yet.webp"
 
 function ProductList() {
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    scrollToTop();
     // Redux store selectors
     const allCategory = useSelector(state => state.product.allCategory) || [];
     const allSubCategory = useSelector(state => state.product.allSubCategory) || [];
@@ -37,9 +43,9 @@ function ProductList() {
             setCurrentSubCategory(selectedSubCategory);
     }
 
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+    const filteredProducts = products.filter(product => 
+        product.subCategory.some(subCat => subCat._id === currentSubCategory?._id)
+    );
 
     useEffect(() => {
         findCurrentSubCategory()
@@ -89,23 +95,6 @@ function ProductList() {
             // console.log(error);
         }
     }
-
-    // const fetchProductsByCategoryAndSubcategory = async () => {
-    //     try {
-    //         const response = await Axios({
-    //             ...summaryApi.getProductByCategoryAndSubCategory,
-    //             data: {
-    //                 categoryId: currentCategory?._id,
-    //                 subcategoryId: currentSubCategory?._id,
-    //             }
-    //         })
-
-    //         console.log("response: ", response);
-            
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
     
     return (
         <section className="lg:px-35 w-full mx-auto mt-3 h-full">
@@ -195,23 +184,25 @@ function ProductList() {
                 </div>
 
                 {/* Right (Products By SubCategory) */}
-                <div className="pl-2 pb-2 pr-2  overflow-y-scroll h-[80vh] border-r border-gray-200 bg-[#F4F6FB] top-0 no-scrollbar">
+                <div className="pl-2 pb-2 pr-2 overflow-y-scroll h-[80vh] border-r border-gray-200 bg-[#F4F6FB] top-0 no-scrollbar">
                     <div className="py-4 pl-6 text-md w-full bg-white flex items-center justify-between top-0">
                         <h2 className="font-bold">Buy {currentSubCategory?.name} online</h2>
                     </div>
-                    <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mx-auto container py-4 ">
-                    {/* <div className=' grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-4 gap-4 '> */}
-                            {
-                                products
-                                    .filter(product => 
-                                        product.subCategory.some(subCat => subCat._id === currentSubCategory?._id)
-                                    )
-                                    .map((product, index) => (
-                                        <ProductCardForProductListPage data={product} key={index} />
-                                    )
-                                )
+                    {filteredProducts.length === 0 ? (
+                        <div className="flex flex-col justify-center items-center">
+                            <img src={nothing_here_yet} alt="No products available" className="w-80 h-80" />
+                            <p className="text-2xl text-[#F8CB46] font-bold">No Product Found</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 mx-auto container py-4">
+                            {filteredProducts
+                                .sort((a, b) => (a.stock === 0) - (b.stock === 0)) // Moves out-of-stock items to the end
+                                .map((product, index) => (
+                                    <ProductCardForProductListPage data={product} key={index} />
+                                ))
                             }
-                    </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>

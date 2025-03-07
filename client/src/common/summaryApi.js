@@ -104,6 +104,14 @@ const summaryApi = {
     getProductByCategoryAndSubCategory: {
         url: "/api/product/get-products-by-category-and-sub-category",
         method: "post"
+    },
+    getProductById: {
+        url: "/api/product/get-product-by-id",
+        method: "post"
+    },
+    searchProduct: {
+        url: "/api/product/search-product",
+        method: "post"
     }
 }
 

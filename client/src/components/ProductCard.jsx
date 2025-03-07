@@ -42,9 +42,20 @@ function ProductCard({data}) {
                 {formattedUnit}
             </div>
             <div className='flex items-center justify-between gap-3'>
-                <div className=''>
-                    <span className="text-[11px] font-bold">₹{data.price}</span>
-                </div>
+                {
+                    data.discount > 0 ? (
+                        <div className="flex items-center gap-1">
+                            <span className="text-[11px] font-bold line-through text-gray-500">
+                                ₹{data.price}
+                            </span>
+                            <span className="text-[11px] font-bold text-black">
+                                ₹{(data.price - (data.price * data.discount / 100)).toFixed(2)}
+                            </span>
+                        </div>
+                    ) : (
+                        <span className="text-[11px] font-bold">₹{data.price}</span>
+                    )
+                }
                 <div className="rounded w-fit">
                     <button className="px-4 py-1 text-green-700 border-2 border-green-700 rounded-lg font-medium transition-all duration-200 hover:bg-green-700 hover:text-white">
                         ADD
