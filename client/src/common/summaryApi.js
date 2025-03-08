@@ -112,6 +112,22 @@ const summaryApi = {
     searchProduct: {
         url: "/api/product/search-product",
         method: "post"
+    },
+    addToCart: {
+        url: "/api/cart/create-cart",
+        method: "post"
+    },
+    getCartItems: {
+        url: "/api/cart/get-cart-items",
+        method: "get"
+    },
+    updateCartItemQuantity: {
+        url: "/api/cart/update-cart-item-quantity",
+        method: "put"
+    },
+    deleteItemFromCart: {
+        url: "/api/cart/delete-cart-item",
+        method: "delete"
     }
 }
 

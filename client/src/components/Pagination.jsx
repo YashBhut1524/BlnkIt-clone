@@ -24,7 +24,7 @@ const Pagination = ({ pageNum, setPageNum, totalPageCount }) => {
         <div className="flex justify-center items-center gap-4 mt-4">
             <button 
                 className={`px-4 py-2 rounded-md shadow-sm transition duration-200 active:scale-95 
-                    ${pageNum === 1 ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "bg-green-600 text-white hover:bg-green-700"}`}
+                    ${pageNum === 1 ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "bg-green-600 text-white hover:bg-[#318616]"}`}
                 onClick={() => setPageNum(1)}
                 disabled={pageNum === 1}
             >
@@ -33,7 +33,7 @@ const Pagination = ({ pageNum, setPageNum, totalPageCount }) => {
 
             <button 
                 className={`px-4 py-2 rounded-md shadow-sm transition duration-200 active:scale-95 
-                    ${pageNum === 1 ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "bg-green-600 text-white hover:bg-green-700"}`}
+                    ${pageNum === 1 ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "bg-green-600 text-white hover:bg-[#318616]"}`}
                 onClick={() => setPageNum(pageNum - 1)}
                 disabled={pageNum === 1}
             >
@@ -52,7 +52,7 @@ const Pagination = ({ pageNum, setPageNum, totalPageCount }) => {
 
             <button 
                 className={`px-4 py-2 rounded-md shadow-sm transition duration-200 active:scale-95 
-                    ${pageNum === totalPageCount ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "bg-green-600 text-white hover:bg-green-700"}`}
+                    ${pageNum === totalPageCount ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "bg-green-600 text-white hover:bg-[#318616]"}`}
                 onClick={() => setPageNum(pageNum + 1)}
                 disabled={pageNum === totalPageCount}
             >
@@ -61,7 +61,7 @@ const Pagination = ({ pageNum, setPageNum, totalPageCount }) => {
 
             <button 
                 className={`px-4 py-2 rounded-md shadow-sm transition duration-200 active:scale-95 
-                    ${pageNum === totalPageCount ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "bg-green-600 text-white hover:bg-green-700"}`}
+                    ${pageNum === totalPageCount ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "bg-green-600 text-white hover:bg-[#318616]"}`}
                 onClick={() => setPageNum(totalPageCount)}
                 disabled={pageNum === totalPageCount}
             >

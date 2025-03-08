@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
+import AddToCartButton from "../components/AddToCartButton";
 
 function ProductDetails() {
 
@@ -34,7 +35,7 @@ function ProductDetails() {
     const [loading, setLoading] = useState(true);
     const [images, setImages] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [showMoreDetails, setShowMoreDetails] = useState(true);
+    const [showMoreDetails, setShowMoreDetails] = useState(false);
 
     const formattedUnit = /^\d+$/.test(productData?.unit) ? `${productData?.unit} Unit` : productData?.unit;
 
@@ -62,7 +63,7 @@ function ProductDetails() {
                 ...summaryApi.getProductById,
                 data: { id: productId },
             });
-            console.log("response: ", response);
+            // console.log("response: ", response);
 
             if (response.data.success) {
                 setProductData(response.data.data);
@@ -225,10 +226,10 @@ function ProductDetails() {
                                         <div className="flex items-center gap-1">
                                             <span className="text-md font-bold text-gray-500">MRP</span>
                                             <span className="text-md font-bold line-through text-gray-500">
-                                                ₹{productData?.price}
+                                                &#8377;{productData?.price}
                                             </span>
                                             <span className="text-md font-bold text-black">
-                                                ₹{(productData?.price - (productData?.price * productData?.discount / 100)).toFixed(2)}
+                                                &#8377;{(productData?.price - (productData?.price * productData?.discount / 100)).toFixed(2)}
                                             </span>
                                             <span className="text-white px-1 rounded bg-[#538CEE] font-semibold text-[x-small]">
                                                 {`${productData?.discount}% OFF`}
@@ -236,22 +237,14 @@ function ProductDetails() {
                                         </div>
                                     ) : (
                                         <span className="text-sm font-medium">
-                                            MRP <span className="font-bold">₹{productData?.price}</span>
+                                            MRP <span className="font-bold">&#8377;{productData?.price}</span>
                                         </span>
                                     )}
                                     <span className="text-[0.8rem] text-[#666666]">(Inclusive of all taxes)</span>
                                 </div>
                                 {/* add button */}
-                                <div className="rounded w-fit">
-                                    <button
-                                        className={`px-4 py-1 border-2 rounded-lg font-semibold text-sm transition-all duration-200 
-                                            ${productData?.stock === 0 
-                                                ? "text-gray-400 border-gray-400 cursor-not-allowed" 
-                                                : "text-green-700 border-green-700 hover:bg-green-700 hover:text-white"}`}
-                                        disabled={productData?.stock === 0}
-                                    >
-                                        ADD
-                                    </button>
+                                <div className="w-fit">
+                                    <AddToCartButton data={productData || ""}/>
                                 </div>
                             </div>
                             {/* Other Info about blinkit */}
@@ -341,10 +334,10 @@ function ProductDetails() {
                                 <div className="flex items-center gap-1">
                                     <span className="text-md font-bold text-gray-500">MRP</span>
                                     <span className="text-md font-bold line-through text-gray-500">
-                                        ₹{productData?.price}
+                                        &#8377;{productData?.price}
                                     </span>
                                     <span className="text-md font-bold text-black">
-                                        ₹{(productData?.price - (productData?.price * productData?.discount / 100)).toFixed(2)}
+                                        &#8377;{(productData?.price - (productData?.price * productData?.discount / 100)).toFixed(2)}
                                     </span>
                                     <span className="text-white px-1 rounded bg-[#538CEE] font-semibold text-[x-small]">
                                         {`${productData?.discount}% OFF`}
@@ -352,22 +345,14 @@ function ProductDetails() {
                                 </div>
                             ) : (
                                 <span className="text-sm font-medium">
-                                    MRP <span className="font-bold">₹{productData?.price}</span>
+                                    MRP <span className="font-bold">&#8377;{productData?.price}</span>
                                 </span>
                             )}
                             <span className="text-[0.6rem] text-[#666666]">(Inclusive of all taxes)</span>
                         </div>
                         {/* add button */}
-                        <div className="rounded w-fit">
-                            <button
-                                className={`px-4 py-1 border-2 rounded-lg font-semibold text-sm transition-all duration-200 
-                                    ${productData?.stock === 0 
-                                        ? "text-gray-400 border-gray-400 cursor-not-allowed" 
-                                        : "text-green-700 border-green-700 hover:bg-green-700 hover:text-white"}`}
-                                disabled={productData?.stock === 0}
-                            >
-                                ADD
-                            </button>
+                        <div className="w-fit">
+                            <AddToCartButton data={productData || ""}/>
                         </div>
                     </div>
                     {/* Product other info */}

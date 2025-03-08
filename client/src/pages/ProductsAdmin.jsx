@@ -116,7 +116,7 @@ function ProductsAdmin() {
                     {/* Hide on small screens */}
                     <button 
                         className="hidden sm:block px-3 py-2 rounded-md shadow-sm transition duration-200 active:scale-95 
-                            bg-green-600 text-white hover:bg-green-700 disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed"
+                            bg-green-600 text-white hover:bg-[#318616] disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed"
                         onClick={() => setPageNum(1)}
                         disabled={pageNum === 1}
                     >
@@ -125,7 +125,7 @@ function ProductsAdmin() {
 
                     <button 
                         className="w-20 h-10 flex items-center justify-center rounded-md shadow-sm transition duration-200 active:scale-95 
-                            bg-green-600 text-white hover:bg-green-700 disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed"
+                            bg-green-600 text-white hover:bg-[#318616] disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed"
                         onClick={() => setPageNum(pageNum - 1)}
                         disabled={pageNum === 1}
                     >
@@ -154,7 +154,7 @@ function ProductsAdmin() {
 
                     <button 
                         className="w-20 h-10 flex items-center justify-center rounded-md shadow-sm transition duration-200 active:scale-95 
-                            bg-green-600 text-white hover:bg-green-700 disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed"
+                            bg-green-600 text-white hover:bg-[#318616] disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed"
                         onClick={() => setPageNum(pageNum + 1)}
                         disabled={pageNum === totalPageCount}
                     >
@@ -164,7 +164,7 @@ function ProductsAdmin() {
                     {/* Hide on small screens */}
                     <button 
                         className="hidden sm:block px-3 py-2 rounded-md shadow-sm transition duration-200 active:scale-95 
-                            bg-green-600 text-white hover:bg-green-700 disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed"
+                            bg-green-600 text-white hover:bg-[#318616] disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed"
                         onClick={() => setPageNum(totalPageCount)}
                         disabled={pageNum === totalPageCount}
                     >

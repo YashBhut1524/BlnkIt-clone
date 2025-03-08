@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/blinkitlogo.jpg";
@@ -11,12 +12,14 @@ import { useSelector } from "react-redux";
 import { FaUserCircle } from "react-icons/fa";
 import UserMenu from "./UserMenu";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import toast from "react-hot-toast";
 
-function Header() {
+function Header({setIsCartMenuOpen}) {
     const [isMobile] = useMobile();
     const location = useLocation();
     const isSearchPage = location.pathname === "/search";
     const navigate = useNavigate()
+    const cartItem = useSelector((state) => state.cartItem.cart);
     const user = useSelector((state) => state?.user)
     // console.log("user from store: ", user);
     
@@ -26,11 +29,36 @@ function Header() {
     const [isRegister, setIsRegister] = useState(false);
     const [openUserMenu, setOpenUserMenu] = useState(false)
     const [userData, setUserData] = useState(user);
+    const [totalItems, setTotalItems] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
 
-useEffect(() => {
-    // console.log("User state updated:", user);
-        setOpenUserMenu(false);  // Close the user menu when user logs in
-        setUserData(user); // Update local state when Redux updates
+
+    useEffect(() => {
+        let itemsCount = 0;
+        let priceCount = 0;
+
+        // for (const item of cartItem) {
+        //     itemsCount += item.quantity;
+        //     const discountedPrice = item.productId.price * (1 - item.productId.discount / 100);
+        //     priceCount += discountedPrice * item.quantity;
+        // }
+        itemsCount = cartItem.reduce((prev, curr) => {
+            return prev + curr.quantity;
+        }, 0)
+        priceCount = parseFloat(cartItem.reduce((prev, curr) => {
+            return prev + curr.productId.price * (1 - curr.productId.discount / 100) * curr.quantity;
+        }, 0).toFixed(2));
+
+        setTotalItems(itemsCount);
+        setTotalPrice(priceCount);
+    }, [cartItem]);
+
+    
+
+    useEffect(() => {
+        // console.log("User state updated:", user);
+        setOpenUserMenu(false);
+        setUserData(user); 
     }, [user]);
 
     const handleMobileUser = () => {
@@ -111,14 +139,37 @@ useEffect(() => {
                         }
 
                         {/* Cart Button */}
-                        <button className="min-w-[8rem] w-auto justify-around hidden lg:flex items-center bg-[#0C831F] px-2 py-3 gap-1 text-white cursor-pointer rounded-lg">
+                        <button 
+                            className="min-w-[7rem] w-auto justify-around hidden lg:flex items-center bg-[#0C831F] px-2 py-2 gap-1 text-white cursor-pointer rounded-lg"
+                            onClick={() => {
+                                if (user._id) {
+                                    setIsCartMenuOpen(true);
+                                }
+                            }}
+                        >
                             <div className="hover:animate-bounce">
                                 <HiOutlineShoppingCart size={30} />
                             </div>
-                            <div className="font-bold">
-                                My Cart
-                            </div>
+                            {
+                                cartItem.length > 0 ? (
+                                    <div className="font-bold flex flex-col text-sm items-center justify-center">
+                                        <p>{totalItems} items</p>
+                                        <p>&#8377;{totalPrice}</p>
+                                    </div>
+                                ) : (
+                                    <div 
+                                        className="font-bold"
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Prevents triggering the parent button's onClick
+                                            !user._id ? setIsLoginOpen(true) : navigate("/user-menu");
+                                        }}
+                                    >
+                                        My Cart
+                                    </div>
+                                )
+                            }
                         </button>
+
                     </div>
                 </div>
             )}

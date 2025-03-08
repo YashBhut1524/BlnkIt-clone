@@ -19,6 +19,7 @@ import UpdateProduct from "../pages/UpdateProduct"
 import ProductList from "../pages/ProductList"
 import ProductDetails from "../pages/ProductDetails"
 import AllProductsByCategory from "../components/AllProductsByCategory"
+import ViewCart from "../pages/ViewCart"
 
 const router = createBrowserRouter([
     {
@@ -107,7 +108,12 @@ const router = createBrowserRouter([
             {
                 path: "/all-products-by-category",
                 element: <AllProductsByCategory />
-            }
+            },
+            {
+                path: "cart",
+                element: <ViewCart />
+            },
+            
         ]
     }
 ]);

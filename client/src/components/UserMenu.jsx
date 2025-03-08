@@ -22,6 +22,7 @@ function UserMenu({ closeMenu }) {
                 toast.success(response.data.message);
                 navigate("/");
                 closeMenu(); // Close menu on logout
+                window.location.reload()
             }
         } catch (error) {
             AxiosToastError(error);

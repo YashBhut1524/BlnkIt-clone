@@ -3,10 +3,13 @@ import { CiStopwatch } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { validURLConvertor } from "../utils/validURLConvertor";
 import disscountBannerSVG from "../assets/disscountBanner.svg";
+import AddToCartButton from "./AddToCartButton";
 
 function ProductCardForProductListPage({ data }) {
+
     const formattedUnit = /^\d+$/.test(data?.unit) ? `${data.unit} Unit` : data.unit;
     const url = `/products-list/${validURLConvertor(data.name)}-${data._id}`;
+
 
     return (
         <Link to={url} className="border py-2 px-3 grid gap-2 h-full w-full rounded cursor-pointer bg-white border-gray-200 relative text-xs">
@@ -42,20 +45,20 @@ function ProductCardForProductListPage({ data }) {
                     data.discount > 0 ? (
                         <div className="flex items-center gap-1">
                             <span className="text-[11px] font-bold line-through text-gray-500">
-                                ₹{data.price}
+                                &#8377;{data.price}
                             </span>
                             <span className="text-[11px] font-bold text-black">
-                                ₹{(data.price - (data.price * data.discount / 100)).toFixed(2)}
+                                &#8377;{(data.price - (data.price * data.discount / 100)).toFixed(2)}
                             </span>
                         </div>
                     ) : (
-                        <span className="text-[11px] font-bold">₹{data.price}</span>
+                        <span className="text-[11px] font-bold">&#8377;{data.price}</span>
                     )
                 }
                 {data.stock !== 0 && (
-                    <button className="px-2.5 py-1 text-green-700 border border-green-700 rounded text-[11px] sm:text-[12px] font-medium transition-all duration-200 hover:bg-green-700 hover:text-white">
-                        ADD
-                    </button>
+                    <div className="w-fit">
+                        <AddToCartButton data={data}/>
+                    </div>
                 )}
             </div>
         </Link>

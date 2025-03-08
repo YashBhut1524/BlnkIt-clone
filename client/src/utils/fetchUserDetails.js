@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import summaryApi from "../common/summaryApi";
 import Axios from "./Axios";
 
@@ -11,7 +12,9 @@ const fetchUserDetails = async () => {
         return response.data 
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
+        console.log("User is not logged in.");
+        
     }
 }
 

@@ -6,16 +6,22 @@ import toast, { Toaster } from 'react-hot-toast';
 import Login from "./components/Login";
 import fetchUserDetails from "./utils/fetchUserDetails";
 import { setUserDetails } from "./store/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Axios from "./utils/Axios";
 import summaryApi from "./common/summaryApi";
 import { setAllCategory, setAllSubCategory, setLoadingCategory } from "./store/productSlice";
 import AxiosToastError from "./utils/AxiosToastError";
+import { handleAddItem } from "./store/cartProductSlice";
+import CartButtonForMobile from "./components/CartButtonForMobile"
+import CartSideMenu from "./components/CartSideMenu";
 
 function App() {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const dispatch = useDispatch()
 
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isCartMenuOpen, setIsCartMenuOpen] = useState(true);
+
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user);
 
   const fetchUser = async () => {
     const userData = await fetchUserDetails()
@@ -57,24 +63,63 @@ function App() {
           AxiosToastError(error)
       }
   }
-    
+
+  const fetchCartItem = async () => {
+    try {
+        const response = await Axios({
+            ...summaryApi.getCartItems,
+        })
+        // console.log("response: ", response);
+
+        if (response.data.success) {
+            dispatch(handleAddItem(response.data.data))
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
     useEffect(() => {
+      fetchCartItem()
       fetchUser()
       fetchCategory()
       fetchSubCategory()
   }, [])
-  
+
+  useEffect(() => {
+    if (user._id) { // Fetch cart only if the user is logged in
+      fetchCartItem();
+    }
+  }, [user]);
 
   return (
     <>
-      <Header setIsLoginOpen={setIsLoginOpen} />
+      <Header 
+        setIsLoginOpen={setIsLoginOpen} 
+        setIsCartMenuOpen={setIsCartMenuOpen}
+      />
       
       <main className="min-h-[77vh] w-full bg-white">
-        <Outlet context={{ setIsLoginOpen }} />
+        <Outlet 
+          context={{ setIsLoginOpen }} 
+        />
       </main> 
 
       <Footer />
       <Toaster />
+
+      {/* Cart option for mobile if there is something in cart */}
+      <CartButtonForMobile />
+
+      {/* CartSideMenu for laptop and xl screen */}
+      {
+        isCartMenuOpen && (
+          <>
+            <CartSideMenu setIsCartMenuOpen={setIsCartMenuOpen}/>
+          </>
+        )
+      }
 
       {/* Check if Login Component is Being Rendered */}
       {isLoginOpen && (

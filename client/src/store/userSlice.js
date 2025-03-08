@@ -36,20 +36,21 @@ const userSlice = createSlice({
         updateAvatar : (state, action) => {
             state.avatar = action.payload
         },
-        logout: (state, action) => {
-            state._id= "",
-            state.name= "",
-            state.email= "",
-            state.avatar= "",
-            state.mobile= "",
-            state.verify_email= "",
-            state.address_details= [],
-            state.last_login_date= "",
-            state.status= "",
-            state.shopping_cart= [],
-            state.orderHistory= [],
-            state.role= ""
+        logout: (state) => {
+            state._id = "";
+            state.name = "";
+            state.email = "";
+            state.avatar = "";
+            state.mobile = "";
+            state.verify_email = "";
+            state.address_details = [];
+            state.last_login_date = "";
+            state.status = "";
+            state.shopping_cart = [];
+            state.orderHistory = [];
+            state.role = "";
         }
+        
     }
 })
 

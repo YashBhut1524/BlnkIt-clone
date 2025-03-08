@@ -10,6 +10,7 @@ import categoryRoutes from "./routes/category.route.js"
 import imageRoutes from "./routes/image.route.js"
 import subCategoryRoutes from "./routes/subCetegory.route.js"
 import productRouters from "./routes/product.route.js"
+import cartRoutes from "./routes/cart.route.js"
 
 dotenv.config()
 
@@ -41,7 +42,7 @@ app.use("/api/file", imageRoutes)
 app.use("/api/category", categoryRoutes)
 app.use("/api/sub-category", subCategoryRoutes)
 app.use("/api/product", productRouters)
-
+app.use("/api/cart", cartRoutes)
 connectDB().then(() => {
     app.listen(PORT, () => {
         console.log(`Server is running on ${PORT}`);

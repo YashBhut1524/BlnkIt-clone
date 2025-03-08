@@ -5,11 +5,14 @@ import { RouterProvider } from 'react-router-dom'
 import router from './routes/index.jsx'
 import { store } from './store/store.js'
 import { Provider } from 'react-redux'
+import { CartProvider } from './provider/CartContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <RouterProvider router={router}>
-        <App />
-    </RouterProvider>
+    <CartProvider>
+      <RouterProvider router={router}>
+          <App />
+      </RouterProvider>
+    </CartProvider>
   </Provider>
 )

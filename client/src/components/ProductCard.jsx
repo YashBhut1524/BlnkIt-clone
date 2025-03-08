@@ -3,11 +3,11 @@ import { CiStopwatch } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { validURLConvertor } from "../utils/validURLConvertor";
 import disscountBannerSVG from "../assets/disscountBanner.svg";
+import AddToCartButton from "./AddToCartButton";
 
 function ProductCard({data}) {
 
     const formattedUnit = /^\d+$/.test(data?.unit) ? `${data.unit} Unit` : data.unit;
-
     const url = `products-list/${validURLConvertor(data.name)}-${data._id}`;
 
     return (
@@ -46,20 +46,18 @@ function ProductCard({data}) {
                     data.discount > 0 ? (
                         <div className="flex items-center gap-1">
                             <span className="text-[11px] font-bold line-through text-gray-500">
-                                ₹{data.price}
+                                &#8377;{data.price}
                             </span>
                             <span className="text-[11px] font-bold text-black">
-                                ₹{(data.price - (data.price * data.discount / 100)).toFixed(2)}
+                                &#8377;{(data.price - (data.price * data.discount / 100)).toFixed(2)}
                             </span>
                         </div>
                     ) : (
-                        <span className="text-[11px] font-bold">₹{data.price}</span>
+                        <span className="text-[11px] font-bold">&#8377;{data.price}</span>
                     )
                 }
                 <div className="rounded w-fit">
-                    <button className="px-4 py-1 text-green-700 border-2 border-green-700 rounded-lg font-medium transition-all duration-200 hover:bg-green-700 hover:text-white">
-                        ADD
-                    </button>
+                    <AddToCartButton data={data}/>
                 </div>
             </div>
         </Link>

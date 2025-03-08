@@ -29,7 +29,7 @@ function SearchBar() {
     }
 
     return (
-        <div className="w-full min-w-[300px] lg:min-w-[600px] rounded-lg border border-neutral-200 overflow-hidden flex items-center h-12 lg:h-full bg-slate-50 px-3">
+        <div className="w-full min-w-[300px] lg:min-w-[600px] rounded-lg border border-neutral-200 overflow-hidden flex items-center h-12 lg:h-full bg-slate-50">
             <div>
                 {
                     (isSearchPage && isMobile) 
