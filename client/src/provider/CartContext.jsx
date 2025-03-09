@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import Axios from "../utils/Axios";
 import { useEffect } from "react";
 import AxiosToastError from "../utils/AxiosToastError";
-import toast from "react-hot-toast";
 
 const CartContext = createContext();
 

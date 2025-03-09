@@ -10,7 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.7",
+    "@mui/styled-engine-sc": "^6.4.6",
     "@radix-ui/react-slot": "^1.1.2",
+    "@react-google-maps/api": "^2.20.6",
     "@reduxjs/toolkit": "^2.5.1",
     "@tailwindcss/vite": "^4.0.5",
     "@tanstack/react-table": "^8.21.2",
@@ -31,6 +36,7 @@
     "react-switch": "^7.1.0",
     "react-type-animation": "^3.2.0",
     "shadcn": "^2.4.0-canary.10",
+    "styled-components": "^6.1.15",
     "sweetalert2": "^11.17.2",
     "swiper": "^11.2.5",
     "tailwind-merge": "^3.0.1",

@@ -9,7 +9,6 @@ import UserMenuForMobileUser from "../pages/UserMenuForMobileUser"
 import Dashboard from "../layout/Dashboard"
 import Profile from "../pages/Profile"
 import MyOrders from "../pages/MyOrders"
-import Addresses from "../pages/Addresses"
 import UploadProduct from "../pages/UploadProduct"
 import Category from "../pages/Category"
 import SubCategory from "../pages/SubCategory"
@@ -20,6 +19,7 @@ import ProductList from "../pages/ProductList"
 import ProductDetails from "../pages/ProductDetails"
 import AllProductsByCategory from "../components/AllProductsByCategory"
 import ViewCart from "../pages/ViewCart"
+import Addresses from "../components/Addresses"
 
 const router = createBrowserRouter([
     {

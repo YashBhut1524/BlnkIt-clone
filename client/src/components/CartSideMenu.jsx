@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import clock from "../assets/clock.png"
@@ -8,10 +9,11 @@ import { GiScooter } from "react-icons/gi";
 import { HiShoppingBag } from "react-icons/hi";
 import waves from "../assets/waves.svg"
 import feeding_india_icon_v6 from "../assets/feeding_india_icon_v6.webp"
-import { FaChevronRight } from "react-icons/fa";
 import empty_cart from "../assets/empty_cart.webp"
+import CheckOutButton from "./CheckOutButton";
+import { userCart } from "../provider/CartContext";
 
-function CartSideMenu({ setIsCartMenuOpen }) {
+function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
 
     const [loading, setLoading] = useState(false);
     const cartItem = useSelector((state) => state.cartItem.cart);
@@ -27,7 +29,10 @@ function CartSideMenu({ setIsCartMenuOpen }) {
     const [custonTipInput, setCustonTipInput] = useState(0)
     const grandTotal = totalPriceWithDiscount + 4 + (isDonationChecked ? 1 : 0) + tipAmount;
 
+    const {fetchCartItem} = userCart()
+
     useEffect(() => {
+        fetchCartItem()
         document.body.classList.add("overflow-hidden");
         return () => {
             document.body.classList.remove("overflow-hidden");
@@ -63,13 +68,16 @@ function CartSideMenu({ setIsCartMenuOpen }) {
     }, [cartItem]);
 
     return (
-        <section className="fixed top-0 bottom-0 left-0 right-0 bg-neutral-800/70 z-50">
+        <section className="fixed top-0 bottom-0 left-0 right-0 bg-neutral-800/70 z-40">
             <div
                 className="fixed top-0 right-0 h-full pb-10 bg-[#F5F7FD] w-100 shadow-lg mb-64 overflow-y-auto"
             >
                 <button
                     className="absolute top-4 right-4 text-xl font-bold"
-                    onClick={() => setIsCartMenuOpen(false)}
+                    onClick={() => {
+                        setIsCartMenuOpen(false)
+                        setIsAddressMenuOpen(false)
+                    }}
                 >
                     ✕
                 </button>
@@ -355,18 +363,8 @@ function CartSideMenu({ setIsCartMenuOpen }) {
 
                                     </div>
 
-                                    <div className="fixed bottom-1 right-0 bg-white p-4 rounded-lg shadow-lg border border-gray-300 w-[28vw] mt-3">
-                                        <div className="flex justify-between text-white bg-[#0C831F] px-2 py-4 rounded-xl">
-                                            <div className="flex flex-col justify-start">
-                                                <span className="text-sm font-bold">&#8377;{grandTotal}</span>
-                                                <span className="text-xs">TOTAL</span>
-                                            </div>
-                                            <button className="flex items-center gap-1">
-                                                <span>Proceed</span>
-                                                <FaChevronRight />
-                                            </button>
-                                        </div>
-                                    </div>
+                                    {/* Checkout Button */}
+                                    <CheckOutButton grandTotal={grandTotal} setIsAddressMenuOpen={setIsAddressMenuOpen}/>
                                 </div>
                             ) : (
                                 <div className="h-full bg-white">

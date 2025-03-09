@@ -14,11 +14,15 @@ import AxiosToastError from "./utils/AxiosToastError";
 import { handleAddItem } from "./store/cartProductSlice";
 import CartButtonForMobile from "./components/CartButtonForMobile"
 import CartSideMenu from "./components/CartSideMenu";
+import AddNewAddress from "./components/AddNewAddress";
+import AddressMenu from "./components/AddressMenu";
 
 function App() {
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isCartMenuOpen, setIsCartMenuOpen] = useState(true);
+  const [isCartMenuOpen, setIsCartMenuOpen] = useState(false);
+  const [isAddressMenuOpen, setIsAddressMenuOpen] = useState(false);
+  const [openAddNewAddressMenu, setOpenAddNewAddressMenu] = useState(false);
 
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user);
@@ -28,6 +32,9 @@ function App() {
     // console.log("userData: ", userData);
     dispatch(setUserDetails(userData.data))
   }
+
+  // console.warn = () => {};
+  // console.error = () => {};
 
   const fetchCategory = async () => {
         try {
@@ -116,7 +123,31 @@ function App() {
       {
         isCartMenuOpen && (
           <>
-            <CartSideMenu setIsCartMenuOpen={setIsCartMenuOpen}/>
+            <CartSideMenu 
+              setIsCartMenuOpen={setIsCartMenuOpen}
+              setIsAddressMenuOpen={setIsAddressMenuOpen}
+            />
+          </>
+        )
+      }
+      {
+        isCartMenuOpen && isAddressMenuOpen && (
+          <>
+            <AddressMenu 
+              setIsCartMenuOpen={setIsCartMenuOpen}
+              setIsAddressMenuOpen={setIsAddressMenuOpen}
+              setOpenAddNewAddressMenu={setOpenAddNewAddressMenu}
+            />
+          </>
+        )
+      }
+
+      {     
+        openAddNewAddressMenu && (
+          <>
+            <AddNewAddress 
+              setOpenAddNewAddressMenu={setOpenAddNewAddressMenu}
+            />
           </>
         )
       }
