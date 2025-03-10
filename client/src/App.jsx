@@ -16,6 +16,7 @@ import CartButtonForMobile from "./components/CartButtonForMobile"
 import CartSideMenu from "./components/CartSideMenu";
 import AddNewAddress from "./components/AddNewAddress";
 import AddressMenu from "./components/AddressMenu";
+import { setAddresses } from "./store/addressSlice";
 
 function App() {
 
@@ -85,13 +86,30 @@ function App() {
     } catch (error) {
         console.log(error);
     }
-}
+  }
+
+  const fetchAddress = async () => {
+    try {
+      const response = await Axios({
+        ...summaryApi.getAddress,
+      })
+      console.log("response: ", response);
+
+      if(response.data.success) {
+        dispatch(setAddresses(response.data.data))
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
     useEffect(() => {
       fetchCartItem()
       fetchUser()
       fetchCategory()
       fetchSubCategory()
+      fetchAddress()
   }, [])
 
   useEffect(() => {
@@ -109,6 +127,7 @@ function App() {
       
       <main className="min-h-[77vh] w-full bg-white">
         <Outlet 
+          fetchAddress={fetchAddress}
           context={{ setIsLoginOpen }} 
         />
       </main> 
@@ -146,6 +165,7 @@ function App() {
         openAddNewAddressMenu && (
           <>
             <AddNewAddress 
+              setIsAddressMenuOpen={setIsAddressMenuOpen}
               setOpenAddNewAddressMenu={setOpenAddNewAddressMenu}
             />
           </>

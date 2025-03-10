@@ -12,8 +12,12 @@ import TextField from '@mui/material/TextField';
 import { BiCurrentLocation } from "react-icons/bi";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import AxiosToastError from '../utils/AxiosToastError';
+import Axios from "../utils/Axios";
+import summaryApi from "../common/summaryApi";
+import toast from "react-hot-toast";
 
-function AddNewAddress({ setOpenAddNewAddressMenu }) {
+function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
 
     const user = useSelector((state) => state?.user)
 
@@ -25,11 +29,11 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
     const [address, setAddress] = useState("");
     const [area, setArea] = useState("");
     const [map, setMap] = useState(null);
-    const [saveAddressAs, setSaveAddressAs] = useState("home")
+    const [saveAddressAs, setSaveAddressAs] = useState("")
     const [openOtherAsSaveAddressAs, setOpenOtherAsSaveAddressAs] = useState(false)
     const [isManualEditing, setIsManualEditing] = useState(false);
     const [addressData, setAddressData] = useState({
-        saveAs: "home",
+        saveAs: "",
         flatHouseNumber: "",
         floor: "",
         street: "",
@@ -45,8 +49,8 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
         longitude: null, // Add this
     });
 
-    console.warn = () => { };
-    console.error = () => { };
+    // console.warn = () => { };
+    // console.error = () => { };
 
     // useEffect(() => {
     //     console.log("addressData", addressData);
@@ -70,21 +74,21 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
             console.error("Invalid place object", place);
             return;
         }
-    
+
         // Extract latitude and longitude
         const newLat = place.geometry.location.lat(); // Call the function
         const newLng = place.geometry.location.lng(); // Call the function
-        
-    
+
+
         // console.log("Extracted Lat/Lng:", newLat, newLng); // Debugging
-    
+
         // Extract additional address components
         let newCity = "";
         let newState = "";
         let newPincode = "";
         let newCountry = "";
         let newStreet = "";
-    
+
         for (const component of place.address_components) {
             if (component.types.includes("locality")) {
                 newCity = component.long_name;
@@ -106,7 +110,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
                 newStreet = component.long_name;
             }
         }
-    
+
         // ✅ Update addressData state
         setAddressData((prev) => ({
             ...prev,
@@ -119,9 +123,6 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
             street: newStreet,
         }));
     };
-    
-
-
 
     // useEffect(() => {
     //     const handleClickOutside = (event) => {
@@ -137,14 +138,14 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
         setMap(mapInstance);
         mapInstance.setCenter(center);
         mapInstance.setZoom(15);
-        fetchAddress(center.lat, center.lng);
+        fetchAddressFromMap(center.lat, center.lng);
     }, [center]);
 
     const onUnmountMap = useCallback(() => {
         setMap(null);
     }, []);
 
-    const fetchAddress = (lat, lng) => {
+    const fetchAddressFromMap = (lat, lng) => {
         if (window.google && window.google.maps) {
             const geocoder = new window.google.maps.Geocoder();
             geocoder.geocode({ location: { lat, lng } }, (results, status) => {
@@ -158,7 +159,12 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
             });
         }
     };
+
+    useEffect(() => {
+        setAddressData((prev) => ({ ...prev, saveAs: saveAddressAs }));
+    }, [saveAddressAs]);
     
+
     const extractArea = (place) => {
         for (const component of place.address_components) {
             // console.log(place);
@@ -172,7 +178,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
                 return;
             }
         }
-        
+
         setArea("");
         setAddressData((prev) => ({
             ...prev,
@@ -189,7 +195,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
         const lat = newCenter.lat();
         const lng = newCenter.lng();
         setCenter({ lat, lng });
-        fetchAddress(lat, lng);
+        fetchAddressFromMap(lat, lng);
     }, [map, isManualEditing]);
 
     useEffect(() => {
@@ -245,7 +251,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
                     const newLng = position.coords.longitude;
                     setCenter({ lat: newLat, lng: newLng });
                     if (map) map.setCenter({ lat: newLat, lng: newLng });
-                    fetchAddress(newLat, newLng);
+                    fetchAddressFromMap(newLat, newLng);
                 },
                 (error) => {
                     console.error("Error getting location:", error);
@@ -256,6 +262,42 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
         }
     };
 
+    const handleSubmit = async () => {
+        try {
+            const response = await Axios({
+                ...summaryApi.addNewAddress,
+                data: {
+                    saveAs: addressData.saveAs,
+                    flatHouseNumber: addressData.flatHouseNumber,
+                    floor: addressData.floor,
+                    street: addressData.street,
+                    area: addressData.area,
+                    landmark: addressData.landmark,
+                    city: addressData.city,
+                    state: addressData.state,
+                    pincode: addressData.pincode,
+                    country: addressData.country,
+                    name: addressData.name,
+                    mobileNumber: addressData.mobileNumber,
+                    latitude: addressData.latitude,
+                    longitude: addressData.longitude,
+                }
+            })
+
+            // console.log("response: ", response);
+            if (response.data.success) {
+                toast.success(response.data.message)
+                setOpenAddNewAddressMenu(false)
+                setIsAddressMenuOpen(true)
+                // dispatch(addAddress(response.data.data))
+            } else {
+                toast.error(response.data.message)
+            }
+
+        } catch (error) {
+            AxiosToastError(error)
+        }
+    }
 
     if (!isLoaded) {
         return (
@@ -268,10 +310,10 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
     }
 
     return (
-        <div className="fixed inset-0 bg-neutral-800/70 flex justify-center items-center z-50 overflow-y-auto w-full p-4">
+        <div className="fixed inset-0 bg-neutral-800/70 flex justify-center items-center z-40 overflow-y-auto w-full p-4">
             <div
                 ref={modalRef}
-                className="bg-white rounded-lg shadow-lg w-full max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw] flex flex-col md:flex-row gap-4 relative"
+                className="bg-white rounded-lg shadow-lg w-full max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw] flex flex-col md:flex-row gap-4 relative h-[82vh]"
             >
                 {/* Left Side (Map) */}
                 <div className="relative w-full md:w-1/2 min-h-[60vh] md:min-h-[90vh]">
@@ -336,8 +378,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
                 </div>
 
                 {/* Right Side (Form) */}
-                <div className="w-full md:w-1/2 p-4 mt-25 md:mt-0">
-
+                <div className="w-full md:w-1/2 p-4 h-[80vh] bg-white overflow-y-scroll mt-25 md:mt-0">
                     <div className="border-b border-gray-200 flex justify-between items-center pb-3">
                         <h2 className="text-lg font-bold">Enter complete address</h2>
                         <button
@@ -347,39 +388,39 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
                             <IoCloseCircleSharp size={25} />
                         </button>
                     </div>
-                    <div className="mt-4">
+                    <div className="mt-4 pb-8">
                         <p className="text-sm text-gray-400 pb-2">Save address as *</p>
                         {/* Address Save Options */}
                         {
                             openOtherAsSaveAddressAs ? (
                                 <div className="pb-5 flex items-baseline gap-2">
-                                <button
-                                    className={`flex items-center shadow-md p-2 gap-1 rounded-lg  border-1 bg-[#EBFFEF] border-green-700`}
-                                    onClick={() => setOpenOtherAsSaveAddressAs(false)}
-                                >
-                                    <img src={other} alt="" className="w-5 h-5" />
-                                    <span>Other</span>
-                                </button>
-                                <div className="border-b-2 border-gray-400">
-                                    <input
-                                        type="text"
-                                        className=" focus:outline-none"
-                                        placeholder="Save as"
-                                        onChange={(e) => setSaveAddressAs(e.target.value)}
-                                    />
-                                    {saveAddressAs.length > 0 && (
-                                        <button
-                                            className="pr-4"
-                                            onClick={() => {
-                                                setSaveAddressAs("home")
-                                                setOpenOtherAsSaveAddressAs(false)
-                                            }}
-                                        >
-                                            <AiFillCloseCircle size={20} className="text-gray-300" />
-                                        </button>
-                                    )}
+                                    <button
+                                        className={`flex items-center shadow-md p-2 gap-1 rounded-lg  border-1 bg-[#EBFFEF] border-green-700`}
+                                        onClick={() => setOpenOtherAsSaveAddressAs(false)}
+                                    >
+                                        <img src={other} alt="" className="w-5 h-5" />
+                                        <span>Other</span>
+                                    </button>
+                                    <div className="border-b-2 border-gray-400">
+                                        <input
+                                            type="text"
+                                            className=" focus:outline-none"
+                                            placeholder="Save as"
+                                            onChange={(e) => setSaveAddressAs(e.target.value)}
+                                        />
+                                        {saveAddressAs.length > 0 && (
+                                            <button
+                                                className="pr-4"
+                                                onClick={() => {
+                                                    setSaveAddressAs("home")
+                                                    setOpenOtherAsSaveAddressAs(false)
+                                                }}
+                                            >
+                                                <AiFillCloseCircle size={20} className="text-gray-300" />
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
                             ) : (
                                 <div className="flex gap-2 flex-wrap">
                                     <button
@@ -407,7 +448,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
                                     <button
                                         className={`flex items-center shadow-md p-2 gap-1 rounded-lg  border-1  ${saveAddressAs === "other" ? "bg-[#EBFFEF] border-green-700" : "bg-white border-gray-200"}`}
                                         onClick={() => {
-                                            setSaveAddressAs("")
+                                            setSaveAddressAs("other")
                                             setOpenOtherAsSaveAddressAs(true)
                                         }}
                                     >
@@ -529,7 +570,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
                                     },
                                     '& .MuiInputLabel-root': { color: 'gray' },
                                     '& .MuiInputLabel-root.Mui-focused': { color: 'black' }
-                            }}
+                                }}
                             />
                             {/* Mobile Number */}
                             <TextField
@@ -551,6 +592,28 @@ function AddNewAddress({ setOpenAddNewAddressMenu }) {
                                 }}
                             />
                         </div>
+                    </div>
+                    {/* Submit Section inside the modal */}
+                    <div className="sticky bottom-0 left-0 bg-white p-4 shadow-md z-50">
+                        <button
+                            className="w-full bg-[#318616] text-white py-3 rounded-lg text-lg font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+                            onClick={handleSubmit}
+                            disabled={
+                                !addressData.saveAs ||
+                                !addressData.flatHouseNumber ||
+                                !addressData.area ||
+                                !addressData.city ||
+                                !addressData.pincode ||
+                                !addressData.state ||
+                                !addressData.country ||
+                                !addressData.mobileNumber ||
+                                !addressData.name ||
+                                !addressData.latitude ||
+                                !addressData.longitude
+                            }
+                        >
+                            Submit
+                        </button>
                     </div>
                 </div>
             </div>
