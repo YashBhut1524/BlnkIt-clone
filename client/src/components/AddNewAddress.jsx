@@ -16,10 +16,12 @@ import AxiosToastError from '../utils/AxiosToastError';
 import Axios from "../utils/Axios";
 import summaryApi from "../common/summaryApi";
 import toast from "react-hot-toast";
+import { useAddress } from "../provider/AddressContext";
 
 function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
 
     const user = useSelector((state) => state?.user)
+    const { addresses, fetchAddress } = useAddress();
 
     const modalRef = useRef(null);
     const inputRef = useRef(null);
@@ -286,6 +288,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
 
             // console.log("response: ", response);
             if (response.data.success) {
+                fetchAddress()
                 toast.success(response.data.message)
                 setOpenAddNewAddressMenu(false)
                 setIsAddressMenuOpen(true)

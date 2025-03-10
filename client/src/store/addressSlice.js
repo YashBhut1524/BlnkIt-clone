@@ -9,10 +9,10 @@ const addressSlice = createSlice({
     initialState,
     reducers: {
         setAddresses: (state, action) => {
-            state.addresses = action.payload; // Set all addresses (useful on first load)
+            state.addresses = [...action.payload]; // Set all addresses (useful on first load)
         },
     }
 });
 
-export const { setAddresses, addAddress, updateAddress, deleteAddress } = addressSlice.actions;
+export const { setAddresses } = addressSlice.actions;
 export default addressSlice.reducer;
