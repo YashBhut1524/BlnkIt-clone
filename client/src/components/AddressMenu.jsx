@@ -9,7 +9,7 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { useAddress } from "../provider/AddressContext";
 import { useEffect } from "react";
 
-function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu }) {
+function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu, setOpenEditAddressMenu }) {
     const { addresses, fetchAddress } = useAddress();
 
     useEffect(() => {
@@ -66,7 +66,10 @@ function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu }) {
                                                     .join(", ")}
                                             </p>
                                         </div>
-                                        <button className="text-[#0C831F] w-6 p-1 border border-gray-200 rounded-full">
+                                        <button
+                                            className="text-[#0C831F] w-6 p-1 border border-gray-200 rounded-full"
+                                            onClick={() => setOpenEditAddressMenu(address)} // Pass the address
+                                        >
                                             <MdOutlineModeEdit size={16} />
                                         </button>
                                     </div>

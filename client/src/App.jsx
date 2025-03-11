@@ -17,6 +17,7 @@ import CartSideMenu from "./components/CartSideMenu";
 import AddNewAddress from "./components/AddNewAddress";
 import AddressMenu from "./components/AddressMenu";
 import { setAddresses } from "./store/addressSlice";
+import EditAddress from "./components/EditAddress";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
   const [isCartMenuOpen, setIsCartMenuOpen] = useState(false);
   const [isAddressMenuOpen, setIsAddressMenuOpen] = useState(false);
   const [openAddNewAddressMenu, setOpenAddNewAddressMenu] = useState(false);
+  const [openEditAddressMenu, setOpenEditAddressMenu] = useState(null); // Store selected address
 
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user);
@@ -38,53 +40,53 @@ function App() {
   // console.error = () => {};
 
   const fetchCategory = async () => {
-        try {
-            dispatch(setLoadingCategory(true))
-            const response = await Axios({
-                ...summaryApi.getCategory,
-            })
-            // console.log("response: ", response);
-            if(response.data.success) {
-                dispatch(setAllCategory(response.data.data))
-            } else {
-                toast.error(response.data.message)
-            } 
-        } catch (error) {
-            AxiosToastError(error)
-        } finally {
-          dispatch(setLoadingCategory(false))
-        }
-    }
-
-    const fetchSubCategory = async () => {
-      try {
-          const response = await Axios({
-              ...summaryApi.getSubCategory,
-          })
-          // console.log("response: ", response);
-          if(response.data.success) {
-              dispatch(setAllSubCategory(response.data.data))
-          } else {
-              toast.error(response.data.message)
-          }
-      } catch (error) {
-          AxiosToastError(error)
+    try {
+      dispatch(setLoadingCategory(true))
+      const response = await Axios({
+        ...summaryApi.getCategory,
+      })
+      // console.log("response: ", response);
+      if (response.data.success) {
+        dispatch(setAllCategory(response.data.data))
+      } else {
+        toast.error(response.data.message)
       }
+    } catch (error) {
+      AxiosToastError(error)
+    } finally {
+      dispatch(setLoadingCategory(false))
+    }
+  }
+
+  const fetchSubCategory = async () => {
+    try {
+      const response = await Axios({
+        ...summaryApi.getSubCategory,
+      })
+      // console.log("response: ", response);
+      if (response.data.success) {
+        dispatch(setAllSubCategory(response.data.data))
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      AxiosToastError(error)
+    }
   }
 
   const fetchCartItem = async () => {
     try {
-        const response = await Axios({
-            ...summaryApi.getCartItems,
-        })
-        // console.log("response: ", response);
+      const response = await Axios({
+        ...summaryApi.getCartItems,
+      })
+      // console.log("response: ", response);
 
-        if (response.data.success) {
-            dispatch(handleAddItem(response.data.data))
-        }
+      if (response.data.success) {
+        dispatch(handleAddItem(response.data.data))
+      }
 
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   }
 
@@ -95,7 +97,7 @@ function App() {
       })
       console.log("response: ", response);
 
-      if(response.data.success) {
+      if (response.data.success) {
         dispatch(setAddresses(response.data.data))
       }
 
@@ -104,12 +106,12 @@ function App() {
     }
   }
 
-    useEffect(() => {
-      fetchCartItem()
-      fetchUser()
-      fetchCategory()
-      fetchSubCategory()
-      fetchAddress()
+  useEffect(() => {
+    fetchCartItem()
+    fetchUser()
+    fetchCategory()
+    fetchSubCategory()
+    fetchAddress()
   }, [])
 
   useEffect(() => {
@@ -120,17 +122,17 @@ function App() {
 
   return (
     <>
-      <Header 
-        setIsLoginOpen={setIsLoginOpen} 
+      <Header
+        setIsLoginOpen={setIsLoginOpen}
         setIsCartMenuOpen={setIsCartMenuOpen}
       />
-      
+
       <main className="min-h-[77vh] w-full bg-white">
-        <Outlet 
+        <Outlet
           fetchAddress={fetchAddress}
-          context={{ setIsLoginOpen }} 
+          context={{ setIsLoginOpen }}
         />
-      </main> 
+      </main>
 
       <Footer />
       <Toaster />
@@ -142,18 +144,27 @@ function App() {
       {
         isCartMenuOpen && (
           <>
-            <CartSideMenu 
+            <CartSideMenu
               setIsCartMenuOpen={setIsCartMenuOpen}
               setIsAddressMenuOpen={setIsAddressMenuOpen}
             />
           </>
         )
       }
+
+      {/* Address Menu */}
+      {isAddressMenuOpen && (
+        <AddressMenu
+          setIsAddressMenuOpen={setIsAddressMenuOpen}
+          setOpenAddNewAddressMenu={setOpenAddNewAddressMenu}
+          setOpenEditAddressMenu={setOpenEditAddressMenu} // Pass setter
+        />
+      )}
+
       {
-        isCartMenuOpen && isAddressMenuOpen && (
+        openAddNewAddressMenu && (
           <>
-            <AddressMenu 
-              setIsCartMenuOpen={setIsCartMenuOpen}
+            <AddNewAddress
               setIsAddressMenuOpen={setIsAddressMenuOpen}
               setOpenAddNewAddressMenu={setOpenAddNewAddressMenu}
             />
@@ -161,16 +172,13 @@ function App() {
         )
       }
 
-      {     
-        openAddNewAddressMenu && (
-          <>
-            <AddNewAddress 
-              setIsAddressMenuOpen={setIsAddressMenuOpen}
-              setOpenAddNewAddressMenu={setOpenAddNewAddressMenu}
-            />
-          </>
-        )
-      }
+      {/* Edit Address Menu */}
+      {openEditAddressMenu && (
+        <EditAddress
+          data={openEditAddressMenu} // Pass selected address data
+          setOpenEditAddressMenu={setOpenEditAddressMenu}
+        />
+      )}
 
       {/* Check if Login Component is Being Rendered */}
       {isLoginOpen && (

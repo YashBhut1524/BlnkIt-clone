@@ -136,6 +136,10 @@ const summaryApi = {
     getAddress : {
         url: "/api/address/get-address",
         method: "get"
+    },
+    updateAddress: {
+        url: "/api/address/update-address",
+        method: "put"
     }
 }
 
