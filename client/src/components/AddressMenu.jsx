@@ -50,24 +50,26 @@ function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu }) {
                 {addresses.length > 0 && (
                     <div>
                         {addresses.map((address, index) => (
-                            <div key={index} className="flex flex-col p-4 bg-white mx-2 mt-3 rounded-lg">
+                            <div key={index} className="flex flex-col p-2 bg-white mx-4 mt-3 rounded-xl">
                                 <div className="flex gap-3">
                                     <img
                                         src={getAddressImage(address?.saveAs)}
                                         alt={address?.saveAs}
                                         className="w-8 h-8 p-2 bg-[#F2F2F2] rounded-lg"
                                     />
-                                    <div className="flex-1">
-                                        <p className="text-sm font-semibold">{capitalizeFirstLetter(address?.saveAs)}</p>
-                                        <p className="text-xs text-gray-500">
-                                            {[address?.street, address?.flatHouseNumber, address?.floor, address?.landmark, `${address?.city}-${address?.pincode}`]
-                                                .filter(Boolean)
-                                                .join(", ")}
-                                        </p>
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col">
+                                            <p className="text-sm font-semibold">{capitalizeFirstLetter(address?.saveAs)}</p>
+                                            <p className="text-xs text-gray-500">
+                                                {[address?.street, address?.flatHouseNumber, address?.floor, address?.landmark, `${address?.city}-${address?.pincode}`]
+                                                    .filter(Boolean)
+                                                    .join(", ")}
+                                            </p>
+                                        </div>
+                                        <button className="text-[#0C831F] w-6 p-1 border border-gray-200 rounded-full">
+                                            <MdOutlineModeEdit size={16} />
+                                        </button>
                                     </div>
-                                    <button className="text-[#0C831F] p-2 border border-gray-200 rounded-full">
-                                        <MdOutlineModeEdit size={16} />
-                                    </button>
                                 </div>
                             </div>
                         ))}

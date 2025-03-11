@@ -69,19 +69,20 @@ function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
 
     return (
         <section className="fixed top-0 bottom-0 left-0 right-0 bg-neutral-800/70 z-40">
-            <div
-                className="fixed top-0 right-0 h-full pb-10 bg-[#F5F7FD] w-100 shadow-lg mb-64 overflow-y-auto"
-            >
-                <button
-                    className="absolute top-4 right-4 text-xl font-bold"
-                    onClick={() => {
-                        setIsCartMenuOpen(false)
-                        setIsAddressMenuOpen(false)
-                    }}
-                >
-                    ✕
-                </button>
-                <h2 className="text-md font-bold mb-1 p-4">My Cart</h2>
+            <div className="fixed top-0 right-0 h-full pb-10 bg-[#F5F7FD] w-100 shadow-lg overflow-y-auto">
+                {/* Sticky Cart Header */}
+                <div className="sticky top-0 bg-white flex justify-between z-50">
+                    <h2 className="text-md font-bold mb-1 p-4">My Cart</h2>
+                    <button
+                        className="absolute top-4 right-4 text-xl font-bold"
+                        onClick={() => {
+                            setIsCartMenuOpen(false)
+                            setIsAddressMenuOpen(false)
+                        }}
+                    >
+                        ✕
+                    </button>
+                </div>
                 {loading ? (
                     <>
                         <div className="space-y-4 animate-pulse p-4">

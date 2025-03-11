@@ -21,7 +21,7 @@ import { useAddress } from "../provider/AddressContext";
 function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
 
     const user = useSelector((state) => state?.user)
-    const { addresses, fetchAddress } = useAddress();
+    const { fetchAddress } = useAddress();
 
     const modalRef = useRef(null);
     const inputRef = useRef(null);
@@ -61,9 +61,9 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-        libraries: ["places"],
+        libraries: ["places"],  // Make sure "places" is included
     });
-
+    
     const handleChange = (field) => (event) => {
         setAddressData((prev) => ({
             ...prev,
@@ -146,6 +146,30 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
     const onUnmountMap = useCallback(() => {
         setMap(null);
     }, []);
+
+    useEffect(() => {
+        if (!isLoaded || !window.google || !window.google.maps || autocompleteRef.current) return;
+    
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
+            types: ["geocode"], 
+            componentRestrictions: { country: "IN" } // Restrict to India (optional)
+        });
+    
+        autocompleteRef.current.addListener("place_changed", () => {
+            setIsManualEditing(false);
+            const place = autocompleteRef.current.getPlace();
+            
+            if (place.geometry) {
+                const newLat = place.geometry.location.lat();
+                const newLng = place.geometry.location.lng();
+                setCenter({ lat: newLat, lng: newLng });
+                setAddress(place.formatted_address);
+                extractArea(place);
+                updateAddressData(place); 
+                if (map) map.setCenter({ lat: newLat, lng: newLng });
+            }
+        });
+    }, [isLoaded]);  // Depend on `isLoaded` to prevent issues
 
     const fetchAddressFromMap = (lat, lng) => {
         if (window.google && window.google.maps) {
