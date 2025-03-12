@@ -140,6 +140,10 @@ const summaryApi = {
     updateAddress: {
         url: "/api/address/update-address",
         method: "put"
+    },
+    deleteAddress: {
+        url: "/api/address/delete-address",
+        method: "delete"
     }
 }
 

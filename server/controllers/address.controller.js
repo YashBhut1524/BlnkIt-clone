@@ -3,7 +3,7 @@ import AddressModel from "../models/address.model.js"
 
 export const addNewAddressController = async (req, res) => {
     try {
-        const userId = req.userId
+        const userId = req.userId;
         const {
             saveAs,
             flatHouseNumber,
@@ -18,9 +18,8 @@ export const addNewAddressController = async (req, res) => {
             name,
             mobileNumber,
             latitude,
-            longitude,
-            defaultAddress
-        } = req.body
+            longitude
+        } = req.body;
 
         if (!name || !saveAs || !mobileNumber || !latitude || !longitude || !flatHouseNumber || !city || !state || !area) {
             return res.status(400).json({
@@ -30,6 +29,10 @@ export const addNewAddressController = async (req, res) => {
             });
         }
 
+        // Set defaultAddress = false for all existing addresses of this user
+        await AddressModel.updateMany({ userId }, { defaultAddress: false });
+
+        // Create new address with defaultAddress: true
         const newAddress = new AddressModel({
             saveAs,
             flatHouseNumber,
@@ -45,12 +48,13 @@ export const addNewAddressController = async (req, res) => {
             mobileNumber,
             latitude,
             longitude,
-            userId
-        })
+            userId,
+            defaultAddress: true // New address is always default
+        });
 
-        const saveAddress = await newAddress.save()
+        const savedAddress = await newAddress.save();
 
-        if (!saveAddress) {
+        if (!savedAddress) {
             return res.status(500).json({
                 message: "Failed to add new address. Please try again.",
                 error: true,
@@ -62,17 +66,17 @@ export const addNewAddressController = async (req, res) => {
             message: "Address added successfully!",
             error: false,
             success: true,
-            address: saveAddress
+            address: savedAddress
         });
 
     } catch (error) {
         return res.status(500).json({
-            message: error.message || error,
+            message: error.message || "An error occurred while adding the address.",
             error: true,
             success: false
-        })
+        });
     }
-} 
+};
 
 export const getAllAddressByIdController = async (req, res) => {
     try {
@@ -109,7 +113,7 @@ export const updateAddressController = async (req, res) => {
     try {
         const userId = req.userId;
 
-        if(!userId) {
+        if (!userId) {
             return res.status(401).json({
                 message: "User not authorized to access this endpoint.",
                 error: true,
@@ -132,10 +136,10 @@ export const updateAddressController = async (req, res) => {
             name,
             mobileNumber,
             latitude,
-            longitude
+            longitude,
+            defaultAddress
         } = req.body;
         
-        // Validate _id
         if (!_id) {
             return res.status(400).json({
                 message: "Address _id is required!",
@@ -144,7 +148,6 @@ export const updateAddressController = async (req, res) => {
             });
         }
 
-        // Validate required fields
         if (!name || !saveAs || !mobileNumber || !latitude || !longitude || !flatHouseNumber || !city || !state || !area) {
             return res.status(400).json({
                 message: "Please fill the required fields!",
@@ -153,7 +156,20 @@ export const updateAddressController = async (req, res) => {
             });
         }
 
-        // Update the address
+        // Check if the address exists
+        const addressToUpdate = await AddressModel.findById(_id);
+        if (!addressToUpdate) {
+            return res.status(404).json({
+                message: "Address not found!",
+                error: true,
+                success: false
+            });
+        }
+
+        // Set defaultAddress = false for all user's addresses before updating the new one
+        await AddressModel.updateMany({ userId }, { defaultAddress: false });
+
+        // Update the selected address with defaultAddress: true
         const updatedAddress = await AddressModel.findByIdAndUpdate(
             _id,
             {
@@ -170,18 +186,11 @@ export const updateAddressController = async (req, res) => {
                 name,
                 mobileNumber,
                 latitude,
-                longitude
+                longitude,
+                defaultAddress: true // Always set this address as default
             },
-            { new: true } // Return updated document
+            { new: true }
         );
-
-        if (!updatedAddress) {
-            return res.status(404).json({
-                message: "Address not found!",
-                error: true,
-                success: false
-            });
-        }
 
         return res.status(200).json({
             message: "Address updated successfully!",
@@ -192,6 +201,68 @@ export const updateAddressController = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: error.message || "An error occurred while updating the address.",
+            error: true,
+            success: false
+        });
+    }
+};
+
+
+export const deleteAddressController = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const { _id } = req.body;
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "User not authorized to access this endpoint.",
+                error: true,
+                success: false
+            });
+        }
+
+        if (!_id) {
+            return res.status(400).json({
+                message: "Address _id is required!",
+                error: true,
+                success: false
+            });
+        }
+
+        // Find the address to be deleted
+        const addressToDelete = await AddressModel.findOne({ _id, userId });
+
+        if (!addressToDelete) {
+            return res.status(404).json({
+                message: "Address not found!",
+                error: true,
+                success: false
+            });
+        }
+
+        const wasDefault = addressToDelete.defaultAddress; // Check if it's the default address
+
+        // Delete the address
+        await AddressModel.findByIdAndDelete(_id);
+
+        // If deleted address was default, set the first available address as default
+        if (wasDefault) {
+            const firstAddress = await AddressModel.findOne({ userId }).sort({ createdAt: 1 });
+
+            if (firstAddress) {
+                await AddressModel.findByIdAndUpdate(firstAddress._id, { defaultAddress: true });
+            }
+        }
+
+        return res.status(200).json({
+            message: "Address deleted successfully!",
+            error: false,
+            success: true
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "An error occurred while deleting the address.",
             error: true,
             success: false
         });

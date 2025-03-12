@@ -5,9 +5,12 @@ import home from "../assets/home.avif";
 import hotel from "../assets/hotel.avif";
 import other from "../assets/other.avif";
 import work from "../assets/work.avif";
-import { MdOutlineModeEdit } from "react-icons/md";
+import { MdOutlineModeEdit, MdOutlineDelete } from "react-icons/md";
 import { useAddress } from "../provider/AddressContext";
 import { useEffect } from "react";
+import Axios from "../utils/Axios";
+import summaryApi from "../common/summaryApi";
+import toast from "react-hot-toast";
 
 function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu, setOpenEditAddressMenu }) {
     const { addresses, fetchAddress } = useAddress();
@@ -24,9 +27,35 @@ function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu, setOpenEd
         return str.charAt(0).toUpperCase() + str.slice(1);
     };
 
+    const handleDeleteAddress = async (address) => {
+        try {
+            const response = await Axios({
+                ...summaryApi.deleteAddress,
+                data: { _id: address._id },
+            })     
+            
+            // console.log("response: ", response);
+            
+            if(response.data.success) {
+                toast.success(response.data.message)
+                fetchAddress()
+            } else {
+                toast.error(response.data.message)
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleDefaultAddress = async (address) => {
+        console.log("default", address);
+    }
+
     return (
         <section className="fixed top-0 bottom-0 left-0 right-0 bg-neutral-800/70 z-40">
-            <div className="fixed top-0 right-0 h-full pb-10 bg-[#F5F7FD] w-100 shadow-lg mb-64 overflow-y-auto">
+            <div className="fixed top-0 right-0 h-full pb-10 bg-[#F5F7FD] w-full sm:w-full md:w-[400px] lg:w-[400px] shadow-lg mb-64 overflow-y-auto">
+
                 {/* Go Back */}
                 <div
                     className="bg-white flex gap-4 px-2 py-4 font-bold cursor-pointer"
@@ -50,7 +79,11 @@ function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu, setOpenEd
                 {addresses.length > 0 && (
                     <div>
                         {addresses.map((address, index) => (
-                            <div key={index} className="flex flex-col p-2 bg-white mx-4 mt-3 rounded-xl">
+                            <div 
+                                key={index} 
+                                className={`flex flex-col p-2 mx-4 mt-3 rounded-xl ${address.defaultAddress ? "border border-[#0C831F] bg-[#E8F5E9]" : "bg-white"}`}
+                                onClick={() => handleDefaultAddress(address)}
+                            >
                                 <div className="flex gap-3">
                                     <img
                                         src={getAddressImage(address?.saveAs)}
@@ -66,12 +99,20 @@ function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu, setOpenEd
                                                     .join(", ")}
                                             </p>
                                         </div>
-                                        <button
-                                            className="text-[#0C831F] w-6 p-1 border border-gray-200 rounded-full"
-                                            onClick={() => setOpenEditAddressMenu(address)} // Pass the address
-                                        >
-                                            <MdOutlineModeEdit size={16} />
-                                        </button>
+                                        <div className="flex gap-2">
+                                            <button
+                                                className="text-[#0C831F] w-6 p-1 border border-gray-200 rounded-full"
+                                                onClick={() => setOpenEditAddressMenu(address)} // Pass the address
+                                            >
+                                                <MdOutlineModeEdit size={16} />
+                                            </button>
+                                            <button
+                                                className="text-red-500 w-6 p-1 border border-gray-200 rounded-full"
+                                                onClick={() => handleDeleteAddress(address)} // Pass the address
+                                            >
+                                                <MdOutlineDelete size={16} />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

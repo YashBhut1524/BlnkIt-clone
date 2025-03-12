@@ -13,16 +13,18 @@ export const AddressProvider = ({ children }) => {
         try {
             const response = await Axios({ ...summaryApi.getAddress });
             console.log("response: ", response);
-
+    
             if (response.data.success) {
-                setAddresses(response.data.data);
-                return response.data.data; // Return fetched addresses
+                setAddresses(response.data.data || []); // Ensure empty array if no data
+                return response.data.data;
             }
         } catch (error) {
             console.log(error);
+            setAddresses([]); // Explicitly set to empty on error
             return [];
         }
     };
+    
 
     useEffect(() => {
         fetchAddress();

@@ -5,7 +5,7 @@ function CheckOutButton({grandTotal, setIsAddressMenuOpen}) {
     return (
         <section className="z-40">
                 {/* Checkout Button */}
-                <div className="fixed bottom-1 right-0 bg-white px-4 py-3 rounded-2xl shadow-lg border border-gray-300 w-[27vw] mt-3">
+                <div className="fixed bottom-1 right-0 bg-white px-4 py-3 rounded-2xl shadow-lg border border-gray-300 min-w-[38%] mt-3">
                     <div className="flex justify-between text-white bg-[#0C831F] px-2 py-3 rounded-xl">
                         <div className="flex flex-col justify-start">
                             <span className="text-sm font-bold">&#8377;{grandTotal}</span>

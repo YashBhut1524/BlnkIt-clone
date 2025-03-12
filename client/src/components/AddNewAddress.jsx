@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState, useCallback } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import { IoSearch } from "react-icons/io5";
+import { IoLocation, IoSearch } from "react-icons/io5";
 import home from "../assets/home.avif"
 import hotel from "../assets/hotel.avif"
 import other from "../assets/other.avif"
 import work from "../assets/work.avif"
-import location from "../assets/location.avif"
 import { AiFillCloseCircle } from "react-icons/ai";
 import TextField from '@mui/material/TextField';
 import { BiCurrentLocation } from "react-icons/bi";
@@ -17,11 +16,15 @@ import Axios from "../utils/Axios";
 import summaryApi from "../common/summaryApi";
 import toast from "react-hot-toast";
 import { useAddress } from "../provider/AddressContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
 
     const user = useSelector((state) => state?.user)
     const { fetchAddress } = useAddress();
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const modalRef = useRef(null);
     const inputRef = useRef(null);
@@ -49,6 +52,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
         mobileNumber: user.mobile || "",
         latitude: null,  // Add this
         longitude: null, // Add this
+        defaultAddress: true, // Add this
     });
 
     // console.warn = () => { };
@@ -69,6 +73,14 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
             ...prev,
             [field]: event.target.value,
         }));
+    };
+
+    const handleClose = () => {
+        if (location.pathname === "/add-new-address") {
+            navigate(-1); // Go back to the previous page
+        } else {
+            setOpenAddNewAddressMenu(false);
+        }
     };
 
     const updateAddressData = (place) => {
@@ -307,6 +319,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
                     mobileNumber: addressData.mobileNumber,
                     latitude: addressData.latitude,
                     longitude: addressData.longitude,
+                    defaultAddress: addressData.defaultAddress
                 }
             })
 
@@ -314,8 +327,12 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
             if (response.data.success) {
                 fetchAddress()
                 toast.success(response.data.message)
-                setOpenAddNewAddressMenu(false)
-                setIsAddressMenuOpen(true)
+                if (location.pathname === "/add-new-address") {
+                    navigate(-1); // Go back to the previous page
+                } else {
+                    setIsAddressMenuOpen(true)
+                    setOpenAddNewAddressMenu(false);
+                }
                 // dispatch(addAddress(response.data.data))
             } else {
                 toast.error(response.data.message)
@@ -340,10 +357,10 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
         <div className="fixed inset-0 bg-neutral-800/70 flex justify-center items-center z-40 overflow-y-auto w-full p-4">
             <div
                 ref={modalRef}
-                className="bg-white rounded-lg shadow-lg w-full max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw] flex flex-col md:flex-row gap-4 relative h-[82vh]"
+                className="bg-white rounded-lg shadow-lg w-full max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw] flex flex-col md:flex-row gap-4 relative h-[90vh] overflow-y-auto"
             >
                 {/* Left Side (Map) */}
-                <div className="relative w-full md:w-1/2 min-h-[60vh] md:min-h-[90vh]">
+                <div className="relative w-full md:w-1/2 min-h-[60vh] md:min-h-[90vh] overflow-y-auto">
                     {/* Search Bar */}
                     <div className="absolute top-2 z-50 w-[90%] max-w-md left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow flex items-center gap-2 border border-gray-300">
                         <IoSearch size={20} className="text-[#318616]" />
@@ -395,7 +412,7 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
                     <div className="absolute bg-white p-3 w-full">
                         <p className="text-md font-semibold pb-1">Delivering your order to</p>
                         <div className="bg-[#F6FCFC] flex gap-2 items-center p-2 rounded-xl border border-gray-300">
-                            <img src={location} alt="" className="w-8 h-8" />
+                                    <IoLocation size={25}/>
                             <div className="text-sm">
                                 <p>{area}</p>
                                 <p className="line-clamp-1">{address}</p>
@@ -405,12 +422,12 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
                 </div>
 
                 {/* Right Side (Form) */}
-                <div className="w-full md:w-1/2 p-4 h-[80vh] bg-white overflow-y-scroll mt-25 md:mt-0">
+                <div className="w-full md:w-1/2 p-4 bg-white overflow-y-auto">
                     <div className="border-b border-gray-200 flex justify-between items-center pb-3">
                         <h2 className="text-lg font-bold">Enter complete address</h2>
                         <button
                             className="text-gray-500 cursor-pointer"
-                            onClick={() => setOpenAddNewAddressMenu(false)}
+                            onClick={handleClose}
                         >
                             <IoCloseCircleSharp size={25} />
                         </button>

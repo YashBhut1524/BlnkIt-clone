@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import toast, { Toaster } from 'react-hot-toast';
@@ -26,16 +26,28 @@ function App() {
   const [isAddressMenuOpen, setIsAddressMenuOpen] = useState(false);
   const [openAddNewAddressMenu, setOpenAddNewAddressMenu] = useState(false);
   const [openEditAddressMenu, setOpenEditAddressMenu] = useState(null); // Store selected address
+  const [isCartButtonForMobile, setIsCartButtonForMobile] = useState(true)
 
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user);
+  const location = useLocation();
 
   const fetchUser = async () => {
     const userData = await fetchUserDetails()
     // console.log("userData: ", userData);
     dispatch(setUserDetails(userData.data))
   }
-
+  
+  useEffect(() => {
+      const shouldHideCartButton = 
+          location.pathname === "/add-new-address" || 
+          location.pathname === "/edit-address" ||
+          location.pathname === "/cart" || 
+          openAddNewAddressMenu || 
+          openEditAddressMenu;
+  
+      setIsCartButtonForMobile(!shouldHideCartButton);
+  }, [location.pathname, openAddNewAddressMenu, openEditAddressMenu]);
   // console.warn = () => {};
   // console.error = () => {};
 
@@ -120,6 +132,7 @@ function App() {
     }
   }, [user]);
 
+  
   return (
     <>
       <Header
@@ -138,7 +151,14 @@ function App() {
       <Toaster />
 
       {/* Cart option for mobile if there is something in cart */}
-      <CartButtonForMobile />
+      {
+        isCartButtonForMobile && (
+          <CartButtonForMobile 
+            setIsCartButtonForMobile={setIsCartButtonForMobile}
+          />
+        )
+        
+      }
 
       {/* CartSideMenu for laptop and xl screen */}
       {

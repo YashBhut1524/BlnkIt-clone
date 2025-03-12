@@ -20,6 +20,8 @@ import ProductDetails from "../pages/ProductDetails"
 import AllProductsByCategory from "../components/AllProductsByCategory"
 import ViewCart from "../pages/ViewCart"
 import Addresses from "../components/Addresses"
+import AddNewAddress from "../components/AddNewAddress"
+import EditAddress from "../components/EditAddress"
 
 const router = createBrowserRouter([
     {
@@ -113,7 +115,18 @@ const router = createBrowserRouter([
                 path: "cart",
                 element: <ViewCart />
             },
-            
+            {
+                path: "/address",
+                element: <Addresses />
+            },
+            {
+                path: "/add-new-address",
+                element: <AddNewAddress />
+            },
+            {
+                path: "/edit-address",
+                element: <EditAddress />
+            }
         ]
     }
 ]);

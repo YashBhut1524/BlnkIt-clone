@@ -63,6 +63,10 @@ const addressSchema = new mongoose.Schema(
             ref: "User", // Assuming there's a User model
             required: true,
         },
+        defaultAddress: {
+            type: Boolean,
+            default: false,
+        }
     },
     {
         timestamps: true,

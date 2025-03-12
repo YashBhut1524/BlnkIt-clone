@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { FaCaretRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-function CartButtonForMobile() {
+function CartButtonForMobile({setIsCartButtonForMobile}) {
 
     const cartItem = useSelector((state) => state.cartItem.cart);
     const navigate = useNavigate();
@@ -47,7 +48,10 @@ function CartButtonForMobile() {
             {/* View Cart */}
             <div 
                 className="flex items-center text-white cursor-pointer"
-                onClick={() => navigate("/cart")}
+                onClick={() => {
+                    navigate("/cart")
+                    setIsCartButtonForMobile(false)
+                }}
             >
                 <span>View Cart</span>
                 <FaCaretRight size={15} className="mt-1"/>
