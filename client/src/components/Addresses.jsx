@@ -49,7 +49,24 @@ function AddressMenuMobile({ setOpenAddNewAddressMenu }) {
     };
 
     const handleDefaultAddress = async (address) => {
-        console.log("default", address);
+        try {
+            // console.log("address: ", address);
+            
+            const response = await Axios({
+                ...summaryApi.setDefaultAddress,
+                data: { _id: address?._id },
+            })
+            // console.log("response: ", response);
+            
+            if(response.data.success) {
+                toast.success(response.data.message)
+                fetchAddress()
+            }else {
+                toast.error(response.data.message)
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (

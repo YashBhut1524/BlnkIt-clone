@@ -50,7 +50,7 @@ function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu, setOpenEd
 
     const handleSetDefaultAddress = async (address) => {
         try {
-            console.log("address: ", address);
+            // console.log("address: ", address);
             
             const response = await Axios({
                 ...summaryApi.setDefaultAddress,

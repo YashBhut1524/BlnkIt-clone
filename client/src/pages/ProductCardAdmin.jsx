@@ -27,7 +27,7 @@ function ProductCardAdmin({ data, fetchProductsData }) {
                 ...summaryApi.deleteProduct,
                 url: summaryApi.deleteProduct.url.replace(":id", data._id),
             });
-            console.log("response:", response);
+            // console.log("response:", response);
     
             if (response.data.success) {
                 toast.success(response.data.message || "Product deleted successfully!");

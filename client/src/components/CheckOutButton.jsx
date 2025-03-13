@@ -6,7 +6,7 @@ import { CiLocationOn } from 'react-icons/ci';
 function CheckOutButton({grandTotal, setIsAddressMenuOpen}) {
 
     const { addresses } = useAddress();
-    console.log(addresses);
+    // console.log(addresses);
     const defaultAddress = addresses.find(address => address.defaultAddress) || addresses[0];
 
     const capitalizeFirstLetter = (str) => {
@@ -56,7 +56,13 @@ function CheckOutButton({grandTotal, setIsAddressMenuOpen}) {
                         </div>
                         <button 
                             className="flex items-center gap-1 cursor-pointer"
-                            onClick={() => setIsAddressMenuOpen(true)}
+                            onClick={() => {
+                                if(addresses.length > 0) {
+                                    console.log("checkout");
+                                }else {
+                                    setIsAddressMenuOpen(true)
+                                }
+                            }}
                         >
                             <span>Proceed</span>
                             <FaChevronRight />
