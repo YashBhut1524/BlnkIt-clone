@@ -23,7 +23,7 @@ function UpdateProduct() {
     const product = location.state?.product; // Accessing the passed data
     const id = product?._id;
 
-    // console.log(product);
+    console.log(product);
 
     // Initialize state with product data if available
     const [data, setData] = useState({

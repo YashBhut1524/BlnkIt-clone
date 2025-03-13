@@ -334,7 +334,7 @@ function EditAddress({data, setOpenEditAddressMenu}) {
                 }
             })
 
-            // console.log("response: ", response);
+            console.log("response: ", response);
             if (response.data.success) {
                 fetchAddress()
                 toast.success(response.data.message)

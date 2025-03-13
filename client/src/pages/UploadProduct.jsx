@@ -174,7 +174,7 @@ function UploadProduct() {
     }
 
     const handleSubmit = async () => {
-        // console.log("Data:", data);
+        console.log("Data:", data);
 
         try {
             const response = await Axios({
@@ -182,7 +182,7 @@ function UploadProduct() {
                 data: data
             })
 
-            // console.log("response: ", response);
+            console.log("response: ", response);
             if(response.data.success) {
 
                 // toast.success(response.data.message || "Product added successfully");

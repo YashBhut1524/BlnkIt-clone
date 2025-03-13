@@ -12,7 +12,7 @@ export const AddressProvider = ({ children }) => {
     const fetchAddress = async () => {
         try {
             const response = await Axios({ ...summaryApi.getAddress });
-            // console.log("response: ", response);
+            console.log("response: ", response);
     
             if (response.data.success) {
                 setAddresses(response.data.data || []); // Ensure empty array if no data

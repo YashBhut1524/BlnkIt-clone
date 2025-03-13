@@ -107,7 +107,7 @@ function App() {
       const response = await Axios({
         ...summaryApi.getAddress,
       })
-      // console.log("response: ", response);
+      console.log("response: ", response);
 
       if (response.data.success) {
         dispatch(setAddresses(response.data.data))

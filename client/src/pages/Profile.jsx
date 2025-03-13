@@ -67,7 +67,7 @@ function Profile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log("formData :", formData);
+        console.log("formData :", formData);
         
         try {
             const response = await Axios({
