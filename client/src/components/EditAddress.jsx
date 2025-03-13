@@ -41,14 +41,6 @@ function EditAddress({data, setOpenEditAddressMenu}) {
         lng: addressDataSource.longitude
     });
 
-    const handleClose = () => {
-        if (location.pathname === "/add-new-address") {
-            navigate(-1); // Go back to the previous page
-        } else {
-            setOpenEditAddressMenu(false);
-        }
-    };
-
     const [address, setAddress] = useState("");
     const [area, setArea] = useState("");
     const [map, setMap] = useState(null);
@@ -334,7 +326,7 @@ function EditAddress({data, setOpenEditAddressMenu}) {
                 }
             })
 
-            console.log("response: ", response);
+            // console.log("response: ", response);
             if (response.data.success) {
                 fetchAddress()
                 toast.success(response.data.message)
@@ -434,7 +426,7 @@ function EditAddress({data, setOpenEditAddressMenu}) {
                         <button
                             className="text-gray-500 cursor-pointer"
                             onClick={() => {
-                                if (location.pathname === "/address") {
+                                if (location.pathname === "/edit-address") {
                                     navigate(-1);
                                 } else {
                                     setOpenEditAddressMenu(false);

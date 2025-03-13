@@ -22,6 +22,7 @@ import ViewCart from "../pages/ViewCart"
 import Addresses from "../components/Addresses"
 import AddNewAddress from "../components/AddNewAddress"
 import EditAddress from "../components/EditAddress"
+import CheckOut from "../pages/CheckOut"
 
 const router = createBrowserRouter([
     {
@@ -126,6 +127,10 @@ const router = createBrowserRouter([
             {
                 path: "/edit-address",
                 element: <EditAddress />
+            },
+            {
+                path: "/checkout",
+                element: <CheckOut />
             }
         ]
     }

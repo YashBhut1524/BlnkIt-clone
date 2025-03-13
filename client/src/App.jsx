@@ -42,7 +42,8 @@ function App() {
       const shouldHideCartButton = 
           location.pathname === "/add-new-address" || 
           location.pathname === "/edit-address" ||
-          location.pathname === "/cart" || 
+          location.pathname === "/cart" ||
+          location.pathname === "/checkout" || 
           openAddNewAddressMenu || 
           openEditAddressMenu;
   
@@ -107,7 +108,7 @@ function App() {
       const response = await Axios({
         ...summaryApi.getAddress,
       })
-      console.log("response: ", response);
+      // console.log("response: ", response);
 
       if (response.data.success) {
         dispatch(setAddresses(response.data.data))
@@ -147,7 +148,9 @@ function App() {
         />
       </main>
 
-      <Footer />
+      {
+        location.pathname !== "/checkout" && <Footer />
+      }
       <Toaster />
 
       {/* Cart option for mobile if there is something in cart */}

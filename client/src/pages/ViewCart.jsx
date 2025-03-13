@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import clock from "../assets/clock.png"
@@ -15,7 +16,7 @@ import { useAddress } from "../provider/AddressContext";
 import { CiLocationOn } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-function ViewCart({ setIsAddressMenuOpen }) {
+function ViewCart() {
 
     const capitalizeFirstLetter = (str) => {
         if (!str) return "";
@@ -39,6 +40,7 @@ function ViewCart({ setIsAddressMenuOpen }) {
     const [tipAmount, setTipAmount] = useState(0);
     const [clickAddTip, setClickAddTip] = useState(false);
     const [custonTipInput, setCustonTipInput] = useState(0)
+    const [totalItems, setTotalItems] = useState(0)
     const grandTotal = totalPriceWithDiscount + 4 + (isDonationChecked ? 1 : 0) + tipAmount;
 
 
@@ -49,8 +51,11 @@ function ViewCart({ setIsAddressMenuOpen }) {
     }, []);
 
     useEffect(() => {
+        let itemsCount = 0;
         let priceCountWithDiscount = 0;
         let priceCountWithOutDiscount = 0;
+
+        itemsCount = cartItem.reduce((prev, curr) => prev + curr.quantity, 0);
 
         priceCountWithDiscount = parseFloat(
             cartItem.reduce((prev, curr) =>
@@ -64,6 +69,7 @@ function ViewCart({ setIsAddressMenuOpen }) {
             ).toFixed(2)
         );
 
+        setTotalItems(itemsCount);
         setTotalPriceWithDiscount(priceCountWithDiscount);
         setTotalPriceWithOutDiscount(priceCountWithOutDiscount);
         setTotalSavings((totalPriceWithOutDiscount - totalPriceWithDiscount).toFixed(2));
@@ -404,8 +410,12 @@ function ViewCart({ setIsAddressMenuOpen }) {
                                         <button
                                             className="flex items-center gap-1 cursor-pointer"
                                             onClick={() => {
-                                                navigate("/address")
-                                                toast.error("Please add your address")
+                                                if(addresses.length > 0) {
+                                                    navigate("/checkout", { state: { grandTotal, totalItems } })
+                                                } else {
+                                                    navigate("/address")
+                                                    toast.error("Please add your address")
+                                                }
                                             }}
                                         >
                                             <span>Add payment method</span>

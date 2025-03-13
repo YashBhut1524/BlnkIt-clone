@@ -15,8 +15,9 @@ import { userCart } from "../provider/CartContext";
 
 function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
 
-    const [loading, setLoading] = useState(false);
     const cartItem = useSelector((state) => state.cartItem.cart);
+
+    const [loading, setLoading] = useState(false);
     const [totalItems, setTotalItems] = useState(0);
     const [totalPriceWithDiscount, setTotalPriceWithDiscount] = useState(0);
     const [totalPriceWithOutDiscount, setTotalPriceWithOutDiscount] = useState(0);
@@ -365,7 +366,12 @@ function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
                                     </div>
 
                                     {/* Checkout Button */}
-                                    <CheckOutButton grandTotal={grandTotal} setIsAddressMenuOpen={setIsAddressMenuOpen}/>
+                                    <CheckOutButton 
+                                        grandTotal={grandTotal} 
+                                        setIsAddressMenuOpen={setIsAddressMenuOpen}
+                                        setIsCartMenuOpen={setIsCartMenuOpen}
+                                        totalItems={totalItems}
+                                    />
                                 </div>
                             ) : (
                                 <div className="h-full bg-white">

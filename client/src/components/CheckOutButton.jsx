@@ -2,17 +2,29 @@
 import { FaChevronRight } from 'react-icons/fa6'
 import { useAddress } from '../provider/AddressContext';
 import { CiLocationOn } from 'react-icons/ci';
+import { useNavigate } from 'react-router-dom';
 
-function CheckOutButton({grandTotal, setIsAddressMenuOpen}) {
+function CheckOutButton({grandTotal, totalItems, setIsAddressMenuOpen, setIsCartMenuOpen}) {
+
+    const navigate = useNavigate()
 
     const { addresses } = useAddress();
-    console.log(addresses);
+    // console.log(addresses);
     const defaultAddress = addresses.find(address => address.defaultAddress) || addresses[0];
 
     const capitalizeFirstLetter = (str) => {
         if (!str) return "";
         return str.charAt(0).toUpperCase() + str.slice(1);
     };
+
+    const handleProceed = () => {
+        if(addresses.length > 0) {
+            navigate("/checkout", { state: { grandTotal, totalItems } })
+            setIsCartMenuOpen(false)
+        } else {
+            setIsAddressMenuOpen(true)
+        }
+    }
 
     return (
         <section className="z-40">
@@ -56,7 +68,7 @@ function CheckOutButton({grandTotal, setIsAddressMenuOpen}) {
                         </div>
                         <button 
                             className="flex items-center gap-1 cursor-pointer"
-                            onClick={() => setIsAddressMenuOpen(true)}
+                            onClick={handleProceed}
                         >
                             <span>Proceed</span>
                             <FaChevronRight />
