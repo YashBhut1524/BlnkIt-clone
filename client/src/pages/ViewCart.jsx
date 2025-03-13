@@ -23,9 +23,10 @@ function ViewCart({ setIsAddressMenuOpen }) {
     };
 
     const navigate = useNavigate()
-
+    
     const { addresses } = useAddress();
     // console.log(addresses);
+    const defaultAddress = addresses.find(address => address.defaultAddress) || addresses[0];
 
     const [loading, setLoading] = useState(false);
     const cartItem = useSelector((state) => state.cartItem.cart);
@@ -379,9 +380,9 @@ function ViewCart({ setIsAddressMenuOpen }) {
                                                     <div className="flex gap-2">
                                                         <CiLocationOn size={25} />
                                                         <div className="flex flex-col">
-                                                            <p className="text-sm font-semibold">Delivering to {capitalizeFirstLetter(addresses[0].saveAs)}</p>
+                                                            <p className="text-sm font-semibold">Delivering to {capitalizeFirstLetter(defaultAddress.saveAs)}</p>
                                                             <p className="text-xs text-gray-500">
-                                                                {[addresses[0]?.street, addresses[0]?.flatHouseNumber, addresses[0]?.floor, addresses[0]?.landmark, `${addresses[0]?.city}-${addresses[0]?.pincode}`]
+                                                                {[defaultAddress?.street, defaultAddress?.flatHouseNumber, defaultAddress?.floor, defaultAddress?.landmark, `${defaultAddress?.city}-${defaultAddress?.pincode}`]
                                                                     .filter(Boolean)
                                                                     .join(", ")}
                                                             </p>

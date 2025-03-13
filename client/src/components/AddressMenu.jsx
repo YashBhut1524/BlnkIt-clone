@@ -48,8 +48,25 @@ function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu, setOpenEd
         }
     }
 
-    const handleDefaultAddress = async (address) => {
-        console.log("default", address);
+    const handleSetDefaultAddress = async (address) => {
+        try {
+            console.log("address: ", address);
+            
+            const response = await Axios({
+                ...summaryApi.setDefaultAddress,
+                data: { _id: address?._id },
+            })
+            // console.log("response: ", response);
+            
+            if(response.data.success) {
+                toast.success(response.data.message)
+                fetchAddress()
+            }else {
+                toast.error(response.data.message)
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -82,7 +99,7 @@ function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu, setOpenEd
                             <div 
                                 key={index} 
                                 className={`flex flex-col p-2 mx-4 mt-3 rounded-xl ${address.defaultAddress ? "border border-[#0C831F] bg-[#E8F5E9]" : "bg-white"}`}
-                                onClick={() => handleDefaultAddress(address)}
+                                onClick={() => handleSetDefaultAddress(address)}
                             >
                                 <div className="flex gap-3">
                                     <img
@@ -102,13 +119,20 @@ function AddressMenu({ setIsAddressMenuOpen, setOpenAddNewAddressMenu, setOpenEd
                                         <div className="flex gap-2">
                                             <button
                                                 className="text-[#0C831F] w-6 p-1 border border-gray-200 rounded-full"
-                                                onClick={() => setOpenEditAddressMenu(address)} // Pass the address
+                                                onClick={(event) => {
+                                                    event.stopPropagation(); // Prevent triggering handleSetDefaultAddress
+                                                    setOpenEditAddressMenu(address);
+                                                }}
                                             >
                                                 <MdOutlineModeEdit size={16} />
                                             </button>
+
                                             <button
                                                 className="text-red-500 w-6 p-1 border border-gray-200 rounded-full"
-                                                onClick={() => handleDeleteAddress(address)} // Pass the address
+                                                onClick={(event) => {
+                                                    event.stopPropagation(); // Prevent triggering handleSetDefaultAddress
+                                                    handleDeleteAddress(address);
+                                                }}
                                             >
                                                 <MdOutlineDelete size={16} />
                                             </button>

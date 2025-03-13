@@ -144,6 +144,10 @@ const summaryApi = {
     deleteAddress: {
         url: "/api/address/delete-address",
         method: "delete"
+    },
+    setDefaultAddress: {
+        url: "/api/address/set-default-address",
+        method: "put"
     }
 }
 

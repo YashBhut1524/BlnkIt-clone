@@ -24,7 +24,6 @@ export const AddressProvider = ({ children }) => {
             return [];
         }
     };
-    
 
     useEffect(() => {
         fetchAddress();

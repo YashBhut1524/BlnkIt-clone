@@ -41,6 +41,14 @@ function EditAddress({data, setOpenEditAddressMenu}) {
         lng: addressDataSource.longitude
     });
 
+    const handleClose = () => {
+        if (location.pathname === "/add-new-address") {
+            navigate(-1); // Go back to the previous page
+        } else {
+            setOpenEditAddressMenu(false);
+        }
+    };
+
     const [address, setAddress] = useState("");
     const [area, setArea] = useState("");
     const [map, setMap] = useState(null);
@@ -425,7 +433,13 @@ function EditAddress({data, setOpenEditAddressMenu}) {
                         <h2 className="text-lg font-bold">Enter complete address</h2>
                         <button
                             className="text-gray-500 cursor-pointer"
-                            onClick={() => navigate(-1)}
+                            onClick={() => {
+                                if (location.pathname === "/address") {
+                                    navigate(-1);
+                                } else {
+                                    setOpenEditAddressMenu(false);
+                                }
+                            }}
                         >
                             <IoCloseCircleSharp size={25} />
                         </button>

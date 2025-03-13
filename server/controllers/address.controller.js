@@ -268,3 +268,60 @@ export const deleteAddressController = async (req, res) => {
         });
     }
 };
+
+export const setDefaultAddressController = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const { _id } = req.body;
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "User not authorized to access this endpoint.",
+                error: true,
+                success: false
+            });
+        }
+
+        if (!_id) {
+            return res.status(400).json({
+                message: "Address _id is required!",
+                error: true,
+                success: false
+            });
+        }
+
+        const addressToSetAsDefault = await AddressModel.findById(_id);
+
+        if (!addressToSetAsDefault) {
+            return res.status(404).json({
+                message: "Address not found!",
+                error: true,
+                success: false
+            });
+        }
+
+        // Set all addresses of the user to false
+        await AddressModel.updateMany({ userId }, { defaultAddress: false });
+
+        // Correctly update the selected address
+        const setDefaultAddress = await AddressModel.findByIdAndUpdate(
+            _id,
+            { defaultAddress: true },
+            { new: true } // Ensures it returns the updated document
+        );
+
+        return res.status(200).json({
+            message: "Default address set successfully!",
+            error: false,
+            success: true,
+            address: setDefaultAddress
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "An error occurred while setting the default address.",
+            error: true,
+            success: false
+        });
+    }
+};
