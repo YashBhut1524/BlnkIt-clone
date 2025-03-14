@@ -105,33 +105,33 @@ const router = createBrowserRouter([
                 element: <ProductDetails />
             },
             {
-                path: "/products-list",
+                path: "products-list",
                 element: <ProductList />
             },
             {
-                path: "/all-products-by-category",
+                path: "all-products-by-category",
                 element: <AllProductsByCategory />
             },
             {
                 path: "cart",
                 element: <ViewCart />
             },
+            // {
+            //     path: "address",
+            //     element: <Addresses />
+            // },
             {
-                path: "/address",
-                element: <Addresses />
-            },
-            {
-                path: "/add-new-address",
+                path: "add-new-address",
                 element: <AddNewAddress />
             },
             {
-                path: "/edit-address",
+                path: "edit-address",
                 element: <EditAddress />
             },
             {
-                path: "/checkout",
+                path: "checkout",
                 element: <CheckOut />
-            }
+            },
         ]
     }
 ]);

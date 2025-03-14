@@ -16,7 +16,7 @@ function CheckOut() {
     const { grandTotal, totalItems, totalPriceWithOutDiscount } = location.state || {};
 
     const cartItem = useSelector((state) => state.cartItem.cart);
-    console.log("cartItem", cartItem);
+    // console.log("cartItem", cartItem);
 
     const defaultAddress = addresses.find((address) => address.defaultAddress === true)
 
@@ -29,17 +29,15 @@ function CheckOut() {
         setLoading(true)
         if (selectedPaymentMethod === "cash") {
 
-            const data = {
-                itemList: cartItem,
-                totalAmt: grandTotal,
-                subTotalAmt: totalPriceWithOutDiscount,
-                delivery_address_id: defaultAddress._id,
-            }
-            console.log(data);
+            // const data = {
+            //     itemList: cartItem,
+            //     totalAmt: grandTotal,
+            //     subTotalAmt: totalPriceWithOutDiscount,
+            //     delivery_address_id: defaultAddress._id,
+            // }
+            // console.log(data);
 
             try {
-
-
                 const response = await Axios({
                     ...summaryApi.createCODOrder,
                     data: {
@@ -52,13 +50,13 @@ function CheckOut() {
 
                 if (response.data.success) {
                     toast.success(response.data.message)
-                    // navigate("/success")
+                    navigate("dashboard/my-orders")
                 } else {
                     toast.error(response.data.message)
                 }
 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
                 toast.error(error)
             } finally {
                 setIsConfirmationScreenActive(false)

@@ -58,3 +58,7 @@ export const createCashOnDeliveryOrderController = async (req, res) => {
         });
     }
 };
+
+export const getOrderController = (req, res) => {
+    
+} 

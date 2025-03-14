@@ -397,7 +397,7 @@ function ViewCart() {
                                                     <button
                                                         className="text-sm text-[#0C831F] font-semibold"
                                                         onClick={() => {
-                                                            navigate("/address")
+                                                            navigate("/dashboard/addresses")
                                                         }}
                                                     >
                                                         Change
@@ -413,7 +413,7 @@ function ViewCart() {
                                                 if(addresses.length > 0) {
                                                     navigate("/checkout", { state: { grandTotal, totalItems, totalPriceWithOutDiscount } })
                                                 } else {
-                                                    navigate("/address")
+                                                    navigate("/dashboard/addresses")
                                                     toast.error("Please add your address")
                                                 }
                                             }}

@@ -11,7 +11,7 @@ import AxiosToastError from "../utils/AxiosToastError";
 import { AiFillProduct } from "react-icons/ai";
 import { TbCategory } from "react-icons/tb";
 
-function UserMenuForMobileUser() {
+function DashBoardLeftSide() {
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -31,18 +31,17 @@ function UserMenuForMobileUser() {
     };
 
     return (
-        <div className="bg-white px-6 py-1">
-
+        <div className="bg-white top-0">
             {/* Back Button */}
             <button 
-                className="mt-10 flex items-center space-x-2 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                className="flex items-center space-x-2 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 px-2 py-3 w-full border-b border-gray-300"
                 onClick={() => navigate("/")}
             >
                 <IoArrowBack size={24} /> <span>Go Back</span>
             </button>
             {/* User Info */}
             <Link to={"/dashboard/profile"}>
-                <div className="mt-1 text-gray-700 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 py-1 rounded-xl">
+                <div className="text-gray-700 py-3 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 border-gray-300 border-b px-2">
                     {user?.avatar && user.avatar !== "" ? (
                         <img 
                             src={user.avatar} 
@@ -59,32 +58,32 @@ function UserMenuForMobileUser() {
                 </div>
             </Link>
             {/* Menu Items */}
-            <div className="mt-2 space-y-1">
+            <div>
                 {
                     user.role === "ADMIN" 
                         && (
                             <>
                                 <Link 
                                     to="/dashboard/category" 
-                                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                                    className="text-gray-700 py-3 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 border-gray-300 border-b px-2"
                                 >
                                     <TbCategory size={20} /> <span>Category</span>
                                 </Link>
                                 <Link 
                                     to="/dashboard/sub-category" 
-                                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                                    className="text-gray-700 py-3 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 border-gray-300 border-b px-2"
                                 >
                                     <MdCategory size={20} /> <span>Sub Category</span>
                                 </Link>
                                 <Link 
                                     to="/dashboard/products" 
-                                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                                    className="text-gray-700 py-3 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 border-gray-300 border-b px-2"
                                 >
                                     <AiFillProduct size={20} /> <span>Products</span>
                                 </Link>
                                 <Link 
                                     to="/dashboard/upload-product" 
-                                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                                    className="text-gray-700 py-3 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 border-gray-300 border-b px-2"
                                 >
                                     <FaFileUpload size={18} /> <span>Upload Product</span>
                                 </Link>
@@ -93,18 +92,18 @@ function UserMenuForMobileUser() {
                 }
                 <Link 
                     to="/dashboard/my-orders" 
-                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                    className="text-gray-700 py-3 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 border-gray-300 border-b px-2"
                 >
                     <MdOutlineListAlt size={20} /> <span>My Orders</span>
                 </Link>
                 <Link 
                     to="/dashboard/addresses" 
-                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                    className="text-gray-700 py-3 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 border-gray-300 border-b px-2"
                 >
                     <FaHome size={20} /> <span>Saved Addresses</span>
                 </Link>
                 <button 
-                    className="flex items-center space-x-3 text-red-500 text-lg hover:text-red-700 transition duration-200 hover:bg-red-100 p-2 rounded-lg w-full"
+                    className="text-gray-700 py-3 flex items-center space-x-4 hover:text-black transition duration-200 hover:bg-gray-200 border-gray-300 border-b px-2 w-full"
                     onClick={handleLogout}
                 >
                     <FaRegUser size={20} /> <span>Logout</span>
@@ -114,4 +113,4 @@ function UserMenuForMobileUser() {
     );
 }
 
-export default UserMenuForMobileUser;
+export default DashBoardLeftSide;

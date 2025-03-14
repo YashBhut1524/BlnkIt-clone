@@ -149,7 +149,9 @@ function App() {
       </main>
 
       {
-        location.pathname !== "/checkout" && <Footer />
+        location.pathname !== "/checkout" || 
+        location.pathname !== "/dashboard"
+        && <Footer />
       }
       <Toaster />
 
