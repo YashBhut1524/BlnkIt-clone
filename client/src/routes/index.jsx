@@ -92,7 +92,7 @@ const router = createBrowserRouter([
                     },
                     {
                         path: "all-orders",
-                        element: <AllOrderAdmin />
+                        element: <ProtectedRoute element={<AllOrderAdmin />} allowedRoles={["ADMIN"]} />
                     }
                 ]
             },

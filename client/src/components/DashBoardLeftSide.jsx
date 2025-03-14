@@ -51,9 +51,14 @@ function DashBoardLeftSide() {
                     ) : (
                         <FaUserCircle size={48} className="text-black" />
                     )}
-                    <div>
-                        <p className="text-lg font-medium">{user?.name} <span className="text-sm text-[#878787]">{user.role === "ADMIN" ? "(admin)" : ""}</span></p>
-                        <p className="text-sm text-gray-500">{user?.email}</p>
+                    <div className="flex flex-col">
+                        <p className="text-lg font-medium w-[150px] truncate">
+                            {user?.name} 
+                            <span className="text-sm text-[#878787]">
+                                {user.role === "ADMIN" ? " (admin)" : ""}
+                            </span>
+                        </p>
+                        <p className="text-sm text-gray-500 w-[150px] truncate">{user?.email}</p>
                     </div>
                 </div>
             </Link>

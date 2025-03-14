@@ -1,6 +1,7 @@
 import OrderModel from "../models/order.model.js";
 import mongoose from "mongoose";
-
+import UserModel from "../models/user.model.js"
+import { request } from "express";
 export const createCashOnDeliveryOrderController = async (req, res) => {
     try {
         const userId = req.userId;
@@ -78,55 +79,6 @@ export const createCashOnDeliveryOrderController = async (req, res) => {
     }
 };
 
-export const getAllOrdersController = async (req, res) => {
-    try {
-        const userId = req.userId;
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "Please loging to access this endpoint.",
-                success: false,
-                error: true
-            });
-        }
-
-        const user = await UserModel.findById(userId);
-
-        if(!user) {
-            return res.status(401).json({
-                message: "User does not Exist.",
-                success: false,
-                error: true
-            });
-        }
-
-        if(user.role !== "ADMIN") {
-            return res.status(403).json({
-                message: "Only admin can access this endpoint.",
-                success: false,
-                error: true
-            });
-        }
-
-        const orders = await OrderModel.find()
-            .populate("itemList.productId") // Corrected population inside itemList array
-            .populate("delivery_address");
-
-        return res.status(200).json({
-            message: "Orders fetched successfully.",
-            success: true,
-            orders
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message || "Something went wrong",
-            success: false
-        });
-    }
-};
-
-
 export const getOrdersController = async (req, res) => {
     try {
         const userId = req.userId;
@@ -151,6 +103,129 @@ export const getOrdersController = async (req, res) => {
         });
 
     } catch (error) {
+        return res.status(500).json({
+            message: error.message || "Something went wrong",
+            success: false
+        });
+    }
+};
+
+export const getAllOrdersController = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "Please log in to access this endpoint.",
+                success: false,
+                error: true
+            });
+        }
+
+        const user = await UserModel.findById(userId).lean();
+
+        if (!user) {
+            return res.status(401).json({
+                message: "User does not exist.",
+                success: false,
+                error: true
+            });
+        }
+
+        if (user.role.toLowerCase() !== "admin") {
+            return res.status(403).json({
+                message: "Only admins can access this endpoint.",
+                success: false,
+                error: true
+            });
+        }
+
+        // Fetch all orders
+        const orders = await OrderModel.find()
+            .populate("userId", "name")
+            .populate("itemList.productId") 
+            .populate("delivery_address")   
+            
+
+        return res.status(200).json({
+            message: "Orders fetched successfully.",
+            success: true,
+            orders
+        });
+
+    } catch (error) {
+        console.error("Error fetching orders:", error);
+        return res.status(500).json({
+            message: error.message || "Something went wrong",
+            success: false
+        });
+    }
+};
+
+export const updateOrderStatusController = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const { orderId, order_status } = req.body;
+
+        // Check if user is logged in
+        if (!userId) {
+            return res.status(401).json({
+                message: "Please log in to access this endpoint.",
+                success: false,
+                error: true
+            });
+        }
+
+        // Fetch user details
+        const user = await UserModel.findById(userId).lean();
+        if (!user) {
+            return res.status(401).json({
+                message: "User does not exist.",
+                success: false,
+                error: true
+            });
+        }
+
+        // Only admin can update order status
+        if (user.role.toLowerCase() !== "admin") {
+            return res.status(403).json({
+                message: "Only admins can access this endpoint.",
+                success: false,
+                error: true
+            });
+        }
+
+        // Validate input
+        if (!orderId || !order_status) {
+            return res.status(400).json({
+                message: "Missing orderId or order_status.",
+                success: false,
+                error: true
+            });
+        }
+
+        // Check if the order exists
+        const order = await OrderModel.findById(orderId);
+        if (!order) {
+            return res.status(404).json({
+                message: "Order not found.",
+                success: false,
+                error: true
+            });
+        }
+
+        // Update order status
+        order.order_status = order_status;
+        await order.save();
+
+        return res.status(200).json({
+            message: "Order status updated successfully.",
+            success: true,
+            updatedOrder: order
+        });
+
+    } catch (error) {
+        console.error("Error updating order status:", error);
         return res.status(500).json({
             message: error.message || "Something went wrong",
             success: false
