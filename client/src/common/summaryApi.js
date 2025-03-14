@@ -152,6 +152,10 @@ const summaryApi = {
     createCODOrder: {
         url: "/api/order/add-cash-on-delivery-order",
         method: "post"
+    },
+    getOrders: {
+        url: "/api/order/get-orders",
+        method: "get"
     }
 }
 

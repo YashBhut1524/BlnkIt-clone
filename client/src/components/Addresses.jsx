@@ -75,7 +75,7 @@ function AddressMenuMobile({ setOpenAddNewAddressMenu }) {
                 <div className="h-full">
                         {/* Go Back */}
                         <div
-                            className="bg-white flex gap-4 px-4 py-4 font-bold cursor-pointer"
+                            className="lg:hidden xl:hidden bg-white flex gap-4 px-4 py-4 font-bold cursor-pointer"
                             onClick={() => navigate(-1)}
                         >
                             <BiArrowBack size={22} className="font-extrabold" />

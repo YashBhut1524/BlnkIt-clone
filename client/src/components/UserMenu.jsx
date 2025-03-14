@@ -51,18 +51,41 @@ function UserMenu({ closeMenu }) {
                     user.role === "ADMIN" 
                         && (
                             <>
-                                <Link to="/dashboard/category" onClick={closeMenu} className="hover:text-blue-500 transition">
+                                <Link 
+                                    to="/dashboard/category" 
+                                    onClick={closeMenu} 
+                                    className="hover:text-blue-500 transition"
+                                >
                                     <span>Category</span>
                                 </Link>
-                                <Link to="/dashboard/sub-category" onClick={closeMenu} className="hover:text-blue-500 transition">
+                                <Link 
+                                    to="/dashboard/sub-category" 
+                                    onClick={closeMenu} 
+                                    className="hover:text-blue-500 transition"
+                                >
                                     <span>Sub Category</span>
                                 </Link>
-                                <Link to="/dashboard/products" onClick={closeMenu} className="hover:text-blue-500 transition">
+                                <Link 
+                                    to="/dashboard/products" 
+                                    onClick={closeMenu} 
+                                    className="hover:text-blue-500 transition"
+                                >
                                     <span>Products</span>
                                 </Link>
-                                <Link to="/dashboard/upload-product" onClick={closeMenu} className="hover:text-blue-500 transition">
+                                <Link 
+                                    to="/dashboard/upload-product" 
+                                    onClick={closeMenu} 
+                                    className="hover:text-blue-500 transition"
+                                >
                                     <span>Upload Product</span>
-                                </Link>                                                                                                                            
+                                </Link>
+                                <Link 
+                                    to="/dashboard/all-orders" 
+                                    onClick={closeMenu} 
+                                    className="hover:text-blue-500 transition"
+                                >
+                                    <span>All Orders</span>
+                                </Link>                                                                                                                       
                             </>
                         )
                 }

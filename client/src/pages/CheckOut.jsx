@@ -50,7 +50,7 @@ function CheckOut() {
 
                 if (response.data.success) {
                     toast.success(response.data.message)
-                    navigate("dashboard/my-orders")
+                    navigate("/dashboard/my-orders")
                 } else {
                     toast.error(response.data.message)
                 }

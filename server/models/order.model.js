@@ -29,10 +29,6 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    payment_status: {
-        type: String,
-        default: ""
-    },
     delivery_address: {
         type: mongoose.Schema.ObjectId,
         ref: 'address',

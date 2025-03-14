@@ -4,6 +4,15 @@ import mongoose from "mongoose";
 export const createCashOnDeliveryOrderController = async (req, res) => {
     try {
         const userId = req.userId;
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "Please loging to access this endpoint.",
+                success: false,
+                error: true
+            });
+        }
+
         const { itemList, totalAmt, subTotalAmt, delivery_address_id } = req.body;
 
         if (!itemList || !itemList.length) {
@@ -22,7 +31,18 @@ export const createCashOnDeliveryOrderController = async (req, res) => {
             });
         }
 
-        const orderId = `ORD-${new mongoose.Types.ObjectId()}`;
+        const generateOrderId = () => {
+            const randomNumber = Math.floor(100000 + Math.random() * 900000); // 6-digit random number
+            const now = new Date();
+            const year = now.getFullYear().toString().slice(-2); // Last 2 digits of year
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Month (2 digits)
+            const day = String(now.getDate()).padStart(2, '0'); // Day (2 digits)
+        
+            return `ORD${randomNumber}${day}${month}${year}`;
+        };
+        
+        const orderId = generateOrderId();
+        
 
         const filteredItems = itemList.map(item => ({
             productId: item.productId._id, // Extract product ID
@@ -34,7 +54,6 @@ export const createCashOnDeliveryOrderController = async (req, res) => {
             orderId,
             itemList: filteredItems,
             paymentId: "",
-            payment_status: "Pending",
             delivery_address: delivery_address_id,
             subTotalAmt,
             totalAmt,
@@ -59,6 +78,82 @@ export const createCashOnDeliveryOrderController = async (req, res) => {
     }
 };
 
-export const getOrderController = (req, res) => {
-    
-} 
+export const getAllOrdersController = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "Please loging to access this endpoint.",
+                success: false,
+                error: true
+            });
+        }
+
+        const user = await UserModel.findById(userId);
+
+        if(!user) {
+            return res.status(401).json({
+                message: "User does not Exist.",
+                success: false,
+                error: true
+            });
+        }
+
+        if(user.role !== "ADMIN") {
+            return res.status(403).json({
+                message: "Only admin can access this endpoint.",
+                success: false,
+                error: true
+            });
+        }
+
+        const orders = await OrderModel.find()
+            .populate("itemList.productId") // Corrected population inside itemList array
+            .populate("delivery_address");
+
+        return res.status(200).json({
+            message: "Orders fetched successfully.",
+            success: true,
+            orders
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "Something went wrong",
+            success: false
+        });
+    }
+};
+
+
+export const getOrdersController = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "Please loging to access this endpoint.",
+                success: false,
+                error: true
+            });
+        }
+
+        const orders = await OrderModel.find({ userId })
+            .populate("itemList.productId") // Corrected population inside itemList array
+            .populate("delivery_address");
+
+
+        return res.status(200).json({
+            message: "Orders fetched successfully.",
+            success: true,
+            orders
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "Something went wrong",
+            success: false
+        });
+    }
+};

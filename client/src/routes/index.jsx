@@ -23,6 +23,7 @@ import Addresses from "../components/Addresses"
 import AddNewAddress from "../components/AddNewAddress"
 import EditAddress from "../components/EditAddress"
 import CheckOut from "../pages/CheckOut"
+import AllOrderAdmin from "../pages/AllOrderAdmin"
 
 const router = createBrowserRouter([
     {
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
                     {
                         path: "update-product/:id",
                         element: <ProtectedRoute element={<UpdateProduct />} allowedRoles={["ADMIN"]} />
+                    },
+                    {
+                        path: "all-orders",
+                        element: <AllOrderAdmin />
                     }
                 ]
             },
