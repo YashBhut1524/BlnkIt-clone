@@ -361,7 +361,7 @@ function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
                                     </div>
 
                                     {/* empty space */}
-                                    <div className="pb-30">
+                                    <div className="pb-50">
 
                                     </div>
 
@@ -371,6 +371,7 @@ function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
                                         setIsAddressMenuOpen={setIsAddressMenuOpen}
                                         setIsCartMenuOpen={setIsCartMenuOpen}
                                         totalItems={totalItems}
+                                        totalPriceWithOutDiscount={totalPriceWithOutDiscount}
                                     />
                                 </div>
                             ) : (

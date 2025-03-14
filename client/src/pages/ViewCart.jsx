@@ -411,7 +411,7 @@ function ViewCart() {
                                             className="flex items-center gap-1 cursor-pointer"
                                             onClick={() => {
                                                 if(addresses.length > 0) {
-                                                    navigate("/checkout", { state: { grandTotal, totalItems } })
+                                                    navigate("/checkout", { state: { grandTotal, totalItems, totalPriceWithOutDiscount } })
                                                 } else {
                                                     navigate("/address")
                                                     toast.error("Please add your address")

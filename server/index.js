@@ -12,6 +12,7 @@ import subCategoryRoutes from "./routes/subCetegory.route.js"
 import productRouters from "./routes/product.route.js"
 import cartRoutes from "./routes/cart.route.js"
 import addressRoutes from "./routes/address.route.js"
+import orderRouters from "./routes/order.route.js"
 
 dotenv.config()
 
@@ -45,6 +46,7 @@ app.use("/api/sub-category", subCategoryRoutes)
 app.use("/api/product", productRouters)
 app.use("/api/cart", cartRoutes)
 app.use("/api/address", addressRoutes)
+app.use("/api/order", orderRouters)
 
 connectDB().then(() => {
     app.listen(PORT, () => {

@@ -4,7 +4,7 @@ import { useAddress } from '../provider/AddressContext';
 import { CiLocationOn } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 
-function CheckOutButton({grandTotal, totalItems, setIsAddressMenuOpen, setIsCartMenuOpen}) {
+function CheckOutButton({grandTotal, totalItems, setIsAddressMenuOpen, setIsCartMenuOpen, totalPriceWithOutDiscount}) {
 
     const navigate = useNavigate()
 
@@ -19,7 +19,7 @@ function CheckOutButton({grandTotal, totalItems, setIsAddressMenuOpen, setIsCart
 
     const handleProceed = () => {
         if(addresses.length > 0) {
-            navigate("/checkout", { state: { grandTotal, totalItems } })
+            navigate("/checkout",  { state: { grandTotal, totalItems, totalPriceWithOutDiscount } })
             setIsCartMenuOpen(false)
         } else {
             setIsAddressMenuOpen(true)

@@ -148,6 +148,10 @@ const summaryApi = {
     setDefaultAddress: {
         url: "/api/address/set-default-address",
         method: "put"
+    },
+    createCODOrder: {
+        url: "/api/order/add-cash-on-delivery-order",
+        method: "post"
     }
 }
 

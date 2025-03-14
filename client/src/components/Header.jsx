@@ -12,9 +12,8 @@ import { useSelector } from "react-redux";
 import { FaUserCircle } from "react-icons/fa";
 import UserMenu from "./UserMenu";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
-import toast from "react-hot-toast";
 
-function Header({setIsCartMenuOpen}) {
+function Header({ setIsCartMenuOpen }) {
     const [isMobile] = useMobile();
     const location = useLocation();
     const isSearchPage = location.pathname === "/search";
@@ -22,7 +21,7 @@ function Header({setIsCartMenuOpen}) {
     const cartItem = useSelector((state) => state.cartItem.cart);
     const user = useSelector((state) => state?.user)
     // console.log("user from store: ", user);
-    
+
 
     // Login/Register Popup State
     const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -53,16 +52,16 @@ function Header({setIsCartMenuOpen}) {
         setTotalPrice(priceCount);
     }, [cartItem]);
 
-    
+
 
     useEffect(() => {
         // console.log("User state updated:", user);
         setOpenUserMenu(false);
-        setUserData(user); 
+        setUserData(user);
     }, [user]);
 
     const handleMobileUser = () => {
-        if(!user._id) {
+        if (!user._id) {
             setIsLoginOpen(true)
         }
         navigate("/user-menu")
@@ -80,36 +79,36 @@ function Header({setIsCartMenuOpen}) {
                     </div>
 
                     {/* Search Section */}
-                    <div className="hover:cursor-pointer hidden lg:block">
+                    <div className={`hover:cursor-pointer hidden ${location.pathname === "/checkout" ? "hidden" : "lg:block"}`}>
                         <SearchBar />
                     </div>
 
                     {/* Login, User Icon, and Cart */}
-                    <div className="flex items-center gap-4 lg:gap-8">
+                    <div className={`${location.pathname === "/checkout" ? "hidden" : "flex items-center gap-4 lg:gap-8"}`}>
                         {/* User Icon (for mobile) */}
-                        <button 
+                        <button
                             className="lg:hidden"
                             onClick={handleMobileUser}
                         >
-                        {user?.avatar && user.avatar !== "" 
-                            ? (
-                                <img 
-                                    src={user.avatar} 
-                                    alt="User Avatar" 
-                                    className="w-10 h-10 rounded-full object-cover"
-                                />
-                            ) : (
-                                <FaUserCircle size={25} className="text-black" />
-                            )
-                        }
+                            {user?.avatar && user.avatar !== ""
+                                ? (
+                                    <img
+                                        src={user.avatar}
+                                        alt="User Avatar"
+                                        className="w-10 h-10 rounded-full object-cover"
+                                    />
+                                ) : (
+                                    <FaUserCircle size={25} className="text-black" />
+                                )
+                            }
                         </button>
 
                         {/* Login Button */}
                         {
-                            user?._id 
+                            user?._id
                                 ? (
                                     <div className="hidden lg:block relative w-[40%] p-2 select-none">
-                                        <div 
+                                        <div
                                             className="flex gap-2 items-center cursor-pointer p-2 hover:bg-[#f6f2f2] rounded-md"
                                             onClick={() => setOpenUserMenu(prev => !prev)}
                                         >
@@ -124,13 +123,13 @@ function Header({setIsCartMenuOpen}) {
                                             )}
                                         </div>
                                     </div>
-                                ) 
+                                )
                                 : (
-                                    <button 
+                                    <button
                                         onClick={() => {
                                             setIsLoginOpen(true);
                                             setIsRegister(false);
-                                        }} 
+                                        }}
                                         className="hidden lg:block text-xl cursor-pointer"
                                     >
                                         Login
@@ -139,7 +138,7 @@ function Header({setIsCartMenuOpen}) {
                         }
 
                         {/* Cart Button */}
-                        <button 
+                        <button
                             className="min-w-[7rem] w-auto justify-around hidden lg:flex items-center bg-[#0C831F] px-2 py-2 gap-1 text-white cursor-pointer rounded-lg"
                             onClick={() => {
                                 if (user._id) {
@@ -157,7 +156,7 @@ function Header({setIsCartMenuOpen}) {
                                         <p>&#8377;{totalPrice}</p>
                                     </div>
                                 ) : (
-                                    <div 
+                                    <div
                                         className="font-bold"
                                         onClick={(e) => {
                                             e.stopPropagation(); // Prevents triggering the parent button's onClick
@@ -175,14 +174,15 @@ function Header({setIsCartMenuOpen}) {
             )}
 
             {/* Mobile Search Bar */}
-            <div className={`container mx-auto px-4 lg:hidden ${isSearchPage && isMobile ? "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" : ""}`}>
+            <div className={`container mx-auto px-4 lg:hidden ${location.pathname === "/checkout" ? "hidden" : isSearchPage && isMobile ? "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" : ""}`}>
                 <SearchBar />
             </div>
 
+
             {/* Login/Register Modals */}
             {isLoginOpen && (
-                isRegister ? 
-                    <Register setIsLoginOpen={setIsLoginOpen} setIsRegister={setIsRegister} /> : 
+                isRegister ?
+                    <Register setIsLoginOpen={setIsLoginOpen} setIsRegister={setIsRegister} /> :
                     <Login setIsLoginOpen={setIsLoginOpen} setIsRegister={setIsRegister} />
             )}
         </header>
