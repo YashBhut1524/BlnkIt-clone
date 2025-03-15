@@ -29,45 +29,33 @@ function CheckOut() {
     const [isConfirmationScreenActive, setIsConfirmationScreenActive] = useState("")
     const [loading, setLoading] = useState(false)
 
-    const handlePayNow = async () => {
-        setLoading(true)
-        if (selectedPaymentMethod === "cash") {
-
-            // const data = {
-            //     itemList: cartItem,
-            //     totalAmt: grandTotal,
-            //     subTotalAmt: totalPriceWithOutDiscount,
-            //     delivery_address_id: defaultAddress._id,
-            // }
-            // console.log(data);
-
-            try {
-                const response = await Axios({
-                    ...summaryApi.createCODOrder,
-                    data: {
-                        itemList: cartItem,
-                        totalAmt: grandTotal,
-                        otherCharge: otherCharge,
-                        subTotalAmt: totalPriceWithOutDiscount,
-                        delivery_address_id: defaultAddress._id,
-                    }
-                })
-
-                if (response.data.success) {
-                    toast.success(response.data.message)
-                    clearTheCart()
-                    navigate("/dashboard/my-orders")
-                } else {
-                    toast.error(response.data.message)
+    const handleCashOnDeliveryOrder = async () => {
+        try {
+            const response = await Axios({
+                ...summaryApi.createCODOrder,
+                data: {
+                    itemList: cartItem,
+                    totalAmt: grandTotal,
+                    otherCharge: otherCharge,
+                    subTotalAmt: totalPriceWithOutDiscount,
+                    delivery_address_id: defaultAddress._id,
                 }
+            })
 
-            } catch (error) {
-                // console.log(error);
-                toast.error(error)
-            } finally {
-                setIsConfirmationScreenActive(false)
-                setLoading(false)
+            if (response.data.success) {
+                toast.success(response.data.message)
+                clearTheCart()
+                navigate("/dashboard/my-orders")
+            } else {
+                toast.error(response.data.message)
             }
+
+        } catch (error) {
+            // console.log(error);
+            toast.error(error)
+        } finally {
+            setIsConfirmationScreenActive(false)
+            setLoading(false)
         }
     }
 
@@ -81,7 +69,6 @@ function CheckOut() {
             delivery_address_id: defaultAddress._id,
         }
         console.log(data);
-
 
         try {
 
@@ -104,6 +91,22 @@ function CheckOut() {
 
         } catch (error) {
             toast.error(error.message || error)
+        }
+    }
+
+    const handlePayNow = async () => {
+        setLoading(true)
+        if (selectedPaymentMethod === "cash") {
+            // const data = {
+            //     itemList: cartItem,
+            //     totalAmt: grandTotal,
+            //     subTotalAmt: totalPriceWithOutDiscount,
+            //     delivery_address_id: defaultAddress._id,
+            // }
+            // console.log(data);
+            handleCashOnDeliveryOrder()
+        } else if (selectedPaymentMethod === "stripe") {
+            handleStripePayment()
         }
     }
 

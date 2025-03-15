@@ -4,6 +4,8 @@ import UserModel from "../models/user.model.js"
 import dotenv from "dotenv";
 import Stripe from "../config/stripe.js";
 import { pricewithDiscount } from "../utils/PriceWithDiscount.js";
+import { emptyCartController } from "./cart.controller.js";
+import CartProductModel from "../models/cartProduct.model.js";
 // import Stripe from "../config/stripe.js";
 
 dotenv.config(); // Load environment variables
@@ -246,7 +248,7 @@ export const createStripePaymentOrderController = async (req, res) => {
 //http://localhost:8080/api/order/webhook
 export const stripeWebhookPayment = async (req, res) => {
     const event = req.body;
-    console.log("event: ", event);
+    // console.log("event: ", event);
     const endPointSecret = process.env.STRIPE_WEBHOOK_SECRET_KEY
 
     // Handle the event
@@ -254,11 +256,13 @@ export const stripeWebhookPayment = async (req, res) => {
         case 'checkout.session.completed':
             const session = event.data.object
             const lineItems = await Stripe.checkout.sessions.listLineItems(session.id)
-            console.log("lineItems: ", lineItems);
-            console.log("session: ", session);
+            // console.log("lineItems: ", lineItems);
+            // console.log("session: ", session);
             
+            const userId = session.metadata.userId
+
             const newOrder = new OrderModel({
-                userId: session.metadata.userId,
+                userId: userId,
                 orderId: session.metadata.orderId,
                 itemList: JSON.parse(session.metadata.filteredItems),
                 paymentId: session.payment_intent,
@@ -272,13 +276,22 @@ export const stripeWebhookPayment = async (req, res) => {
             console.log("newOrder: ", newOrder);
 
             await newOrder.save();
-    
-            return res.status(201).json({
-                message: "Order placed successfully",
-                success: true,
-                order: newOrder
-            });
-
+            
+            if(newOrder) {
+                await CartProductModel.deleteMany({userId})
+                return res.status(201).json({
+                    message: "Order placed successfully",
+                    error: false,
+                    success: true,
+                    order: newOrder
+                });
+            } else {
+                return res.status(500).json({
+                    message: "Failed to place order",
+                    error: true,
+                    success: false
+                });
+            }
             break;
         default:
             console.log(`Unhandled event type ${event.type}`);
