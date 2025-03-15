@@ -41,8 +41,10 @@ function ViewCart() {
     const [clickAddTip, setClickAddTip] = useState(false);
     const [custonTipInput, setCustonTipInput] = useState(0)
     const [totalItems, setTotalItems] = useState(0)
-    const grandTotal = totalPriceWithDiscount + 4 + (isDonationChecked ? 1 : 0) + tipAmount;
 
+    const otherCharge = 4 + (isDonationChecked ? 1 : 0) + tipAmount + deliveryCharge;
+
+    const grandTotal = totalPriceWithDiscount + otherCharge
 
     const { fetchCartItem } = userCart()
 
@@ -411,7 +413,7 @@ function ViewCart() {
                                             className="flex items-center gap-1 cursor-pointer"
                                             onClick={() => {
                                                 if(addresses.length > 0) {
-                                                    navigate("/checkout", { state: { grandTotal, totalItems, totalPriceWithOutDiscount } })
+                                                    navigate("/checkout", { state: { grandTotal, totalItems, totalPriceWithOutDiscount, totalPriceWithDiscount, otherCharge} })
                                                 } else {
                                                     navigate("/dashboard/addresses")
                                                     toast.error("Please add your address")

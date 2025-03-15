@@ -28,7 +28,10 @@ function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
     const [tipAmount, setTipAmount] = useState(0);
     const [clickAddTip, setClickAddTip] = useState(false);
     const [custonTipInput, setCustonTipInput] = useState(0)
-    const grandTotal = totalPriceWithDiscount + 4 + (isDonationChecked ? 1 : 0) + tipAmount;
+
+    const otherCharge = 4 + (isDonationChecked ? 1 : 0) + tipAmount + deliveryCharge;
+
+    const grandTotal = totalPriceWithDiscount + otherCharge
 
     const {fetchCartItem} = userCart()
 
@@ -372,6 +375,8 @@ function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
                                         setIsCartMenuOpen={setIsCartMenuOpen}
                                         totalItems={totalItems}
                                         totalPriceWithOutDiscount={totalPriceWithOutDiscount}
+                                        totalPriceWithDiscount={totalPriceWithDiscount}
+                                        otherCharge={otherCharge}
                                     />
                                 </div>
                             ) : (

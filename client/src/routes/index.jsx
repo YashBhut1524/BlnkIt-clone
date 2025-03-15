@@ -24,6 +24,8 @@ import AddNewAddress from "../components/AddNewAddress"
 import EditAddress from "../components/EditAddress"
 import CheckOut from "../pages/CheckOut"
 import AllOrderAdmin from "../pages/AllOrderAdmin"
+import Success from "../pages/Success"
+import Cancel from "../pages/Cancel"
 
 const router = createBrowserRouter([
     {
@@ -136,6 +138,14 @@ const router = createBrowserRouter([
             {
                 path: "checkout",
                 element: <CheckOut />
+            },
+            {
+                path: "success",
+                element: <Success />
+            },
+            {
+                path: "cancel",
+                element: <Cancel />
             },
         ]
     }

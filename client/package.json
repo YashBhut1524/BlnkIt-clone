@@ -18,6 +18,7 @@
     "@react-google-maps/api": "^2.20.6",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.5.1",
+    "@stripe/stripe-js": "^6.0.0",
     "@tailwindcss/vite": "^4.0.5",
     "@tanstack/react-table": "^8.21.2",
     "axios": "^1.8.3",

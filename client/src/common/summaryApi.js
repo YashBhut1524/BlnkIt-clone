@@ -157,6 +157,10 @@ const summaryApi = {
         url: "/api/order/add-cash-on-delivery-order",
         method: "post"
     },
+    addStripPaymentOrder: {
+        url: "/api/order/add-stripe-payment-checkout",
+        method: "post"
+    },
     getOrders: {
         url: "/api/order/get-orders",
         method: "get"
@@ -168,7 +172,7 @@ const summaryApi = {
     updateOrderStatusAdmin: {
         url: "/api/order/update-order-status-admin",
         method: "put"
-    }
+    },
 }
 
 export default summaryApi

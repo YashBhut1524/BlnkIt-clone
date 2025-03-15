@@ -7,17 +7,18 @@ import toast from "react-hot-toast"
 import Axios from "../utils/Axios";
 import summaryApi from "../common/summaryApi";
 import { userCart } from "../provider/CartContext";
+import { loadStripe } from "@stripe/stripe-js";
 
 function CheckOut() {
 
     const { addresses } = useAddress()
-
     const {clearTheCart} = userCart()
-
     const navigate = useNavigate();
     const location = useLocation();
-    const { grandTotal, totalItems, totalPriceWithOutDiscount } = location.state || {};
-
+    
+    const { grandTotal, totalItems, totalPriceWithOutDiscount, otherCharge } = location.state || {};
+    console.log("otherCharge: " + otherCharge);
+    
     const cartItem = useSelector((state) => state.cartItem.cart);
     console.log("cartItem", cartItem);
 
@@ -46,6 +47,7 @@ function CheckOut() {
                     data: {
                         itemList: cartItem,
                         totalAmt: grandTotal,
+                        otherCharge: otherCharge,
                         subTotalAmt: totalPriceWithOutDiscount,
                         delivery_address_id: defaultAddress._id,
                     }
@@ -66,6 +68,42 @@ function CheckOut() {
                 setIsConfirmationScreenActive(false)
                 setLoading(false)
             }
+        }
+    }
+
+    const handleStripePayment = async () => {
+
+        const data = {
+            itemList: cartItem,
+            totalAmt: grandTotal,
+            otherCharge: otherCharge,
+            subTotalAmt: totalPriceWithOutDiscount,
+            delivery_address_id: defaultAddress._id,
+        }
+        console.log(data);
+
+
+        try {
+
+            toast.loading("Redirecting to payment gateway... Please wait")
+
+            const stripePromise = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
+
+            const response = await Axios({
+                ...summaryApi.addStripPaymentOrder,
+                data: {
+                    itemList: cartItem,
+                    totalAmt: grandTotal,
+                    otherCharge: otherCharge,
+                    subTotalAmt: totalPriceWithOutDiscount,
+                    delivery_address_id: defaultAddress._id,
+                }
+            })
+
+            stripePromise.redirectToCheckout({sessionId: response.data.id})
+
+        } catch (error) {
+            toast.error(error.message || error)
         }
     }
 
@@ -118,7 +156,12 @@ function CheckOut() {
                             {
                                 optionOpen === "stripe" && (
                                     <div className="mt-10 font-semibold text-gray-600">
-                                        Please keep exact change handy to help us serve you better
+                                        <button 
+                                            className="bg-red-200 cursor-pointer px-2 py-3 rounded-2xl"
+                                            onClick={handleStripePayment}
+                                        >
+                                            Proceed to purchase
+                                        </button>
                                     </div>
                                 )
                             }
