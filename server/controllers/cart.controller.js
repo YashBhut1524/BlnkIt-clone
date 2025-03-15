@@ -144,6 +144,14 @@ export const deleteItemFromCartController = async (req, res) => {
         const userId = req.userId 
         const { _id } = req.body 
         
+        if(!userId) {
+            return res.status(401).json({
+                message : "Please login to access this endpoint.",
+                error : true,
+                success : false
+            })
+        }
+
         if(!_id){
             return res.status(400).json({
                 message : "Product ID is required.",
@@ -159,6 +167,36 @@ export const deleteItemFromCartController = async (req, res) => {
             error : false,
             success : true,
             data : deleteCartItem
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false,
+        })
+    }
+}
+
+export const emptyCartController = async (req, res) => {
+    try {
+        const userId = req.userId 
+        
+        if(!userId) {
+            return res.status(401).json({
+                message : "Please login to access this endpoint.",
+                error : true,
+                success : false
+            })
+        }
+
+        const emptyCart = await CartProductModel.deleteMany({ userId })
+
+        return res.json({
+            message : "Cart emptied successfully.",
+            error : false,
+            success : true,
+            data : emptyCart
         })
 
     } catch (error) {

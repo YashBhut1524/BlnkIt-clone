@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import Axios from "../utils/Axios";
 import { useEffect } from "react";
 import AxiosToastError from "../utils/AxiosToastError";
+import toast from "react-hot-toast";
 
 const CartContext = createContext();
 
@@ -66,6 +67,23 @@ export const CartProvider = ({ children }) => {
         }
     }
 
+    const clearTheCart = async () => {
+        try {
+            const response = await Axios({
+                ...summaryApi.clearTheCart
+            })
+
+            if(response.data.success) {
+                // toast.success(response.data.message)
+                fetchCartItem()
+            } else {
+                toast.error(response.data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
     useEffect(() => {
         fetchCartItem();
     }, []);
@@ -74,7 +92,8 @@ export const CartProvider = ({ children }) => {
         <CartContext.Provider value={{
             fetchCartItem,
             updateCartItem,
-            deleteCartItem
+            deleteCartItem,
+            clearTheCart
         }}>
             {children}
         </CartContext.Provider>

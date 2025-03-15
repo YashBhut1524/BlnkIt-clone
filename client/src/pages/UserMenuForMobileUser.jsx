@@ -88,6 +88,12 @@ function UserMenuForMobileUser() {
                                 >
                                     <FaFileUpload size={18} /> <span>Upload Product</span>
                                 </Link>
+                                <Link 
+                                    to="/dashboard/all-orders" 
+                                    className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <FaFileUpload size={18} /> <span>All Orders</span>
+                                </Link>
                             </>
                         )
                 }

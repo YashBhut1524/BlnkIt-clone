@@ -19,10 +19,10 @@ function MyOrders() {
             const response = await Axios(
                 summaryApi.getOrders
             );
-            console.log("response: ", response);
+            // console.log("response: ", response);
 
             if (response.data.success) {
-                toast.success(response.data.message);
+                // toast.success(response.data.message);
                 setOrders(response.data.orders || []);
             } else {
                 toast.error(response.data.message);

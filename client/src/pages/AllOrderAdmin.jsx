@@ -16,7 +16,7 @@ function AllOrderAdmin() {
         try {
             const response = await Axios(summaryApi.getAllOrdersAdmin);
             if (response.data.success) {
-                toast.success(response.data.message);
+                // toast.success(response.data.message);
                 setOrders(response.data.orders || []);
             } else {
                 toast.error(response.data.message);
@@ -59,7 +59,10 @@ function AllOrderAdmin() {
         <div className="space-y-4 mt-10 pl-5 pr-15">
             {orders.length > 0 ? (
                 orders.map((order, index) => (
-                    <div key={index} className="flex justify-between gap-2 pb-5 border-b border-gray-300">
+                    <div
+                        key={index}
+                        className="flex justify-between gap-2 pb-5 border-b border-gray-300 transform  transition-transform duration-200 ease-in-out hover:scale-105"
+                    >
                         {/* Order details */}
                         <div className="flex gap-2 items-center">
                             <img src={order_photo} alt="" />
@@ -100,7 +103,7 @@ function AllOrderAdmin() {
                             </select>
                         </div>
                         <div>
-                            <button className="py-2 px-3 rounded-lg border border-gray-300 text-[#038C1F] text-xs">
+                            <button className="py-2 px-3 rounded-lg border border-gray-300 text-[#038C1F] text-xs cursor-pointer">
                                 View Details
                             </button>
                         </div>

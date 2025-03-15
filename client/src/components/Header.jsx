@@ -160,7 +160,7 @@ function Header({ setIsCartMenuOpen }) {
                                         className="font-bold"
                                         onClick={(e) => {
                                             e.stopPropagation(); // Prevents triggering the parent button's onClick
-                                            !user._id ? setIsLoginOpen(true) : navigate("/user-menu");
+                                            !user._id ? setIsLoginOpen(true) : setIsCartMenuOpen(true);
                                         }}
                                     >
                                         My Cart

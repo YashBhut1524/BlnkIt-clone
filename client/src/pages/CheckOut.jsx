@@ -6,17 +6,20 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import toast from "react-hot-toast"
 import Axios from "../utils/Axios";
 import summaryApi from "../common/summaryApi";
+import { userCart } from "../provider/CartContext";
 
 function CheckOut() {
 
     const { addresses } = useAddress()
+
+    const {clearTheCart} = userCart()
 
     const navigate = useNavigate();
     const location = useLocation();
     const { grandTotal, totalItems, totalPriceWithOutDiscount } = location.state || {};
 
     const cartItem = useSelector((state) => state.cartItem.cart);
-    // console.log("cartItem", cartItem);
+    console.log("cartItem", cartItem);
 
     const defaultAddress = addresses.find((address) => address.defaultAddress === true)
 
@@ -50,6 +53,7 @@ function CheckOut() {
 
                 if (response.data.success) {
                     toast.success(response.data.message)
+                    clearTheCart()
                     navigate("/dashboard/my-orders")
                 } else {
                     toast.error(response.data.message)
