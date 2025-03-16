@@ -11,18 +11,20 @@ import { loadStripe } from "@stripe/stripe-js";
 
 function CheckOut() {
 
+    const user = useSelector(state => state.user);
     const { addresses } = useAddress()
-    const {clearTheCart} = userCart()
+    const { clearTheCart } = userCart()
     const navigate = useNavigate();
     const location = useLocation();
-    
+
     const { grandTotal, totalItems, totalPriceWithOutDiscount, otherCharge } = location.state || {};
-    console.log("otherCharge: " + otherCharge);
-    
+    // console.log("otherCharge: ", otherCharge);
+
     const cartItem = useSelector((state) => state.cartItem.cart);
-    console.log("cartItem", cartItem);
+    // console.log("cartItem", cartItem);
 
     const defaultAddress = addresses.find((address) => address.defaultAddress === true)
+    // console.log("defaultAddress: ", defaultAddress)
 
     const [optionOpen, setOptionOpen] = useState("")
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("")
@@ -60,22 +62,11 @@ function CheckOut() {
     }
 
     const handleStripePayment = async () => {
-
-        const data = {
-            itemList: cartItem,
-            totalAmt: grandTotal,
-            otherCharge: otherCharge,
-            subTotalAmt: totalPriceWithOutDiscount,
-            delivery_address_id: defaultAddress._id,
-        }
-        console.log(data);
-
         try {
-
-            toast.loading("Redirecting to payment gateway... Please wait")
-
-            const stripePromise = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
-
+            const toastId = toast.loading("Redirecting to payment gateway... Please wait");
+    
+            const stripePromise = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+    
             const response = await Axios({
                 ...summaryApi.addStripPaymentOrder,
                 data: {
@@ -85,14 +76,81 @@ function CheckOut() {
                     subTotalAmt: totalPriceWithOutDiscount,
                     delivery_address_id: defaultAddress._id,
                 }
-            })
-
-            stripePromise.redirectToCheckout({sessionId: response.data.id})
-
+            });
+    
+            // Dismiss the loading toast before redirecting
+            toast.dismiss(toastId);
+    
+            stripePromise.redirectToCheckout({ sessionId: response.data.id });
         } catch (error) {
-            toast.error(error.message || error)
+            toast.dismiss();
+            toast.error(error.message || error);
         }
-    }
+    };
+    
+
+
+    const handleRazorpayPayment = async () => {
+        try {
+            const response = await Axios({
+                ...summaryApi.addRazorpayPaymentOrder,
+                data: {
+                    itemList: cartItem,
+                    totalAmt: grandTotal,
+                    otherCharge: otherCharge,
+                    subTotalAmt: totalPriceWithOutDiscount,
+                    delivery_address_id: defaultAddress._id,
+                }
+            });
+    
+            console.log(response);
+            let orderData = response.data.order
+            const options = {
+                key: import.meta.env.VITE_RAZORPAY_ID_KEY,
+                amount: response.data.order.amount,
+                currency: 'INR',
+                name: "Blinkit-Clone",
+                description: 'Purchasing with Razorpay',
+                order_id: response.data.order.id,
+                prefill: {
+                    name: user.name,
+                    email: user.email,
+                    contact: user.mobile,
+                },
+                theme: { color: '#FFC602' },
+                handler: function (paymentResponse) {
+                    // Send payment details to backend for verification
+                    Axios({
+                        ...summaryApi.verifyRazorPaymentOrder,
+                        data: {
+                            paymentResponse,
+                            orderData
+                        }, 
+                        headers: { "Content-Type": "application/json" }
+                    })
+                    .then(res => {
+                        console.log("Verification Response:", res.data);
+                        
+                        // Redirect based on backend response
+                        if (res.data.success) {
+                            navigate("/success");
+                        } else {
+                            navigate("/cancel");
+                        }
+                    })
+                    .catch(err => console.error("Verification Error:", err));
+                }
+                
+            };
+    
+            const rzp = new Razorpay(options);
+            rzp.open();
+    
+        } catch (error) {
+            toast.error(error.message || error);
+        }
+    };
+    
 
     const handlePayNow = async () => {
         setLoading(true)
@@ -107,6 +165,8 @@ function CheckOut() {
             handleCashOnDeliveryOrder()
         } else if (selectedPaymentMethod === "stripe") {
             handleStripePayment()
+        } else if (selectedPaymentMethod === "razorpay") {
+            handleRazorpayPayment()
         }
     }
 
@@ -117,7 +177,7 @@ function CheckOut() {
                 <div className="w-screen lg:w-2/3 xl:w-2/3 p-6 rounded-lg bg-white">
                     <h2 className="text-lg lg:text-2xl xl:text-2xl font-semibold mb-4">Select Payment Method</h2>
                     <div>
-                        {/* Method */}
+                        {/* COD Method */}
                         <div className="py-5 px-6 rounded-t-lg overflow-y-auto border border-gray-200">
                             <div className="flex justify-between cursor-pointer"
                                 onClick={() => {
@@ -141,6 +201,7 @@ function CheckOut() {
                                 )
                             }
                         </div>
+                        {/* Sctripe Method */}
                         <div className="py-5 px-6 overflow-y-auto border border-gray-200">
                             <div className="flex justify-between cursor-pointer"
                                 onClick={() => {
@@ -155,13 +216,42 @@ function CheckOut() {
                                     }
                                 </button>
                             </div>
-                            {/* open COD section*/}
+                            {/* open stripe section*/}
                             {
                                 optionOpen === "stripe" && (
                                     <div className="mt-10 font-semibold text-gray-600">
-                                        <button 
+                                        <button
                                             className="bg-red-200 cursor-pointer px-2 py-3 rounded-2xl"
                                             onClick={handleStripePayment}
+                                        >
+                                            Proceed to purchase
+                                        </button>
+                                    </div>
+                                )
+                            }
+                        </div>
+                        {/* Razorpay Method */}
+                        <div className="py-5 px-6 overflow-y-auto border border-gray-200">
+                            <div className="flex justify-between cursor-pointer"
+                                onClick={() => {
+                                    setOptionOpen(optionOpen === "razorpay" ? "" : "razorpay");
+                                    setSelectedPaymentMethod(optionOpen === "razorpay" ? "" : "razorpay");
+                                }}
+                            >
+                                <p className="text-2xl text-[#1C1C1C]">Razorpay</p>
+                                <button>
+                                    {
+                                        optionOpen === "razorpay" ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />
+                                    }
+                                </button>
+                            </div>
+                            {/* open razorpay section*/}
+                            {
+                                optionOpen === "razorpay" && (
+                                    <div className="mt-10 font-semibold text-gray-600">
+                                        <button
+                                            className="bg-red-200 cursor-pointer px-2 py-3 rounded-2xl"
+                                            onClick={handleRazorpayPayment}
                                         >
                                             Proceed to purchase
                                         </button>

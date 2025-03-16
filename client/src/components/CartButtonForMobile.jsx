@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { FaCaretRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-function CartButtonForMobile({setIsCartButtonForMobile}) {
+function CartButtonForMobile({setIsCartButtonForMobile, isCartMenuOpen}) {
 
     const cartItem = useSelector((state) => state.cartItem.cart);
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ function CartButtonForMobile({setIsCartButtonForMobile}) {
     }, [cartItem]);
     return (
 
-        <div className='bg-[#318616] flex sm:flex fixed lg:hidden xl:hidden left-0 right-0 bottom-0 z-50 h-[9vh] rounded-xl mx-4 mb-4 justify-between items-center px-2 '>
+        <div className={`bg-[#318616] flex fixed lg:hidden xl:hidden left-0 right-0 bottom-0 z-50 h-[9vh] rounded-xl mx-4 mb-4 justify-between items-center px-2 ${isCartMenuOpen? "hidden" : ""}`}>
             {/* Cart Logo, number of items and total price */}
             <div className="flex gap-2">
                 <button className="p-2 bg-[#379646] z-20 text-white rounded-lg">

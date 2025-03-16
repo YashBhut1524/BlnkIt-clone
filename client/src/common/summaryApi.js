@@ -161,6 +161,14 @@ const summaryApi = {
         url: "/api/order/add-stripe-payment-checkout",
         method: "post"
     },
+    addRazorpayPaymentOrder: {
+        url: "/api/order/add-razor-payment-checkout",
+        method: "post"
+    },
+    verifyRazorPaymentOrder: {
+        url: "/api/order/razorpay-payment-verification",
+        method: "post"
+    },
     getOrders: {
         url: "/api/order/get-orders",
         method: "get"

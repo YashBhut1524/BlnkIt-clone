@@ -158,6 +158,8 @@ function App() {
         isCartButtonForMobile && (
           <CartButtonForMobile 
             setIsCartButtonForMobile={setIsCartButtonForMobile}
+            setIsCartMenuOpen={setIsCartMenuOpen}
+            isCartMenuOpen={isCartMenuOpen}
           />
         )
         
@@ -170,6 +172,7 @@ function App() {
             <CartSideMenu
               setIsCartMenuOpen={setIsCartMenuOpen}
               setIsAddressMenuOpen={setIsAddressMenuOpen}
+              setIsCartButtonForMobile={setIsCartButtonForMobile}
             />
           </>
         )

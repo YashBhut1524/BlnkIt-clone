@@ -3,7 +3,7 @@ import cors from "cors"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
-import helemet from "helmet"
+import helmet from "helmet";
 import connectDB from "./config/connectDB.js"
 import userRoutes from "./routes/user.route.js"
 import categoryRoutes from "./routes/category.route.js"
@@ -19,16 +19,16 @@ dotenv.config()
 const app = express()
 app.use(cors({
     origin: process.env.CLIENT_URL,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true
 }));
 
 app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
-app.use(morgan())
-app.use(helemet({
-    crossOriginResourcePolicy: false,
-}))
+app.use(morgan("dev")); // Logs requests in a readable format
+app.use(helmet({ crossOriginResourcePolicy: false }));
+
 
 const PORT = 8080 || process.env.PORT
 

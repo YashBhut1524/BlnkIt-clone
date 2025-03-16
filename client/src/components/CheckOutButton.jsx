@@ -27,10 +27,10 @@ function CheckOutButton({grandTotal, totalItems, setIsAddressMenuOpen, setIsCart
     }
 
     return (
-        <section className="z-40">
+        <section className="">
             {/* Addresses*/}
                 {/* Checkout Button */}
-                <div className="fixed bottom-1 right-0 bg-white px-4 py-3 rounded-2xl shadow-lg border border-gray-300 min-w-[38%] mt-3">
+                <div className="fixed bottom-1 right-0 bg-white px-4 py-3 rounded-2xl shadow-lg border border-gray-300 mt-3 lg:min-w-[35vw] lg:max-w-[36vw] md:w-full sm:w-full xs:w-full">
                 <div>
                     {
                         addresses.length === 0 ? (

@@ -27,6 +27,7 @@
     "date-fns": "^4.1.0",
     "framer-motion": "^12.4.7",
     "lucide-react": "^0.475.0",
+    "razorpay": "^2.9.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.1",

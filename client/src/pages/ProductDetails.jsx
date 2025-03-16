@@ -189,7 +189,7 @@ function ProductDetails() {
                         {/* URL, Name, Time */}
                         <div className="border-b-1 border-gray-200 pb-3">
                             {/* Url */}
-                            <div className="text-[13px]">
+                            <div className="text-[13px] line-clamp-1">
                                 <Link to={"/"} className="font-medium">Home / </Link>
 
                                 <span
@@ -224,12 +224,12 @@ function ProductDetails() {
                                         <span className="text-md font-bold text-red-500">Out of Stock</span>
                                     ) : productData?.discount > 0 ? (
                                         <div className="flex items-center gap-1">
-                                            <span className="text-md font-bold text-gray-500">MRP</span>
-                                            <span className="text-md font-bold line-through text-gray-500">
-                                                &#8377;{productData?.price}
-                                            </span>
                                             <span className="text-md font-bold text-black">
                                                 &#8377;{(productData?.price - (productData?.price * productData?.discount / 100)).toFixed(2)}
+                                            <span className="text-xs font-bold text-gray-500"> MRP</span>
+                                            <span className="text-xs font-bold line-through text-gray-500">
+                                                &#8377;{productData?.price}
+                                            </span>
                                             </span>
                                             <span className="text-white px-1 rounded bg-[#538CEE] font-semibold text-[x-small]">
                                                 {`${productData?.discount}% OFF`}

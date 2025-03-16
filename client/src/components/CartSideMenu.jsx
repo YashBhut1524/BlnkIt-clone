@@ -13,7 +13,7 @@ import empty_cart from "../assets/empty_cart.webp"
 import CheckOutButton from "./CheckOutButton";
 import { userCart } from "../provider/CartContext";
 
-function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
+function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen, setIsCartButtonForMobile }) {
 
     const cartItem = useSelector((state) => state.cartItem.cart);
 
@@ -73,7 +73,7 @@ function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
 
     return (
         <section className="fixed top-0 bottom-0 left-0 right-0 bg-neutral-800/70 z-40">
-            <div className="fixed top-0 right-0 h-full pb-10 bg-[#F5F7FD] w-100 shadow-lg overflow-y-auto">
+            <div className="fixed top-0 right-0 h-full pb-10 bg-[#F5F7FD] xs:w-screen sm:w-screen lg:w-100 shadow-lg overflow-y-auto">
                 {/* Sticky Cart Header */}
                 <div className="sticky top-0 bg-white flex justify-between z-50">
                     <h2 className="text-md font-bold mb-1 p-4">My Cart</h2>
@@ -82,6 +82,7 @@ function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen }) {
                         onClick={() => {
                             setIsCartMenuOpen(false)
                             setIsAddressMenuOpen(false)
+                            setIsCartButtonForMobile(true)
                         }}
                     >
                         ✕

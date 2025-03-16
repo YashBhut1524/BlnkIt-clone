@@ -5,6 +5,8 @@ import {
     createStripePaymentOrderController, 
     getAllOrdersController, 
     getOrdersController,
+    razorpayPaymentOrderController,
+    razorpayPaymentVerification,
     stripeWebhookPayment,
     updateOrderStatusController
 } from "../controllers/order.controller.js";
@@ -17,5 +19,7 @@ orderRouters.get("/get-all-orders", authMiddleware, getAllOrdersController)
 orderRouters.put("/update-order-status-admin", authMiddleware, updateOrderStatusController)
 orderRouters.post("/add-stripe-payment-checkout", authMiddleware, createStripePaymentOrderController)
 orderRouters.post("/webhook", stripeWebhookPayment)
+orderRouters.post("/add-razor-payment-checkout", authMiddleware, razorpayPaymentOrderController)
+orderRouters.post("/razorpay-payment-verification", razorpayPaymentVerification);
 
 export default orderRouters
