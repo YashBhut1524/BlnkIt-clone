@@ -66,6 +66,8 @@ export const createCashOnDeliveryOrderController = async (req, res) => {
             quantity: item.quantity // Keep quantity
         }));
 
+        const minutes = Math.floor(Math.random() * (20 - 6 + 1)) + 6;
+
         const newOrder = new OrderModel({
             userId,
             orderId,
@@ -75,9 +77,10 @@ export const createCashOnDeliveryOrderController = async (req, res) => {
             subTotalAmt,
             totalAmt,
             order_status: "Pending", // Default status
-            invoice_receipt: ""
+            invoice_receipt: "",
+            delivery_time: minutes,
         });
-        console.log("newOrder: ", newOrder);
+        // console.log("newOrder: ", newOrder);
 
         await newOrder.save();
 
@@ -242,6 +245,8 @@ export const stripeWebhookPayment = async (req, res) => {
             
             const userId = session.metadata.userId
 
+            const minutes = Math.floor(Math.random() * (20 - 6 + 1)) + 6;
+
             const newOrder = new OrderModel({
                 userId: userId,
                 orderId: session.metadata.orderId,
@@ -251,10 +256,11 @@ export const stripeWebhookPayment = async (req, res) => {
                 subTotalAmt: session.metadata.subTotalAmt,
                 totalAmt: session.metadata.totalAmt,
                 order_status: "Pending", // Default status
-                invoice_receipt: ""
+                invoice_receipt: "",
+                delivery_time: minutes,
             });
 
-            console.log("newOrder: ", newOrder);
+            // console.log("newOrder: ", newOrder);
 
             await newOrder.save();
             
@@ -376,8 +382,8 @@ export const razorpayPaymentOrderController = async (req, res) => {
 
 export const razorpayPaymentVerification = async (req, res) => {
     try {
-        console.log("🟢 Headers:", req.headers);
-        console.log("🟢 Body:", req.body);
+        // console.log("🟢 Headers:", req.headers);
+        // console.log("🟢 Body:", req.body);
 
         const { paymentResponse, orderData } = req.body;
 
@@ -391,7 +397,7 @@ export const razorpayPaymentVerification = async (req, res) => {
 
         const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = paymentResponse;
         const { delivery_address_id, itemList, orderId, totalAmt, subTotalAmt, userId } = orderData.notes;
-        console.log("itemList:", itemList)
+        // console.log("itemList:", itemList)
         if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
             return res.status(400).json({
                 message: "Invalid payment details",
@@ -407,8 +413,8 @@ export const razorpayPaymentVerification = async (req, res) => {
             .update(body)
             .digest("hex");
 
-        console.log(`razorpay_signature: ${razorpay_signature}`);
-        console.log(`expectedSignature: ${expectedSignature}`);
+        // console.log(`razorpay_signature: ${razorpay_signature}`);
+        // console.log(`expectedSignature: ${expectedSignature}`);
 
         if (expectedSignature !== razorpay_signature) {
             return res.status(400).json({
@@ -436,6 +442,8 @@ export const razorpayPaymentVerification = async (req, res) => {
             quantity: item.quantity
         }));
 
+        const minutes = Math.floor(Math.random() * (20 - 6 + 1)) + 6;
+
         // Save new order
         const newOrder = new OrderModel({
             userId,
@@ -446,10 +454,11 @@ export const razorpayPaymentVerification = async (req, res) => {
             subTotalAmt,
             totalAmt,
             order_status: "Pending", // Default status
-            invoice_receipt: ""
+            invoice_receipt: "",
+            delivery_time: minutes,
         });
 
-        console.log("🟢 newOrder:", newOrder);
+        // console.log("🟢 newOrder:", newOrder);
 
         await newOrder.save();
 
@@ -460,7 +469,7 @@ export const razorpayPaymentVerification = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("❌ Error:", error);
+        // console.error("❌ Error:", error);
         return res.status(500).json({
             message: "Internal server error",
             error: true,
@@ -468,7 +477,6 @@ export const razorpayPaymentVerification = async (req, res) => {
         });
     }
 };
-
 
 export const getOrdersController = async (req, res) => {
     try {
@@ -625,3 +633,51 @@ export const updateOrderStatusController = async (req, res) => {
         });
     }
 };
+
+export const getOrderDetailsByIdCOntroller = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const {orderId} = req.body
+
+        if(!userId) { 
+            return res.status(401).json({
+                message: "Please log in to access this endpoint.",
+                success: false,
+                error: true
+            })
+        }
+
+        if(!orderId) {
+            return res.status(400).json({
+                message: "OrderId is required",
+                success: false,
+                error: true
+            })
+        }
+
+        const order = await OrderModel.find({orderId: orderId})
+            .populate("itemList.productId")
+            .populate("delivery_address")
+
+        if(!order) {
+            return res.status(404).json({
+                message: "Order not found",
+                success: false,
+                error: true
+            })
+        }
+
+        return res.status(200).json({
+            message: "Order details fetched successfully",
+            success: true,
+            order
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "Something went wrong",
+            error: true,
+            success: false
+        })
+    }
+}

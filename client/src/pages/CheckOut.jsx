@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { useState } from "react";
 import { useAddress } from "../provider/AddressContext";
 import { useSelector } from "react-redux";
@@ -64,9 +65,9 @@ function CheckOut() {
     const handleStripePayment = async () => {
         try {
             const toastId = toast.loading("Redirecting to payment gateway... Please wait");
-    
+
             const stripePromise = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
-    
+
             const response = await Axios({
                 ...summaryApi.addStripPaymentOrder,
                 data: {
@@ -77,17 +78,17 @@ function CheckOut() {
                     delivery_address_id: defaultAddress._id,
                 }
             });
-    
+
             // Dismiss the loading toast before redirecting
             toast.dismiss(toastId);
-    
+
             stripePromise.redirectToCheckout({ sessionId: response.data.id });
         } catch (error) {
             toast.dismiss();
             toast.error(error.message || error);
         }
     };
-    
+
 
 
     const handleRazorpayPayment = async () => {
@@ -102,8 +103,8 @@ function CheckOut() {
                     delivery_address_id: defaultAddress._id,
                 }
             });
-    
-            console.log(response);
+
+            // console.log(response);
             let orderData = response.data.order
             const options = {
                 key: import.meta.env.VITE_RAZORPAY_ID_KEY,
@@ -125,49 +126,53 @@ function CheckOut() {
                         data: {
                             paymentResponse,
                             orderData
-                        }, 
+                        },
                         headers: { "Content-Type": "application/json" }
                     })
-                    .then(res => {
-                        console.log("Verification Response:", res.data);
-                        
-                        // Redirect based on backend response
-                        if (res.data.success) {
-                            navigate("/success");
-                        } else {
-                            navigate("/cancel");
-                        }
-                    })
-                    .catch(err => console.error("Verification Error:", err));
+                        .then(res => {
+                            // console.log("Verification Response:", res.data);
+
+                            // Redirect based on backend response
+                            if (res.data.success) {
+                                navigate("/success");
+                            } else {
+                                navigate("/cancel");
+                            }
+                        })
+                        .catch(err => console.error("Verification Error:", err));
                 }
-                
+
             };
-    
+
             const rzp = new Razorpay(options);
             rzp.open();
-    
+
         } catch (error) {
             toast.error(error.message || error);
         }
     };
-    
+
 
     const handlePayNow = async () => {
-        setLoading(true)
-        if (selectedPaymentMethod === "cash") {
-            // const data = {
-            //     itemList: cartItem,
-            //     totalAmt: grandTotal,
-            //     subTotalAmt: totalPriceWithOutDiscount,
-            //     delivery_address_id: defaultAddress._id,
-            // }
-            // console.log(data);
-            handleCashOnDeliveryOrder()
-        } else if (selectedPaymentMethod === "stripe") {
-            handleStripePayment()
-        } else if (selectedPaymentMethod === "razorpay") {
-            handleRazorpayPayment()
+        try {
+            setLoading(true)
+            if (selectedPaymentMethod === "cash") {
+                handleCashOnDeliveryOrder()
+            } else if (selectedPaymentMethod === "stripe") {
+                handleStripePayment()
+            } else if (selectedPaymentMethod === "razorpay") {
+                handleRazorpayPayment()
+            }    
+            setIsConfirmationScreenActive(false)
+            setLoading(false)
+        } catch (error) {
+            toast.error(error.message || error);
+            setLoading(false)
+
+        } finally {
+            setLoading(false)
         }
+        
     }
 
     return (
@@ -187,21 +192,18 @@ function CheckOut() {
                             >
                                 <p className="text-2xl text-[#1C1C1C]">Cash</p>
                                 <button>
-                                    {
-                                        optionOpen === "cash" ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />
-                                    }
+                                    {optionOpen === "cash" ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />}
                                 </button>
                             </div>
-                            {/* open COD section*/}
-                            {
-                                optionOpen === "cash" && (
-                                    <div className="mt-10 font-semibold text-gray-600">
-                                        Please keep exact change handy to help us serve you better
-                                    </div>
-                                )
-                            }
+                            {/* Open COD section */}
+                            {optionOpen === "cash" && (
+                                <div className="mt-10 font-semibold text-gray-600">
+                                    Please keep exact change handy to help us serve you better.
+                                </div>
+                            )}
                         </div>
-                        {/* Sctripe Method */}
+
+                        {/* Stripe Method */}
                         <div className="py-5 px-6 overflow-y-auto border border-gray-200">
                             <div className="flex justify-between cursor-pointer"
                                 onClick={() => {
@@ -211,25 +213,17 @@ function CheckOut() {
                             >
                                 <p className="text-2xl text-[#1C1C1C]">Stripe</p>
                                 <button>
-                                    {
-                                        optionOpen === "stripe" ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />
-                                    }
+                                    {optionOpen === "stripe" ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />}
                                 </button>
                             </div>
-                            {/* open stripe section*/}
-                            {
-                                optionOpen === "stripe" && (
-                                    <div className="mt-10 font-semibold text-gray-600">
-                                        <button
-                                            className="bg-red-200 cursor-pointer px-2 py-3 rounded-2xl"
-                                            onClick={handleStripePayment}
-                                        >
-                                            Proceed to purchase
-                                        </button>
-                                    </div>
-                                )
-                            }
+                            {/* Open Stripe section */}
+                            {optionOpen === "stripe" && (
+                                <div className="mt-10 font-semibold text-gray-600">
+                                    Secure and fast payment processing powered by Stripe.
+                                </div>
+                            )}
                         </div>
+
                         {/* Razorpay Method */}
                         <div className="py-5 px-6 overflow-y-auto border border-gray-200">
                             <div className="flex justify-between cursor-pointer"
@@ -240,26 +234,18 @@ function CheckOut() {
                             >
                                 <p className="text-2xl text-[#1C1C1C]">Razorpay</p>
                                 <button>
-                                    {
-                                        optionOpen === "razorpay" ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />
-                                    }
+                                    {optionOpen === "razorpay" ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />}
                                 </button>
                             </div>
-                            {/* open razorpay section*/}
-                            {
-                                optionOpen === "razorpay" && (
-                                    <div className="mt-10 font-semibold text-gray-600">
-                                        <button
-                                            className="bg-red-200 cursor-pointer px-2 py-3 rounded-2xl"
-                                            onClick={handleRazorpayPayment}
-                                        >
-                                            Proceed to purchase
-                                        </button>
-                                    </div>
-                                )
-                            }
+                            {/* Open Razorpay section */}
+                            {optionOpen === "razorpay" && (
+                                <div className="mt-10 font-semibold text-gray-600">
+                                    Pay instantly with Razorpay&#39;s seamless checkout experience.
+                                </div>
+                            )}
                         </div>
                     </div>
+
                 </div>
 
 
@@ -351,13 +337,13 @@ function CheckOut() {
                             <div className="flex justify-center gap-4">
                                 <button
                                     onClick={() => setIsConfirmationScreenActive(false)}
-                                    className="px-5 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+                                    className="px-5 py-2 bg-red-700 text-white rounded-md hover:bg-red-800 transition-all"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handlePayNow}
-                                    className="px-5 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-all"
+                                    className="px-5 py-2 bg-[#4A842C] text-white rounded-md hover:bg-[#415c34] transition-all"
                                 >
                                     Confirm Order
                                 </button>

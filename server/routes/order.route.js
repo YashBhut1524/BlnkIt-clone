@@ -4,6 +4,7 @@ import {
     createCashOnDeliveryOrderController, 
     createStripePaymentOrderController, 
     getAllOrdersController, 
+    getOrderDetailsByIdCOntroller, 
     getOrdersController,
     razorpayPaymentOrderController,
     razorpayPaymentVerification,
@@ -21,5 +22,6 @@ orderRouters.post("/add-stripe-payment-checkout", authMiddleware, createStripePa
 orderRouters.post("/webhook", stripeWebhookPayment)
 orderRouters.post("/add-razor-payment-checkout", authMiddleware, razorpayPaymentOrderController)
 orderRouters.post("/razorpay-payment-verification", razorpayPaymentVerification);
+orderRouters.post("/get-order-details-by-id", authMiddleware, getOrderDetailsByIdCOntroller)
 
 export default orderRouters

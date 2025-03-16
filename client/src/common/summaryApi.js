@@ -181,6 +181,10 @@ const summaryApi = {
         url: "/api/order/update-order-status-admin",
         method: "put"
     },
+    getOrderDetailsByOrderId: {
+        url: "/api/order/get-order-details-by-id",
+        method: "post"
+    },
 }
 
 export default summaryApi

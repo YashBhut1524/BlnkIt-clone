@@ -50,6 +50,9 @@ const orderSchema = new mongoose.Schema({
     invoice_receipt: {
         type: String,
         default: ""
+    },
+    delivery_time: {
+        type: Number,
     }
 }, {
     timestamps: true

@@ -26,6 +26,7 @@ import CheckOut from "../pages/CheckOut"
 import AllOrderAdmin from "../pages/AllOrderAdmin"
 import Success from "../pages/Success"
 import Cancel from "../pages/Cancel"
+import OrderDetails from "../pages/OrderDetails"
 
 const router = createBrowserRouter([
     {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
                         element: <Addresses />
                     },
                     {
+                        path: "order-details/:orderId",
+                        element: <OrderDetails />
+                    },
+                    {
                         path: "products",
                         element: <ProtectedRoute element={<ProductsAdmin />} allowedRoles={["ADMIN"]} />
                     },
@@ -95,7 +100,7 @@ const router = createBrowserRouter([
                     {
                         path: "all-orders",
                         element: <ProtectedRoute element={<AllOrderAdmin />} allowedRoles={["ADMIN"]} />
-                    }
+                    },
                 ]
             },
             // {

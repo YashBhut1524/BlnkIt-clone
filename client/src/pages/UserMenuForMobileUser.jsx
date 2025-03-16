@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHome, FaRegUser, FaFileUpload, FaUserCircle } from "react-icons/fa";
+import { FaHome, FaRegUser, FaFileUpload, FaUserCircle, FaBox } from "react-icons/fa";
 import { MdOutlineListAlt, MdCategory } from "react-icons/md";
 import { IoArrowBack } from "react-icons/io5";
 import Axios from "../utils/Axios";
@@ -92,7 +92,7 @@ function UserMenuForMobileUser() {
                                     to="/dashboard/all-orders" 
                                     className="flex items-center space-x-3 text-gray-700 text-lg hover:text-black transition duration-200 hover:bg-gray-200 p-2 rounded-lg"
                                 >
-                                    <FaFileUpload size={18} /> <span>All Orders</span>
+                                    <FaBox size={18} /> <span>All Orders</span>
                                 </Link>
                             </>
                         )
