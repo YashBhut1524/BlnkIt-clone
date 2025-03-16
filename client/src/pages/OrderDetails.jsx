@@ -5,6 +5,7 @@ import Axios from "../utils/Axios";
 import { useEffect, useState } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { IoMdCopy } from "react-icons/io";
+import { format } from "date-fns";
 
 function OrderDetails() {
     const navigate = useNavigate();
@@ -16,6 +17,16 @@ function OrderDetails() {
     function formatUnit(unit) {
         return typeof unit === "number" || /^\d+$/.test(unit) ? `${unit} Unit` : unit;
     }
+
+    const changeDateFormat = (timestamp) => {
+        if (!timestamp) return "Invalid Date"; // Handle undefined/null cases
+    
+        const date = new Date(timestamp);
+        if (isNaN(date.getTime())) return "Invalid Date"; // Handle invalid date values
+    
+        return format(date, "eee, dd MMM''yy, h:mm a");
+    };
+    
 
     function calculateDeliveryDate(createdAt, deliveryTime) {
         if (!createdAt || !deliveryTime) return "";
@@ -73,7 +84,7 @@ function OrderDetails() {
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-green-500"></div>
                 </div>
             ) : (
-                <div className="mx-3">
+                <div className="mx-3 my-10">
                     {/* Back Button */}
                     <button onClick={() => navigate(-1)} className="p-3 border border-gray-300 rounded-md">
                         <FaArrowLeftLong size={20} className="text-[#1F1F1F]" />
@@ -194,7 +205,31 @@ function OrderDetails() {
                                 <div className="mt-2 flex items-center gap-2">
                                     <div>
                                         <p className="text-xs text-[#666666]">Payment</p>
-                                        <p className="text-sm text-[#282727]">{orderData?.orderId}</p>
+                                        <p className="text-sm text-[#282727]">{orderData?.payment_type}</p>
+                                    </div>
+                                </div>
+                                <div className="mt-2 flex items-center gap-2">
+                                    <div>
+                                        <p className="text-xs text-[#666666]">Deliver to</p>
+                                        <p className="text-sm text-[#282727]">
+                                            {[
+                                                orderData?.delivery_address?.street, 
+                                                orderData?.delivery_address?.flatHouseNumber, 
+                                                orderData?.delivery_address?.floor, 
+                                                orderData?.delivery_address?.landmark, 
+                                                orderData?.delivery_address?.city && orderData?.delivery_address?.pincode 
+                                                    ? `${orderData.delivery_address.city}-${orderData.delivery_address.pincode}` 
+                                                    : null
+                                            ]
+                                                .filter(Boolean)
+                                                .join(", ")}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="mt-2 flex items-center gap-2">
+                                    <div>
+                                        <p className="text-xs text-[#666666]">Order placed</p>
+                                        <p className="text-sm text-[#282727]">Placed on {changeDateFormat(orderData?.createdAt)}</p>
                                     </div>
                                 </div>
                             </div>

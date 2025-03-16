@@ -135,6 +135,7 @@ function CheckOut() {
                             // Redirect based on backend response
                             if (res.data.success) {
                                 navigate("/success");
+                                clearTheCart()
                             } else {
                                 navigate("/cancel");
                             }

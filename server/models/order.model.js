@@ -47,6 +47,11 @@ const orderSchema = new mongoose.Schema({
         enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled", "Returned"],
         default: "Pending"
     },
+    payment_type: {
+        type: String,
+        enum: ["Cash on Delivery", "Stripe", "Razorpay"],
+        default: "Cash on Delivery",
+    },
     invoice_receipt: {
         type: String,
         default: ""

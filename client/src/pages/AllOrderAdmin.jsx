@@ -9,9 +9,12 @@ import { GoArrowRight } from "react-icons/go";
 import { FaRegClock } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 import { TbTruckReturn } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 function AllOrderAdmin() {
     const [orders, setOrders] = useState([]);
+
+    const navigate = useNavigate()
 
     const changeDateFormat = (timestamp) => {
         return format(new Date(timestamp), "eee, dd MMM''yy, h:mm a");
@@ -108,7 +111,10 @@ function AllOrderAdmin() {
                                 </select>
                             </div>
                             <div>
-                                <button className="py-2 px-3 rounded-lg border border-gray-300 text-[#038C1F] text-xs cursor-pointer">
+                                <button 
+                                    className="py-2 px-3 rounded-lg border border-gray-300 text-[#038C1F] text-xs cursor-pointer"
+                                    onClick={() => navigate(`/dashboard/order-details/${order.orderId}`)}
+                                >
                                     View Details
                                 </button>
                             </div>
@@ -198,7 +204,11 @@ function AllOrderAdmin() {
                                             )
                                         }
                                     </div>
-                                    <button><GoArrowRight /></button>
+                                    <button
+                                        onClick={() => navigate(`/dashboard/order-details/${order.orderId}`)}
+                                    >
+                                        <GoArrowRight />
+                                    </button>
                                 </div>
                                 <div className="w-[20%]">
                                     {/* Order status dropdown */}

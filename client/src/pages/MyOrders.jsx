@@ -167,7 +167,11 @@ function MyOrders() {
                                             )
                                         }
                                     </div>
-                                    <button><GoArrowRight /></button>
+                                    <button
+                                        onClick={() => navigate(`/dashboard/order-details/${order.orderId}`)}
+                                    >
+                                        <GoArrowRight />
+                                    </button>
                                 </div>
                                 {/* Bottom Section */}
                                 <div className="flex gap-2 overflow-x-scroll ">

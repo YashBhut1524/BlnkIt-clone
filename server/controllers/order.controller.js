@@ -79,6 +79,7 @@ export const createCashOnDeliveryOrderController = async (req, res) => {
             order_status: "Pending", // Default status
             invoice_receipt: "",
             delivery_time: minutes,
+            payment_type: "Cash on Delivery"
         });
         // console.log("newOrder: ", newOrder);
 
@@ -258,6 +259,7 @@ export const stripeWebhookPayment = async (req, res) => {
                 order_status: "Pending", // Default status
                 invoice_receipt: "",
                 delivery_time: minutes,
+                payment_type: "Stripe",
             });
 
             // console.log("newOrder: ", newOrder);
@@ -456,6 +458,7 @@ export const razorpayPaymentVerification = async (req, res) => {
             order_status: "Pending", // Default status
             invoice_receipt: "",
             delivery_time: minutes,
+            payment_type: "Razorpay"
         });
 
         // console.log("🟢 newOrder:", newOrder);
