@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import summaryApi from "../common/summaryApi";
 import Axios from "../utils/Axios";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { IoMdCopy } from "react-icons/io";
 import { format } from "date-fns";
@@ -16,7 +16,7 @@ function OrderDetails() {
     const [orderData, setOrderData] = useState(null);
     const [deliveryTime, setDeliveryTime] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    const [otherCharge, setOtherCharge] = useState(0)
     function formatUnit(unit) {
         return typeof unit === "number" || /^\d+$/.test(unit) ? `${unit} Unit` : unit;
     }
@@ -91,6 +91,28 @@ function OrderDetails() {
             setTotalAmountWithDiscount(totalAmountWithDiscount)
     }
 
+    const calcOtherCharge = () => {
+    if (!orderData?.totalAmt) return; // Ensure orderData.totalAmt is defined
+
+    let handlingCharge = 4;
+    let deliveryCharge = totalAmountWithDiscount < 500 ? 30 : 0;
+
+    const chagres = orderData.totalAmt.toFixed(2) - deliveryCharge.toFixed(2) - handlingCharge.toFixed(2) - totalAmountWithDiscount.toFixed(2)
+
+    setOtherCharge(chagres)
+
+    // // Calculate otherCharge as the remaining amount
+    // const calculatedOtherCharge = orderData.totalAmt - (totalAmountWithDiscount + handlingCharge + deliveryCharge);
+
+    // // Corrected condition
+    // if (orderData.totalAmt === totalAmountWithDiscount + handlingCharge + deliveryCharge) {
+    //     setOtherCharge(0);
+    // } else {
+    //     setOtherCharge(calculatedOtherCharge > 0 ? calculatedOtherCharge : 0);
+    // }
+};
+
+
     // Set deliveryTime when orderData is updated
     useEffect(() => {
         if (orderData?.itemList && Array.isArray(orderData.itemList)) {
@@ -101,7 +123,13 @@ function OrderDetails() {
         }
     }, [orderData]);
     
-
+    // Run calcOtherCharge when totalAmountWithDiscount is updated
+    useEffect(() => {
+        if (orderData) {
+            calcOtherCharge();
+        }
+    }, [totalAmountWithDiscount]); 
+    
     return (
         <>
             {loading ? (
@@ -183,7 +211,7 @@ function OrderDetails() {
                                     </>
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-xs text-[#666666]">Item total</p>
-                                        <p className="text-xs text-[#666666]">&#8377;{totalAmountWithDiscount}</p>
+                                        <p className="text-xs text-[#666666]">&#8377;{totalAmountWithDiscount.toFixed(2)}</p>
                                     </div>
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-xs text-[#666666]">Handling charge</p>
@@ -195,7 +223,7 @@ function OrderDetails() {
                                     </div>
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-xs text-[#666666]">Other <span>(Tip and Feeding india)</span></p>
-                                        <p className="text-xs text-[#666666]">{totalAmountWithDiscount < 500 ? orderData?.totalAmt - 30 - 4 - totalAmountWithDiscount : <span>&#8377;{orderData?.totalAmt - 4 - totalAmountWithDiscount}</span>}</p>
+                                        <p className="text-xs text-[#666666]">&#8377;{otherCharge}</p>
                                     </div>
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-sm">Bill total</p>
