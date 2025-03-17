@@ -5,7 +5,7 @@ import {
     getSubCategoriesController, 
     updateSubCategoryController 
 } from "../controllers/subCategory.controller.js";
-import authMiddleware from "../middleware/authmiddleware.js";
+import authMiddleware from "../middleware/authMiddleware.js"
 
 const subCategoryRoutes = Router()
 

@@ -9,7 +9,7 @@ import {
     searchProductController, 
     updateProductController 
 } from "../controllers/product.controller.js";
-import authMiddleware from "../middleware/authmiddleware.js";
+import authMiddleware from "../middleware/authMiddleware.js"
 
 const productRouters = Router()
 
