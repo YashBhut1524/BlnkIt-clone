@@ -1,16 +1,15 @@
 {
-    "version" : 2,
-    "name" : "Blinkit_Clone",
-    "builds" : [
+    "version": 2,
+    "builds": [
         {
-            "src" : "./index.js",
-            "use" : "@vercel/node"
+            "src": "index.js",
+            "use": "@vercel/node"
         }
     ],
-    "routes" : [
+    "routes": [
         {
-            "src" : "/(.*)",
-            "dest" : "/"
+            "src": "/(.*)",
+            "dest": "/index.js"
         }
     ]
-}     
+}
