@@ -66,8 +66,8 @@ function EditAddress({data, setOpenEditAddressMenu}) {
         defaultAddress: addressDataSource.defaultAddress || false
     });
 
-    console.warn = () => { };
-    console.error = () => { };
+    // console.warn = () => { };
+    // console.error = () => { };
 
     // useEffect(() => {
     //     console.log("addressData", addressData);

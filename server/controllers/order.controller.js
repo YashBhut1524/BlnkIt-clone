@@ -230,7 +230,7 @@ export const createStripePaymentOrderController = async (req, res) => {
 //http://localhost:8080/api/order/webhook
 export const stripeWebhookPayment = async (req, res) => {
     const event = req.body;
-    console.log("event: ", event);
+    // console.log("event: ", event);
     const endPointSecret = process.env.STRIPE_WEBHOOK_SECRET_KEY
 
     // Handle the event

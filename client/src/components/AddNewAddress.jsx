@@ -55,8 +55,8 @@ function AddNewAddress({ setOpenAddNewAddressMenu, setIsAddressMenuOpen }) {
         defaultAddress: true, // Add this
     });
 
-    console.warn = () => { };
-    console.error = () => { };
+    // console.warn = () => { };
+    // console.error = () => { };
 
     // useEffect(() => {
     //     console.log("addressData", addressData);
