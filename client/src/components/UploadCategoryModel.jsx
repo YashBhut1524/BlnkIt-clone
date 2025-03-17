@@ -22,7 +22,7 @@ function UploadCategoryModel({ close, fetchCategory }) {
     const fileInputRef = useRef(null);
 
     const allCategory = useSelector(state => state.product.allCategory)
-    console.log("allCategory from redux: ", allCategory);
+    // console.log("allCategory from redux: ", allCategory);
     
     useEffect(() => {
         setData(allCategory)

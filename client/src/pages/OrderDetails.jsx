@@ -71,7 +71,7 @@ function OrderDetails() {
 
     useEffect(() => {
         fetchOrderDetails();
-        console.log(orderData);
+        // console.log(orderData);
     }, []);
 
     function calculateTotalAmounts(itemList) {

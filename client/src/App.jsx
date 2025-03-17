@@ -49,8 +49,9 @@ function App() {
   
       setIsCartButtonForMobile(!shouldHideCartButton);
   }, [location.pathname, openAddNewAddressMenu, openEditAddressMenu]);
-  // console.warn = () => {};
-  // console.error = () => {};
+
+  console.warn = () => {};
+  console.error = () => {};
 
   const fetchCategory = async () => {
     try {

@@ -238,8 +238,8 @@ export const stripeWebhookPayment = async (req, res) => {
         case 'checkout.session.completed':
             const session = event.data.object
             const lineItems = await Stripe.checkout.sessions.listLineItems(session.id)
-            console.log("lineItems: ", lineItems);
-            console.log("session: ", session);
+            // console.log("lineItems: ", lineItems);
+            // console.log("session: ", session);
             
             const userId = session.metadata.userId
 
@@ -255,7 +255,7 @@ export const stripeWebhookPayment = async (req, res) => {
                 invoice_receipt: ""
             });
 
-            console.log("newOrder: ", newOrder);
+            // console.log("newOrder: ", newOrder);
 
             await newOrder.save();
             

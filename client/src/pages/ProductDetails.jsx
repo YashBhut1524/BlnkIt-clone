@@ -90,7 +90,7 @@ function ProductDetails() {
 
     useEffect(() => {
         fetchProductData();
-        console.log(productData);
+        // console.log(productData);
     }, []);
     
     return (
