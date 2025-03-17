@@ -10,6 +10,9 @@ import { format } from "date-fns";
 function OrderDetails() {
     const navigate = useNavigate();
     const { orderId } = useParams();
+
+    const [totalAmountWithoutDiscount, setTotalAmountWithoutDiscount] = useState(0)
+    const[totalAmountWithDiscount, setTotalAmountWithDiscount] = useState(0)
     const [orderData, setOrderData] = useState(null);
     const [deliveryTime, setDeliveryTime] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -70,11 +73,29 @@ function OrderDetails() {
         console.log(orderData);
     }, []);
 
+    function calculateTotalAmounts(itemList) {
+        let totalAmountWithoutDiscount = 0;
+        let totalAmountWithDiscount = 0;
+    
+        itemList.forEach(item => {
+            const price = item.productId.price;
+            const discount = item.productId.discount || 0; // If discount is null, consider it as 0
+            const quantity = item.quantity;
+    
+            totalAmountWithoutDiscount += price * quantity;
+            totalAmountWithDiscount += price * quantity * (1 - discount / 100);
+        });
+    
+            setTotalAmountWithoutDiscount(totalAmountWithoutDiscount),
+            setTotalAmountWithDiscount(totalAmountWithDiscount)
+    }
+
     // Set deliveryTime when orderData is updated
     useEffect(() => {
         if (orderData?.createdAt && orderData?.delivery_time) {
             setDeliveryTime(calculateDeliveryDate(orderData.createdAt, orderData.delivery_time));
         }
+        calculateTotalAmounts(orderData?.itemList);
     }, [orderData]);
 
     return (
@@ -140,17 +161,17 @@ function OrderDetails() {
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-xs text-[#666666]">MRP</p>
                                         <p className="text-xs text-[#666666]">
-                                            &#8377;{orderData?.subTotalAmt}
+                                            &#8377;{totalAmountWithoutDiscount}
                                         </p>
 
                                     </div>
                                     <>
                                         {
-                                            (Math.floor(orderData?.subTotalAmt * 100) - Math.floor(orderData?.totalAmt * 100)) / 100 > 0 && (
+                                            totalAmountWithoutDiscount - totalAmountWithDiscount > 0 && (
                                                 <div className="flex justify-between font-semibold">
                                                     <p className="text-xs text-[#256FEF]">Product discount</p>
                                                     <p className="text-xs text-[#256FEF]">
-                                                        -&#8377;{(4 + (Math.floor(orderData?.subTotalAmt * 100) - Math.floor(orderData?.totalAmt * 100)) / 100).toFixed(2)}
+                                                        -&#8377;{(totalAmountWithoutDiscount - totalAmountWithDiscount).toFixed(2)}
                                                     </p>
                                                 </div>
                                             )
@@ -158,7 +179,7 @@ function OrderDetails() {
                                     </>
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-xs text-[#666666]">Item total</p>
-                                        <p className="text-xs text-[#666666]">&#8377;{((Math.floor(orderData?.subTotalAmt * 100) - Math.floor(orderData?.totalAmt * 100)) / 100).toFixed(2) > 0 ? orderData?.subTotalAmt - ((Math.floor(orderData?.subTotalAmt * 100) - Math.floor(orderData?.totalAmt * 100)) / 100).toFixed(2) - 4 : orderData?.subTotalAmt}</p>
+                                        <p className="text-xs text-[#666666]">&#8377;{totalAmountWithDiscount}</p>
                                     </div>
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-xs text-[#666666]">Handling charge</p>
@@ -166,11 +187,11 @@ function OrderDetails() {
                                     </div>
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-xs text-[#666666]">Delivery charges</p>
-                                        <p className="text-xs text-[#666666]">{orderData?.subTotalAmt < 500 ? (<span>&#8377;30</span>) : "FREE"}</p>
+                                        <p className="text-xs text-[#666666]">{totalAmountWithDiscount < 500 ? (<span>&#8377;30</span>) : "FREE"}</p>
                                     </div>
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-xs text-[#666666]">Other <span>(Tip and Feeding india)</span></p>
-                                        <p className="text-xs text-[#666666]">{orderData?.subTotalAmt < 500 ? orderData?.totalAmt - 30 - 4 - orderData?.subTotalAmt : <span>&#8377;0</span>}</p>
+                                        <p className="text-xs text-[#666666]">{totalAmountWithDiscount < 500 ? orderData?.totalAmt - 30 - 4 - totalAmountWithDiscount : <span>&#8377;{orderData?.totalAmt - 4 - totalAmountWithDiscount}</span>}</p>
                                     </div>
                                     <div className="flex justify-between font-semibold">
                                         <p className="text-sm">Bill total</p>
