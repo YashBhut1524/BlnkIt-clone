@@ -96,6 +96,7 @@ function AddressMenuMobile({ setOpenAddNewAddressMenu }) {
                             </div>
                         </div>
 
+                        <p className="text-[#666666] text-sm px-5 mt-4 font-semibold">Your saved address</p>
                         {addresses.length > 0 && (
                             <div>
                                 {addresses.map((address, index) => (

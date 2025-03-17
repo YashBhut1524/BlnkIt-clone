@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // import { validURLConvertor } from "../utils/validURLConvertor";
 import ProductViewByCategory from "../components/ProductViewByCategory";
+import india_last_min_app from "../assets/india's_last_min_app.avif"
 
 function Home() {
     
@@ -36,12 +37,32 @@ function Home() {
             {/* Large Screen Layout */}
             <div className="hidden lg:block w-full max-w-[1200px] mx-auto">
                 <div className="w-full rounded bg-white -ml-4">
-                    <img src={banner} alt="Main Banner" className="w-full rounded-lg" />
+                    <img 
+                        src={banner} 
+                        alt="Main Banner" 
+                        className="w-full rounded-lg" 
+                        onClick={() => navigate("products-list/67bf451e54fc147282502939/67c000d22e4e44504249bb6b")}
+                    />
                 </div>
                 <div className="flex gap-5 rounded mt-4">
-                    <img src={pharmaBanner} alt="Pharmacy" className="w-85 rounded-lg shadow-md" />
-                    <img src={pet} alt="Pet Care" className="w-85 rounded-lg shadow-md" />
-                    <img src={babycare} alt="Baby Care" className="w-85 rounded-lg shadow-md" />
+                    <img 
+                        src={pharmaBanner} 
+                        alt="Pharmacy" 
+                        className="w-85 rounded-lg shadow-md" 
+                        onClick={() => navigate("products-list/67bf453554fc147282502942/67c004c32e4e44504249bc13")}
+                    />
+                    <img 
+                        src={pet} 
+                        alt="Pet Care" 
+                        className="w-85 rounded-lg shadow-md" 
+                        onClick={() => navigate("products-list/67bf452d54fc14728250293f/67c0032e2e4e44504249bbcb")}
+                    />
+                    <img 
+                        src={babycare} 
+                        alt="Baby Care" 
+                        className="w-85 rounded-lg shadow-md" 
+                        onClick={() => navigate("products-list/67bf44cc54fc147282502918/67bf4a2d508a897165189d7e")}
+                    />
                 </div>
             </div>
 
@@ -95,6 +116,12 @@ function Home() {
                         />
                     ))} 
                 </div>
+            </div>
+
+            {/* For md,sm and xs screens*/}
+            <div className="lg:hidden xl:hidden w-full">
+                {/* India's Last Minute App - Blinkit */}
+                <img src={india_last_min_app} alt="" className="w-full"/>
             </div>
         </section>
     );

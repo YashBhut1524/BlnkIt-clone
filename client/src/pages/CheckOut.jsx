@@ -310,7 +310,7 @@ function CheckOut() {
             </div>
             <button
                 className={`w-full fixed lg:hidden xl:hidden bottom-0 text-white py-3 text-lg font-bold ${selectedPaymentMethod === ""
-                    ? "bg-gray-400 cursor-not-allowed"
+                    ? "bg-[#CCCCCC] cursor-not-allowed"
                     : "bg-[#4A842C] cursor-pointer"
                     }`}
                 disabled={selectedPaymentMethod === ""}

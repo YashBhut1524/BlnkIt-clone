@@ -60,7 +60,7 @@ function ProductViewByCategory({ id, name }) {
             <div className="mx-auto flex justify-between">
                 <h2 className="font-bold text-lg mb-3">{name}</h2>
                 <Link 
-                    to={"/all-products-by-category"} 
+                    to={`/all-products-by-category/${id}`} 
                     state={{ categoryId: id }} 
                     className="text-[#0C831F] text-xl font-semibold"
                 >

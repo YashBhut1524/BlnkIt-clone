@@ -33,9 +33,10 @@ function OrderDetails() {
 
     function calculateDeliveryDate(createdAt, deliveryTime) {
         if (!createdAt || !deliveryTime) return "";
+    
         const deliveryDate = new Date(createdAt);
-        deliveryDate.setDate(deliveryDate.getDate() + deliveryTime);
-
+        deliveryDate.setMinutes(deliveryDate.getMinutes() + deliveryTime); // Add minutes instead of days
+    
         return deliveryDate.toLocaleString("en-US", {
             weekday: "short",
             day: "2-digit",
@@ -46,7 +47,7 @@ function OrderDetails() {
             hour12: true
         });
     }
-
+    
     const fetchOrderDetails = async () => {
         try {
             setLoading(true);
