@@ -12,7 +12,7 @@ import {
     verifyForgotPasswordOTPController, 
     verifyUserController 
 } from "../controllers/user.controller.js"
-import authMiddleware from "../middleware/authmiddleware.js"
+import authMiddleware from "../middleware/authMiddleware.js"
 import upload from "../middleware/multer.js"
 
 const userRoutes = Router()

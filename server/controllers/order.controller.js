@@ -1,14 +1,11 @@
 import OrderModel from "../models/order.model.js";
-import mongoose from "mongoose";
 import UserModel from "../models/user.model.js"
 import dotenv from "dotenv";
 import Stripe from "../config/stripe.js";
 import { pricewithDiscount } from "../utils/PriceWithDiscount.js";
-import { emptyCartController } from "./cart.controller.js";
 import CartProductModel from "../models/cartProduct.model.js";
 import razorpayInstance from "../utils/razorpayConfig.js";
 import crypto from "crypto";
-import { log } from "console";
 // import Stripe from "../config/stripe.js";
 
 dotenv.config(); // Load environment variables
