@@ -3,7 +3,7 @@
     "name" : "Blinkit",
     "builds" : [
         {
-            "src" : "./index.js",
+            "src" : "*.js",
             "use" : "@vercel/node"
         }
     ],
