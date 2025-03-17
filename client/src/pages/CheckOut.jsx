@@ -89,8 +89,6 @@ function CheckOut() {
         }
     };
 
-
-
     const handleRazorpayPayment = async () => {
         try {
             const response = await Axios({

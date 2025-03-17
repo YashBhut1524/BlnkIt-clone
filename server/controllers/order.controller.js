@@ -209,7 +209,7 @@ export const createStripePaymentOrderController = async (req, res) => {
                 subTotalAmt: subTotalAmt,
             },
             line_items: line_items,
-            success_url: `${process.env.CLIENT_URL}/success`,
+            success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.CLIENT_URL}/cancel`
         };
 
@@ -230,7 +230,7 @@ export const createStripePaymentOrderController = async (req, res) => {
 //http://localhost:8080/api/order/webhook
 export const stripeWebhookPayment = async (req, res) => {
     const event = req.body;
-    // console.log("event: ", event);
+    console.log("event: ", event);
     const endPointSecret = process.env.STRIPE_WEBHOOK_SECRET_KEY
 
     // Handle the event
@@ -238,12 +238,10 @@ export const stripeWebhookPayment = async (req, res) => {
         case 'checkout.session.completed':
             const session = event.data.object
             const lineItems = await Stripe.checkout.sessions.listLineItems(session.id)
-            // console.log("lineItems: ", lineItems);
-            // console.log("session: ", session);
+            console.log("lineItems: ", lineItems);
+            console.log("session: ", session);
             
             const userId = session.metadata.userId
-
-            const minutes = Math.floor(Math.random() * (20 - 6 + 1)) + 6;
 
             const newOrder = new OrderModel({
                 userId: userId,
@@ -254,12 +252,10 @@ export const stripeWebhookPayment = async (req, res) => {
                 subTotalAmt: session.metadata.subTotalAmt,
                 totalAmt: session.metadata.totalAmt,
                 order_status: "Pending", // Default status
-                invoice_receipt: "",
-                delivery_time: minutes,
-                payment_type: "Stripe",
+                invoice_receipt: ""
             });
 
-            // console.log("newOrder: ", newOrder);
+            console.log("newOrder: ", newOrder);
 
             await newOrder.save();
             
