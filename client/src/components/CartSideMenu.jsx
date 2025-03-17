@@ -42,34 +42,34 @@ function CartSideMenu({ setIsCartMenuOpen, setIsAddressMenuOpen, setIsCartButton
             document.body.classList.remove("overflow-hidden");
         };
     }, []);
-
     useEffect(() => {
         let itemsCount = 0;
         let priceCountWithDiscount = 0;
         let priceCountWithOutDiscount = 0;
-
+    
         itemsCount = cartItem.reduce((prev, curr) => prev + curr.quantity, 0);
-
+    
         priceCountWithDiscount = parseFloat(
             cartItem.reduce((prev, curr) =>
                 prev + curr.productId.price * (1 - curr.productId.discount / 100) * curr.quantity, 0
             ).toFixed(2)
         );
-
+    
         priceCountWithOutDiscount = parseFloat(
             cartItem.reduce((prev, curr) =>
                 prev + curr.productId.price * curr.quantity, 0
             ).toFixed(2)
         );
-
+    
         setTotalItems(itemsCount);
         setTotalPriceWithDiscount(priceCountWithDiscount);
         setTotalPriceWithOutDiscount(priceCountWithOutDiscount);
-        setTotalSavings((totalPriceWithOutDiscount - totalPriceWithDiscount).toFixed(2));
-        if (totalPriceWithDiscount > 500) {
-            setDeliveryCharge(0);
-        }
+        setTotalSavings((priceCountWithOutDiscount - priceCountWithDiscount).toFixed(2));
+    
+        // Use priceCountWithDiscount instead of totalPriceWithDiscount
+        setDeliveryCharge(priceCountWithDiscount > 500 ? 0 : 30);
     }, [cartItem]);
+    
 
     return (
         <section className="fixed top-0 bottom-0 left-0 right-0 bg-neutral-800/70 z-40">

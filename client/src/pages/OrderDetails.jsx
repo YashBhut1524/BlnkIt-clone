@@ -92,11 +92,14 @@ function OrderDetails() {
 
     // Set deliveryTime when orderData is updated
     useEffect(() => {
+        if (orderData?.itemList && Array.isArray(orderData.itemList)) {
+            calculateTotalAmounts(orderData.itemList);
+        }
         if (orderData?.createdAt && orderData?.delivery_time) {
             setDeliveryTime(calculateDeliveryDate(orderData.createdAt, orderData.delivery_time));
         }
-        calculateTotalAmounts(orderData?.itemList);
     }, [orderData]);
+    
 
     return (
         <>
