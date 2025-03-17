@@ -209,7 +209,7 @@ export const createStripePaymentOrderController = async (req, res) => {
                 subTotalAmt: subTotalAmt,
             },
             line_items: line_items,
-            success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${process.env.CLIENT_URL}/success`,
             cancel_url: `${process.env.CLIENT_URL}/cancel`
         };
 
