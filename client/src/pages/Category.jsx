@@ -8,7 +8,7 @@ import GridLoader from "react-spinners/GridLoader";
 import NoData from "../components/NoData"
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import UpdateCategoryModel from "../components/updateCategoryModel"
+import UpdateCategoryModel from "../components/UpdateCategoryModel"
 // import { useSelector } from "react-redux"
 
 function Category() {
