@@ -27,7 +27,7 @@ function Home() {
         
         // navigate(url);
         let subCategoryId = filteredSubCategories[0]?._id;
-        navigate("/products-list", { state: { categoryId, subCategoryId } });
+        navigate(`/products-list/${categoryId}/${subCategoryId}`, { state: { categoryId, subCategoryId } });
 
     };
 

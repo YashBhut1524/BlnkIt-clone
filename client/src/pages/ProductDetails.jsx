@@ -77,7 +77,7 @@ function ProductDetails() {
     };
 
     const handleRedirectToProductList = (categoryId, subCategoryId) => {
-        navigate("/products-list", { state: { categoryId, subCategoryId } });
+        navigate(`/products-list/${categoryId}/${subCategoryId}`, { state: { categoryId, subCategoryId } });
 
     }
     
@@ -91,9 +91,8 @@ function ProductDetails() {
     useEffect(() => {
         fetchProductData();
         console.log(productData);
-        
     }, []);
-
+    
     return (
         <>
             {/* lg and above screen */}
