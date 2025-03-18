@@ -25,8 +25,10 @@ function ProductList() {
     const [filteredSubCategories, setFilteredSubCategories] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const fetchProductsByCategory = async () => {
+        setLoading(true);
         try {
             const response = await Axios({
                 ...summaryApi.getProductByCategory,
@@ -43,6 +45,8 @@ function ProductList() {
             setProducts(filteredProducts);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(true);
         }
     };
 
@@ -183,30 +187,39 @@ function ProductList() {
                 </div>
 
                 {/* Right (Products By SubCategory) */}
-                <div className="pl-2 pb-2 pr-2 overflow-y-scroll h-[80vh] border-r border-gray-200 bg-[#F4F6FB] top-0 no-scrollbar">
-                    <div className="py-4 pl-6 text-md w-full bg-white flex items-center justify-between top-0">
-                        <h2 className="font-bold">
-                            Buy{" "}
-                            {filteredSubCategories.find((sub) => sub._id === subCategoryId)?.name ||
-                                "Products"}{" "}
-                            online
-                        </h2>
-                    </div>
-                    {products.length === 0 ? (
-                        <div className="flex flex-col justify-center items-center">
-                            <img src={nothing_here_yet} alt="No products available" className="w-80 h-80" />
-                            <p className="text-2xl text-[#F8CB46] font-bold">No Product Found</p>
+                {
+                    loading ? (
+                        <div className="w-110 h-110 flex justify-center items-center">
+                                <span className="animate-spin w-10 h-10 border-4 border-gray-300 border-t-green-500 rounded-full"></span>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 mx-auto container py-4">
-                            {products
-                                .sort((a, b) => (a.stock === 0) - (b.stock === 0))
-                                .map((product, index) => (
-                                    <ProductCardForProductListPage data={product} key={index} />
-                                ))}
+                        
+                        <div className="pl-2 pb-2 pr-2 overflow-y-scroll h-[80vh] border-r border-gray-200 bg-[#F4F6FB] top-0 no-scrollbar">
+                            <div className="py-4 pl-6 text-md w-full bg-white flex items-center justify-between top-0">
+                                <h2 className="font-bold">
+                                    Buy{" "}
+                                    {filteredSubCategories.find((sub) => sub._id === subCategoryId)?.name ||
+                                        "Products"}{" "}
+                                    online
+                                </h2>
+                            </div>
+                            {products.length === 0 ? (
+                                <div className="flex flex-col justify-center items-center">
+                                    <img src={nothing_here_yet} alt="No products available" className="w-80 h-80" />
+                                    <p className="text-2xl text-[#F8CB46] font-bold">No Product Found</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 mx-auto container py-4">
+                                    {products
+                                        .sort((a, b) => (a.stock === 0) - (b.stock === 0))
+                                        .map((product, index) => (
+                                            <ProductCardForProductListPage data={product} key={index} />
+                                        ))}
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
+                    )
+                }
             </div>
         </section>
     );
