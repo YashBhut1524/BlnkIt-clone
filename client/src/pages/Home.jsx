@@ -61,7 +61,7 @@ function Home() {
                         src={babycare} 
                         alt="Baby Care" 
                         className="w-85 rounded-lg shadow-md cursor-pointer" 
-                        onClick={() => navigate("products-list/67bf44cc54fc147282502918/67bf4a2d508a897165189d7e")}
+                        onClick={() => navigate("products-list/67bf44cc54fc147282502918/67bf4a25508a897165189d7a")}
                     />
                 </div>
             </div>
