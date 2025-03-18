@@ -10,7 +10,7 @@ import authMiddleware from "../middleware/authMiddleware.js"
 const subCategoryRoutes = Router()
 
 subCategoryRoutes.post("/add-sub-category", authMiddleware, addSubCategoryController)
-subCategoryRoutes.post("/get-sub-category", getSubCategoriesController)
+subCategoryRoutes.get("/get-sub-category", getSubCategoriesController)
 subCategoryRoutes.put("/update-sub-category", authMiddleware, updateSubCategoryController)
 subCategoryRoutes.put("/delete-sub-category", authMiddleware, deleteSubCategoryController)
 
