@@ -112,7 +112,7 @@ function AllProductsByCategory() {
             {/* Product List */}
             {
                 loading ? (
-                    <div className="w-110 h-110 flex justify-center items-center">
+                    <div className="flex justify-center items-center">
                                 <span className="animate-spin w-10 h-10 border-4 border-gray-300 border-t-green-500 rounded-full"></span>
                             </div>
                 ) : (
