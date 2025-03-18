@@ -110,36 +110,44 @@ function AllProductsByCategory() {
             </div>
 
             {/* Product List */}
-            <div className="border-1 border-gray-200 bg-[#F2F4FA]">
-                {loading ? (
-                    <div className="flex justify-center items-center h-screen">
-                        <div className="spinner-border text-primary" role="status">
-                            <span className="sr-only">Loading...</span>
-                        </div>
-                    </div>
+            {
+                loading ? (
+                    <div className="w-110 h-110 flex justify-center items-center">
+                                <span className="animate-spin w-10 h-10 border-4 border-gray-300 border-t-green-500 rounded-full"></span>
+                            </div>
                 ) : (
-                    <div className="p-3">
-                        {productData.length > 0 ? (
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                {[...productData]
-                                    .sort((a, b) => (a.stock === 0) - (b.stock === 0)) // Moves out-of-stock items to the end
-                                    .map((product) => (
-                                        <div
-                                            key={product._id}
-                                            className="relative hover:shadow-2xl hover:scale-105 transition duration-200"
-                                        >
-                                            <ProductCardForProductListPage data={product} />
-                                        </div>
-                                    ))}
+                    <div className="border-1 border-gray-200 bg-[#F2F4FA]">
+                        {loading ? (
+                            <div className="flex justify-center items-center h-screen">
+                                <div className="spinner-border text-primary" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </div>
                             </div>
                         ) : (
-                            <div className="text-center text-gray-500 text-lg my-10">
-                                No products available in this category.
+                            <div className="p-3">
+                                {productData.length > 0 ? (
+                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                        {[...productData]
+                                            .sort((a, b) => (a.stock === 0) - (b.stock === 0)) // Moves out-of-stock items to the end
+                                            .map((product) => (
+                                                <div
+                                                    key={product._id}
+                                                    className="relative hover:shadow-2xl hover:scale-105 transition duration-200"
+                                                >
+                                                    <ProductCardForProductListPage data={product} />
+                                                </div>
+                                            ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center text-gray-500 text-lg my-10">
+                                        No products available in this category.
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
-                )}
-            </div>
+                )
+            }
         </section>
     );
 }
