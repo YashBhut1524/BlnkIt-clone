@@ -26,25 +26,7 @@ function UploadProduct() {
         price: "",
         description: "",
         discount: "",
-        more_details: {
-                // This is an example of additional product details to make it easier to manage and display 
-                "Shelf Life": "3 months",
-                "Key Features": "",
-                "Offers": "",
-                "Nutrition Information": "",
-                "Ingredients": "",
-                "Size": "",
-                "Color": "",
-                "Manufacturer Details": "",
-                "Marketed By": "",
-                "Country Of Origin": "India",
-                "FSSAI License": "",
-                "Customer Care Details": "Email: info@blinkit.com",
-                "Return Policy": "This Item is non-returnable. For a damaged, defective, incorrect or expired item, you can request a replacement within 72 hours of delivery. In case of an incorrect item, you may raise a replacement or return request only if the item is sealed/unopened/unused and in original condition.",
-                "Seller": "Moonstone Ventures LLP",
-                "Seller FSSAI": "13323999000008",
-                "Disclaimer": "Every effort is made to maintain accuracy of all information. However, actual product packaging and materials may contain more and/or different information. It is recommended not to solely rely on the information presented."
-        },
+        more_details: {},
         publish: true
     });
     

@@ -48,27 +48,32 @@ function Home() {
                     <img 
                         src={pharmaBanner} 
                         alt="Pharmacy" 
-                        className="w-85 rounded-lg shadow-md" 
+                        className="w-85 rounded-lg shadow-md cursor-pointer" 
                         onClick={() => navigate("products-list/67bf453554fc147282502942/67c004c32e4e44504249bc13")}
                     />
                     <img 
                         src={pet} 
                         alt="Pet Care" 
-                        className="w-85 rounded-lg shadow-md" 
+                        className="w-85 rounded-lg shadow-md cursor-pointer" 
                         onClick={() => navigate("products-list/67bf452d54fc14728250293f/67c0032e2e4e44504249bbcb")}
                     />
                     <img 
                         src={babycare} 
                         alt="Baby Care" 
-                        className="w-85 rounded-lg shadow-md" 
+                        className="w-85 rounded-lg shadow-md cursor-pointer" 
                         onClick={() => navigate("products-list/67bf44cc54fc147282502918/67bf4a2d508a897165189d7e")}
                     />
                 </div>
             </div>
 
             {/* Mobile Layout */}
-            <div className="block lg:hidden mx-auto my-4 w-full max-w-[1200px]">
-                <img src={android_feed} alt="Mobile Banner" className="w-full rounded-xl" />
+            <div className="block lg:hidden mx-auto my-4 w-full max-w-[1200px] cursor-pointe">
+                <img 
+                    src={android_feed} 
+                    alt="Mobile Banner" 
+                    className="w-full rounded-xl" 
+                    onClick={() => navigate("products-list/67bf451e54fc147282502939/67c000d22e4e44504249bb6b")}
+                />
             </div>
 
             {/* Category Section */}
