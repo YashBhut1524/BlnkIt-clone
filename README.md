@@ -174,7 +174,7 @@ blinkit-clone/
 4. **Upload Avatar**  
    - **Method:** `PUT`  
    - **Path:** `/api/user/upload-avatar`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Headers:**  
      ```
      {
@@ -226,21 +226,21 @@ blinkit-clone/
 8. **Logout**  
    - **Method:** `GET`  
    - **Path:** `/api/user/logout`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in 
+   - **Header** `accessToken: your_access_token `  
    - **Body:** *None*
    - **Description:** This API logs out the user by invalidating the session or token.
 
 9. **Get User Details**  
    - **Method:** `GET`  
    - **Path:** `/api/user/get-user-details`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** None  
    - **Description:** This API retrieves the details of the authenticated user.  
 
 10. **Update User**  
    - **Method:** `PUT`  
    - **Path:** `/api/user/update-user`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:**  
      ```json
      {
@@ -274,7 +274,7 @@ blinkit-clone/
 2. **Delete Image**  
    - **Method:** `POST`  
    - **Path:** `/api/file/delete-image`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** 
         ```json
         {
@@ -288,7 +288,7 @@ blinkit-clone/
 1. **Add Category** (Admin)
    - **Method:** `POST`  
    - **Path:** `/api/category/add-category` 
-   - **Header** `accessToken: your_access_token ` //user must be logged_in 
+   - **Header** `accessToken: your_access_token `  
    - **Body:** 
         ```json
             {
@@ -308,7 +308,7 @@ blinkit-clone/
 3. **Delete Category** (Admin)
    - **Method:** `PUT`  
    - **Path:** `/api/category/delete-category`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** 
         ```json
         {
@@ -319,7 +319,7 @@ blinkit-clone/
 4. **Update Category** (Admin)  
    - **Method:** `PUT`  
    - **Path:** `/api/category/update-category`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** 
         ```json
         {
@@ -335,7 +335,7 @@ blinkit-clone/
 1. **Add Subcategory** (Admin)  
    - **Method:** `POST`  
    - **Path:** `/api/sub-category/add-sub-category` 
-   - **Header** `accessToken: your_access_token ` //user must be logged_in 
+   - **Header** `accessToken: your_access_token `  
    - **Body:** 
         ```json
         {
@@ -362,7 +362,7 @@ blinkit-clone/
 3. **Update Subcategory** (Admin)  
    - **Method:** `PUT`  
    - **Path:** `/api/sub-category/update-sub-category` 
-   - **Header** `accessToken: your_access_token ` //user must be logged_in 
+   - **Header** `accessToken: your_access_token `  
    - **Body:** 
         ```json
         {
@@ -385,7 +385,7 @@ blinkit-clone/
 4. **Delete Subcategory** (Admin)  
    - **Method:** `PUT`  
    - **Path:** `/api/sub-category/delete-sub-category`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** 
         ```json
         {
@@ -399,7 +399,7 @@ blinkit-clone/
 1. **Add Product** (Admin)  
    - **Method:** `POST`  
    - **Path:** `/api/product/add-product`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** 
         ```json
         {
@@ -480,7 +480,7 @@ blinkit-clone/
 7. **Update Product** (Admin)  
    - **Method:** `PUT`  
    - **Path:** `/api/product/update-product`  \
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** 
         ```json
         {
@@ -540,7 +540,7 @@ blinkit-clone/
 8. **Delete Product** (Admin)  
    - **Method:** `DELETE`  
    - **Path:** `/api/product/delete-product/${product_id}` 
-   - **Header** `accessToken: your_access_token ` //user must be logged_in 
+   - **Header** `accessToken: your_access_token `  
    - **Body:** `None`
 
 ---
@@ -549,7 +549,7 @@ blinkit-clone/
 1. **Create Cart**  
    - **Method:** `POST`  
    - **Path:** `/api/cart/create-cart`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** 
         ```json
         {
@@ -560,13 +560,13 @@ blinkit-clone/
 2. **Get Cart Items**  
    - **Method:** `GET`  
    - **Path:** `/api/cart/get-cart-items` 
-   - **Header** `accessToken: your_access_token ` //user must be logged_in 
+   - **Header** `accessToken: your_access_token `  
    - **Body:** `None`
 
 3. **Update Cart Item Quantity**  
    - **Method:** `PUT`  
    - **Path:** `/api/cart/update-cart-item-quantity`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** 
         ```json
         {
@@ -578,7 +578,7 @@ blinkit-clone/
 4. **Delete Cart Item**  
    - **Method:** `DELETE`  
    - **Path:** `/api/cart/delete-cart-item`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** 
         ```json
         {
@@ -592,7 +592,7 @@ blinkit-clone/
 1. **Add New Address**  
    - **Method:** `POST`  
    - **Path:** `/api/address/add-new-address`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** 
         ```json
         {
@@ -618,13 +618,13 @@ blinkit-clone/
 2. **Get Address**  
    - **Method:** `GET`  
    - **Path:** `/api/address/get-address`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** `None`
 
 3. **Update Address**  
    - **Method:** `PUT`  
    - **Path:** `/api/address/update-address`  \
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** 
         ```json
         {
@@ -651,7 +651,7 @@ blinkit-clone/
 4. **Delete Address**  
    - **Method:** `DELETE`  
    - **Path:** `/api/address/delete-address`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** 
         ```json
         {
@@ -662,7 +662,7 @@ blinkit-clone/
 5. **Set Default Address**  
    - **Method:** `PUT`  
    - **Path:** `/api/address/set-default-address`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** 
         ```json
         {
@@ -676,7 +676,7 @@ blinkit-clone/
 1. **Add Cash on Delivery Order**  
    - **Method:** `POST`  
    - **Path:** `/api/order/add-cash-on-delivery-order`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** 
         ```json
         {
@@ -726,7 +726,7 @@ blinkit-clone/
 2. **Add Razorpay Payment Order**  
    - **Method:** `POST`  
    - **Path:** `/api/order/add-razor-payment-checkout`
-   - **Header** `accessToken: your_access_token ` //user must be logged_in  
+   - **Header** `accessToken: your_access_token `   
    - **Body:** 
         ```json
         {
@@ -776,13 +776,13 @@ blinkit-clone/
 3. **Razorpay Payment Verification**
    - **Method:** `POST`  
    - **Path:** `/api/order/razorpay-payment-verification`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body** `None`
 
 4. **Add Stripe Payment Order**  
    - **Method:** `POST`  
    - **Path:** `/api/order/add-razor-payment-checkout`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
 
    - **Body:** 
         ```json
@@ -834,20 +834,20 @@ blinkit-clone/
 5. **Stripe webhook**
    - **Method:** `POST`  
    - **Path:** `/api/order/webhook`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** `None`
 
 6. **Get Orders**  
    - **Method:** `GET`  
    - **Path:** `/api/order/get-orders`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** `None`
 
 
 7. **Get All Orders For Admin** 
    - **Method:** `GET`  
    - **Path:** `/api/order/get-all-orders`  
-   - **Header** `accessToken: your_access_token ` //user must be logged_in
+   - **Header** `accessToken: your_access_token ` 
    - **Body:** `None`
 
 
