@@ -207,7 +207,7 @@ blinkit-clone/
         ```json
         {
             "email": "example@gmail.com",
-            "otp": "665233" //example otp
+            "otp": "your_otp"
         }
         ```
 
@@ -442,7 +442,7 @@ blinkit-clone/
    - **Body:** 
         ```json
         {
-            "search": "Search_Query" //maggie, atta etc
+            "search": "Search_Query" 
         }
         ```
 
@@ -452,7 +452,7 @@ blinkit-clone/
    - **Body:** 
         ```json
         {
-            "id": "product_id" //product._id
+            "id": "product_id" 
         }
         ```
 
@@ -462,7 +462,7 @@ blinkit-clone/
    - **Body:** 
         ```json
         {
-            "id": "category_id" //category._id
+            "id": "category_id"
         }
         ```
 
@@ -472,14 +472,14 @@ blinkit-clone/
    - **Body:** 
         ```json
         {
-            "categoryId": "category_id", //category._id
-            "subCategoryId": "subcategory_id", //subcategory._id
+            "categoryId": "category_id",
+            "subCategoryId": "subcategory_id",
         }
         ```
 
 7. **Update Product** (Admin)  
    - **Method:** `PUT`  
-   - **Path:** `/api/product/update-product`  \
+   - **Path:** `/api/product/update-product`
    - **Header** `accessToken: your_access_token ` 
    - **Body:** 
         ```json
@@ -524,9 +524,9 @@ blinkit-clone/
                     "__v": 0
                 }
             ],
-            "unit": "48g", //unit of product 
-            "stock": 12, //number of stock 
-            "price": 30, //product Price
+            "unit": "prodcut_unit", 
+            "stock": prodcut_stock,  
+            "price": prodcut_price,
             "description": "Product_Description",
             "discount": "",
             "more_details": {
@@ -571,7 +571,7 @@ blinkit-clone/
         ```json
         {
             "_id": "product_id",
-            "quantity": 4 //quantity that you want to set
+            "quantity": 4 
         }
         ```
 
@@ -629,12 +629,12 @@ blinkit-clone/
         ```json
         {
             "_id": "address_id",
-            "saveAs": "home", //saveAs type
+            "saveAs": "home",
             "flatHouseNumber": "flatHouseNumber",
-            "floor": "", //optional
+            "floor": "", 
             "street": "street_name",
             "area": "area_name",
-            "landmark": "", //optional
+            "landmark": "", 
             "city": "city_name",
             "state": "state_name",
             "pincode": "pincode",
