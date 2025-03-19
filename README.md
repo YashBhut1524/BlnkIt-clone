@@ -525,8 +525,8 @@ blinkit-clone/
                 }
             ],
             "unit": "prodcut_unit", 
-            "stock": prodcut_stock,  
-            "price": prodcut_price,
+            "stock": 44,  
+            "price": 199,
             "description": "Product_Description",
             "discount": "",
             "more_details": {
@@ -596,12 +596,12 @@ blinkit-clone/
    - **Body:** 
         ```json
         {
-            "saveAs": "home", //saveAs type
+            "saveAs": "home", 
             "flatHouseNumber": "flatHouseNumber",
-            "floor": "", //optional
+            "floor": "", 
             "street": "street_name",
             "area": "area_name",
-            "landmark": "", //optional
+            "landmark": "", 
             "city": "city_name",
             "state": "state_name",
             "pincode": "pincode",
