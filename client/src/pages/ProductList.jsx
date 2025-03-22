@@ -125,20 +125,26 @@ function ProductList() {
                         {/* Dropdown Menu */}
                         {isDropdownOpen && (
                             <div className="absolute top-full right-0 bg-white shadow-lg border w-48 overflow-y-auto h-[70vh]">
-                                {allCategory.slice(6).map((category) => (
-                                    <button
-                                        key={category._id}
-                                        className="block px-4 py-2 w-full text-left hover:bg-gray-200"
-                                        onMouseDown={(e) => {
-                                            e.preventDefault();
-                                            navigate(`/products-list/${category._id}`);
-                                            scrollToTop();
-                                            setIsDropdownOpen(false);
-                                        }}
-                                    >
-                                        {category.name}
-                                    </button>
-                                ))}
+                                {allCategory.slice(6).map((category) => {
+                                    const firstSubCategory = allSubCategory.find(subCategory =>
+                                        subCategory.category.some(cat => cat._id === category._id)
+                                    );
+                                    return (
+                                        <button
+                                            key={category._id}
+                                            className="block px-4 py-2 w-full text-left hover:bg-gray-200"
+                                            onMouseDown={(e) => {
+                                                e.preventDefault();
+                                                navigate(`/products-list/${category._id}/${firstSubCategory?._id || ""}`);
+                                                scrollToTop();
+                                                setIsDropdownOpen(false);
+                                            }}
+                                        >
+                                            {category.name}
+                                        </button>
+                                    )
+                                }
+                            )}
                             </div>
                         )}
                     </div>
