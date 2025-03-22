@@ -80,8 +80,8 @@ function ProductsAdmin() {
             <div className="h-[70vh] bottom-0">
                 {
                     loading ? (
-                        <div className="grid place-items-center mt-[25vh] h-full">
-                            <GridLoader color="#434343" margin={2} size={25} />
+                        <div className="flex justify-center items-center">
+                            <span className="animate-spin w-10 h-10 border-4 border-gray-300 border-t-green-500 rounded-full"></span>
                         </div>
                     ) : (
                         <>
