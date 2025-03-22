@@ -80,7 +80,7 @@ function ProductsAdmin() {
             <div className="h-[70vh] bottom-0">
                 {
                     loading ? (
-                        <div className="grid place-items-center mt-[25vh]">
+                        <div className="grid place-items-center mt-[25vh] h-full">
                             <GridLoader color="#434343" margin={2} size={25} />
                         </div>
                     ) : (
