@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import AxiosToastError from "../utils/AxiosToastError";
 import Axios from "../utils/Axios";
 import summaryApi from "../common/summaryApi";
-import GridLoader from "react-spinners/GridLoader";
 import ProductCardAdmin from "./ProductCardAdmin";
 import { IoMdSearch } from "react-icons/io";
 import NoData from "../components/NoData";
