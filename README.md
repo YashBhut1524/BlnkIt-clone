@@ -3,6 +3,10 @@
 ## Live Link
 https://blnkit-clone.vercel.app/
 
+## Video Links
+🔗 [Watch the overview video](https://www.youtube.com/watch?v=JJWzSoJBl7c)
+🔗 [Watch the full comparison video](https://www.youtube.com/watch?v=JJWzSoJBl7c)
+
 ## Overview
 This is a BlinkIt clone built using the **MERN (MongoDB, Express.js, React.js, Node.js)** stack. It is an online grocery ordering and delivery application that allows users to browse products, add them to the cart, and complete purchases using integrated payment gateways.
 
