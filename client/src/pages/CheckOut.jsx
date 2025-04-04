@@ -151,7 +151,6 @@ function CheckOut() {
         }
     };
 
-
     const handlePayNow = async () => {
         try {
             setLoading(true)

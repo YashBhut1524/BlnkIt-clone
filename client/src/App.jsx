@@ -18,6 +18,8 @@ import AddNewAddress from "./components/AddNewAddress";
 import AddressMenu from "./components/AddressMenu";
 import { setAddresses } from "./store/addressSlice";
 import EditAddress from "./components/EditAddress";
+import AddNewAddressManually from "./components/AddNewAddressManually";
+import EditAddressManually from "./components/EditAddressManually";
 
 function App() {
 
@@ -190,7 +192,11 @@ function App() {
       {
         openAddNewAddressMenu && (
           <>
-            <AddNewAddress
+            {/* <AddNewAddress
+              setIsAddressMenuOpen={setIsAddressMenuOpen}
+              setOpenAddNewAddressMenu={setOpenAddNewAddressMenu}
+            /> */}
+            <AddNewAddressManually
               setIsAddressMenuOpen={setIsAddressMenuOpen}
               setOpenAddNewAddressMenu={setOpenAddNewAddressMenu}
             />
@@ -200,7 +206,11 @@ function App() {
 
       {/* Edit Address Menu */}
       {openEditAddressMenu && (
-        <EditAddress
+        // <EditAddress
+        //   data={openEditAddressMenu} // Pass selected address data
+        //   setOpenEditAddressMenu={setOpenEditAddressMenu}
+        // />
+        <EditAddressManually
           data={openEditAddressMenu} // Pass selected address data
           setOpenEditAddressMenu={setOpenEditAddressMenu}
         />

@@ -27,6 +27,8 @@ import AllOrderAdmin from "../pages/AllOrderAdmin"
 import Success from "../pages/Success"
 import Cancel from "../pages/Cancel"
 import OrderDetails from "../pages/OrderDetails"
+import AddNewAddressManually from "../components/AddNewAddressManually"
+import EditAddressManually from "../components/EditAddressManually"
 
 const router = createBrowserRouter([
     {
@@ -134,11 +136,13 @@ const router = createBrowserRouter([
             // },
             {
                 path: "add-new-address",
-                element: <AddNewAddress />
+                // element: <AddNewAddress />
+                element: <AddNewAddressManually />
             },
             {
                 path: "edit-address",
-                element: <EditAddress />
+                // element: <EditAddress />
+                element: <EditAddressManually />
             },
             {
                 path: "checkout",
