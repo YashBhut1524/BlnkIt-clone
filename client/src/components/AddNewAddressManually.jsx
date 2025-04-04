@@ -50,28 +50,21 @@ const AddNewAddressManually = ({ setOpenAddNewAddressMenu, setIsAddressMenuOpen 
     };
 
     const handleSubmit = async () => {
+        console.log("Submitting address data:", addressData); // Debugging log
+    
+        if (!addressData.flatHouseNumber || !addressData.city || !addressData.state || !addressData.pincode) {
+            toast.error("Please fill all the required fields.");
+            return;
+        }
+    
         try {
             const response = await Axios({
                 ...summaryApi.addNewAddress,
-                data: {
-                    saveAs: addressData.saveAs,
-                    flatHouseNumber: addressData.flatHouseNumber,
-                    floor: addressData.floor,
-                    street: addressData.street,
-                    area: addressData.area,
-                    landmark: addressData.landmark,
-                    city: addressData.city,
-                    state: addressData.state,
-                    pincode: addressData.pincode,
-                    country: addressData.country,
-                    name: addressData.name,
-                    mobileNumber: addressData.mobileNumber,
-                    latitude: addressData.latitude,
-                    longitude: addressData.longitude,
-                    defaultAddress: addressData.defaultAddress  
-                }
+                data: addressData, // Directly send addressData
             });
-
+    
+            console.log("API Response:", response.data); // Debugging log
+    
             if (response.data.success) {
                 toast.success(response.data.message);
                 setOpenAddNewAddressMenu(false);
@@ -80,10 +73,11 @@ const AddNewAddressManually = ({ setOpenAddNewAddressMenu, setIsAddressMenuOpen 
                 toast.error(response.data.message);
             }
         } catch (error) {
+            console.error("API Error:", error); // Log full error for debugging
             AxiosToastError(error);
         }
     };
-
+    
     return (
         <div className="fixed inset-0 bg-neutral-800/70 flex justify-center items-center z-40 overflow-y-auto w-full p-4">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative mt-130 lg:mt-60">
