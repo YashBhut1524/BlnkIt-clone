@@ -39,6 +39,8 @@ const AddNewAddressManually = ({ setOpenAddNewAddressMenu, setIsAddressMenuOpen 
 
     const handleChange = (field) => (event) => {
         setAddressData((prev) => ({ ...prev, [field]: event.target.value }));
+        console.log(addressData);
+        
     };
 
     const handleClose = () => {
@@ -50,33 +52,47 @@ const AddNewAddressManually = ({ setOpenAddNewAddressMenu, setIsAddressMenuOpen 
     };
 
     const handleSubmit = async () => {
-        console.log("Submitting address data:", addressData); // Debugging log
-    
-        if (!addressData.flatHouseNumber || !addressData.city || !addressData.state || !addressData.pincode) {
-            toast.error("Please fill all the required fields.");
-            return;
-        }
-    
         try {
             const response = await Axios({
                 ...summaryApi.addNewAddress,
-                data: addressData, // Directly send addressData
-            });
-    
-            console.log("API Response:", response.data); // Debugging log
-    
+                data: {
+                    saveAs: addressData.saveAs,
+                    flatHouseNumber: addressData.flatHouseNumber,
+                    floor: addressData.floor,
+                    street: addressData.street,
+                    area: addressData.area,
+                    landmark: addressData.landmark,
+                    city: addressData.city,
+                    state: addressData.state,
+                    pincode: addressData.pincode,
+                    country: addressData.country,
+                    name: addressData.name,
+                    mobileNumber: addressData.mobileNumber,
+                    latitude: addressData.latitude,
+                    longitude: addressData.longitude,
+                    defaultAddress: addressData.defaultAddress
+                }
+            })
+
+            console.log("response: ", response);
             if (response.data.success) {
-                toast.success(response.data.message);
-                setOpenAddNewAddressMenu(false);
-                setIsAddressMenuOpen(false);
+                fetchAddress()
+                toast.success(response.data.message)
+                if (location.pathname === "/add-new-address") {
+                    navigate(-1); // Go back to the previous page
+                } else {
+                    setIsAddressMenuOpen(true)
+                    setOpenAddNewAddressMenu(false);
+                }
+                // dispatch(addAddress(response.data.data))
             } else {
-                toast.error(response.data.message);
+                toast.error(response.data.message)
             }
+
         } catch (error) {
-            console.error("API Error:", error); // Log full error for debugging
-            AxiosToastError(error);
+            AxiosToastError(error)
         }
-    };
+    }
     
     return (
         <div className="fixed inset-0 bg-neutral-800/70 flex justify-center items-center z-40 overflow-y-auto w-full p-4">
