@@ -82,7 +82,7 @@ function Footer() {
                         <a href="https://x.com/YaShh1524" className="p-2 bg-black rounded-full text-white">
                             <FaXTwitter size={20} />
                         </a>
-                        <a href="https://www.instagram.com/yashh_1524/" className="p-2 bg-black rounded-full text-white">
+                        <a href="https://www.instagram.com/dev.yashh1524/" className="p-2 bg-black rounded-full text-white">
                             <FaInstagram size={20} />
                         </a>
                         <a href="https://www.linkedin.com/in/yashbhut1524/" className="p-2 bg-black rounded-full text-white">
